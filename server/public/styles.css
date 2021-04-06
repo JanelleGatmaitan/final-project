@@ -1,0 +1,28 @@
+h2 {
+  font-family: 'Libre Baskerville', serif;
+}
+
+p {
+  font-family: 'Lato',  sans-serif;;
+}
+
+.drawer {
+  background-color: #61b15a;
+  height: 94px;
+}
+
+.drawer-icon {
+  font-size: 1.5rem;
+  margin-top: 40px;
+  margin-left: 20px;
+}
+
+header {
+  margin: 40px 0px;
+}
+
+.search-bar {
+  width: 350px;
+  border-radius: 20px;
+  border: 2px solid #F0F0F0;
+}

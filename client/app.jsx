@@ -1,8 +1,17 @@
 import React from 'react';
-import Home from './pages/home';
+import Search from './pages/search';
+import Drawer from './components/drawer';
+import PageContainer from './components/page-container';
 
 export default class App extends React.Component {
   render() {
-    return <Home />;
+    return (
+    <>
+        <Drawer />
+    <PageContainer>
+          <Search />
+    </PageContainer>
+    </>
+    );
   }
 }
