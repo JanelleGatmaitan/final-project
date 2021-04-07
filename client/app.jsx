@@ -3,6 +3,7 @@ import Search from './pages/search';
 import Drawer from './components/drawer';
 import PageContainer from './components/page-container';
 import parseRoute from './lib/parse-route';
+import getAllVegetables from '../server/harvest-helper';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -26,7 +27,9 @@ export default class App extends React.Component {
 
   renderPage() {
     const { route } = this.state;
+    console.log('route: ', route);
     if (route.path === '') {
+      getAllVegetables();
       return <Search />;
     } else {
       console.log('page not found');

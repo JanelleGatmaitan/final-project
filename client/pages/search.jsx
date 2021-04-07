@@ -31,7 +31,11 @@ export default class Search extends React.Component {
           <form onSubmit={this.handleSubmit}>
             <input type="text" className="search-bar"
               value={this.state.value} onChange={this.handleChange} />
-            <ul className="search-suggestions text-left">suggestions</ul>
+            <ul className="search-suggestions text-left">
+              <a href='#plants?plantId='>
+                suggestion
+              </a>
+            </ul>
           </form>
         </header>
       </>
