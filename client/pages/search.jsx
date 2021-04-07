@@ -5,7 +5,8 @@ export default class Search extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchTerm: ''
+      searchTerm: '',
+      plantData: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,6 +20,7 @@ export default class Search extends React.Component {
           plantData: data
         });
       });
+    console.log('compDidMount');
   }
 
   handleChange(event) {
@@ -34,6 +36,12 @@ export default class Search extends React.Component {
   }
 
   render() {
+    const allPlants = this.state.plantData;
+    const searchTerm = this.state.searchTerm;
+    const filteredPlants = allPlants.filter(plant => {
+      return plant.name.includes(searchTerm);
+    });
+    console.log('filteredPlants: ', filteredPlants);
     return (
       <>
         <header className="text-center title">
@@ -54,3 +62,7 @@ export default class Search extends React.Component {
     );
   }
 }
+
+// function Suggestion(props) {
+//   const plantId =
+// }
