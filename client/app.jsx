@@ -29,7 +29,6 @@ export default class App extends React.Component {
     const { route } = this.state;
     console.log('route: ', route);
     if (route.path === '') {
-      getAllVegetables();
       return <Search />;
     } else {
       console.log('page not found');

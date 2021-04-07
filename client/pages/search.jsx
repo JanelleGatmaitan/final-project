@@ -1,18 +1,30 @@
 import React from 'react';
-// import getAllVegetables from '../../server/harvest-helper';
+import getAllVegetables from '../../server/harvest-helper';
 
 export default class Search extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      keyword: ''
+      searchTerm: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    fetch('http://harvesthelper.herokuapp.com/api/v1/plants/?api_key=349d9448a25ad42ce213e1018c428cd3')
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          plantData: data
+        });
+      });
+  }
+
   handleChange(event) {
-    this.setState({ keyword: event.target.value });
+    this.setState({
+      searchTerm: event.target.value
+    });
     console.log('this.state: ', this.state);
   }
 
