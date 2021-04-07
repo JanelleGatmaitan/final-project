@@ -1,5 +1,6 @@
 h2 {
   font-family: 'Libre Baskerville', serif;
+  margin-top: 60px;
 }
 
 p {
@@ -18,11 +19,12 @@ p {
 }
 
 header {
-  margin: 40px 0px;
+
 }
 
 .search-bar {
   width: 350px;
   border-radius: 20px;
   border: 2px solid #F0F0F0;
+  margin-top: 20px;
 }

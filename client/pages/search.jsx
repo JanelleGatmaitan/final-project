@@ -1,4 +1,5 @@
 import React from 'react';
+// import getAllVegetables from '../../server/harvest-helper';
 
 export default class Search extends React.Component {
   constructor(props) {
@@ -7,25 +8,32 @@ export default class Search extends React.Component {
       keyword: ''
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
-    const { keyword, value } = event.target;
-    this.setState(
-      { [keyword]: value }
-    );
+    this.setState({ keyword: event.target.value });
+    console.log('this.state: ', this.state);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    console.log('this.state:', this.state);
   }
 
   render() {
     return (
       <>
-        <header className="text-center">
+        <header className="text-center title">
           <h2 className="mb-2">
             Start Planting
         </h2>
-          <input type="text" className="search-bar" placeholder="ex. Kale"></input>
+          <form onSubmit={this.handleSubmit}>
+            <input type="text" className="search-bar"
+              value={this.state.value} onChange={this.handleChange} />
+            <ul className="search-suggestions text-left">suggestions</ul>
+          </form>
         </header>
-        <ul className="search-suggestions text-left">fgdfg</ul>
       </>
     );
   }
