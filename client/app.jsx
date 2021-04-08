@@ -2,6 +2,8 @@ import React from 'react';
 import Search from './pages/search';
 import Drawer from './components/drawer';
 import parseRoute from './lib/parse-route';
+import PageContainer from './components/page-container';
+import PlantDetail from './pages/plant-detail';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -28,13 +30,16 @@ export default class App extends React.Component {
     if (route.path === '') {
       return <Search />;
     }
+    if (route.path === 'plants') {
+      return <PlantDetail />;
+    }
   }
 
   render() {
     return (
       <>
         <Drawer />
-          {this.renderPage()}
+        {this.renderPage()}
       </>
     );
   }

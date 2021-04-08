@@ -64,3 +64,11 @@ ul.search-list {
   list-style-type: none;
   line-height: 1.75em ;
 }
+
+.card {
+  margin: 0 auto;
+}
+
+.card-title {
+  display: flex;
+}
