@@ -5,7 +5,8 @@ export default class Search extends React.Component {
     super(props);
     this.state = {
       searchTerm: '',
-      plantData: []
+      plantData: [],
+      hasUserTyped: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,7 +24,8 @@ export default class Search extends React.Component {
 
   handleChange(event) {
     this.setState({
-      searchTerm: event.target.value
+      searchTerm: event.target.value,
+      hasUserTyped: true
     });
     console.log('this.state: ', this.state);
   }
@@ -36,10 +38,12 @@ export default class Search extends React.Component {
   render() {
     const allPlants = this.state.plantData;
     const { searchTerm } = this.state;
-    const filteredPlants = allPlants.filter(plant => {
+    let filteredPlants = allPlants.filter(plant => {
       return plant.name.includes(searchTerm);
     });
-    console.log('filteredPlants: ', filteredPlants);
+    if (!this.state.hasUserTyped || searchTerm === '') {
+      filteredPlants = [];
+    }
     return (
       <>
         <header className="text-center title">
