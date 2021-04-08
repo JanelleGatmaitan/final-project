@@ -19,7 +19,6 @@ export default class Search extends React.Component {
           plantData: data
         });
       });
-    console.log('compDidMount');
   }
 
   handleChange(event) {
@@ -53,9 +52,9 @@ export default class Search extends React.Component {
             <ul className="search-suggestions text-left">
               {
                 filteredPlants.map(plant => (
-                <li key={plant.id}>
+                  <li key={plant.id}>
                     <Suggestion plant={plant} />
-                </li>
+                  </li>
                 ))
               }
             </ul>
@@ -69,8 +68,8 @@ export default class Search extends React.Component {
 function Suggestion(props) {
   const { id, name } = props.plant;
   return (
-  <a href={'#products?productId=' + `${id}`}>
-    {name}
-  </a>
+    <a href={'#products?productId=' + `${id}`} className="search-suggestions">
+      {name}
+    </a>
   );
 }
