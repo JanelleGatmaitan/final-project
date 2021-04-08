@@ -13,7 +13,7 @@ export default class Search extends React.Component {
   }
 
   componentDidMount() {
-    fetch('http://harvesthelper.herokuapp.com/api/v1/plants/?api_key=349d9448a25ad42ce213e1018c428cd3')
+    fetch(`http://harvesthelper.herokuapp.com/api/v1/plants/?api_key=${process.env.HARVEST_HELPER_API_KEY}`)
       .then(res => res.json())
       .then(data => {
         this.setState({
@@ -44,24 +44,26 @@ export default class Search extends React.Component {
     }
     return (
       <>
-        <header className="text-center title">
+        <header className="title">
           <h2>
             Start Planting
         </h2>
           <form onSubmit={this.handleSubmit}>
             <input type="text" className="search-bar"
               value={this.state.value} onChange={this.handleChange} />
-            <ul className="search-suggestions text-left">
-              {
-                filteredPlants.map(plant => (
-                  <li key={plant.id}>
-                    <Suggestion plant={plant} />
-                  </li>
-                ))
-              }
-            </ul>
           </form>
         </header>
+        <div className="list-container">
+          <ul className="search-list">
+            {
+              filteredPlants.map(plant => (
+                <li key={plant.id}>
+                  <Suggestion plant={plant} />
+                </li>
+              ))
+            }
+          </ul>
+        </div>
       </>
     );
   }
