@@ -53,7 +53,7 @@ export default class Search extends React.Component {
             <ul className="search-suggestions text-left">
               {
                 filteredPlants.map(plant => (
-                <li key={plant.plantId}>
+                <li key={plant.id}>
                     <Suggestion plant={plant} />
                 </li>
                 ))
