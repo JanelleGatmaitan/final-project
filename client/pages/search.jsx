@@ -27,12 +27,10 @@ export default class Search extends React.Component {
       searchTerm: event.target.value,
       hasUserTyped: true
     });
-    console.log('this.state: ', this.state);
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log('this.state:', this.state);
   }
 
   render() {
@@ -47,7 +45,7 @@ export default class Search extends React.Component {
     return (
       <>
         <header className="text-center title">
-          <h2 className="mb-2">
+          <h2>
             Start Planting
         </h2>
           <form onSubmit={this.handleSubmit}>
@@ -72,7 +70,7 @@ export default class Search extends React.Component {
 function Suggestion(props) {
   const { id, name } = props.plant;
   return (
-    <a href={'#products?productId=' + `${id}`} className="search-suggestions">
+    <a href={'#plants?plantId=' + `${id}`} className="search-suggestions">
       {name}
     </a>
   );

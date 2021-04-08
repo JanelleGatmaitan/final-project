@@ -4,7 +4,7 @@ h2 {
 }
 
 p {
-  font-family: 'Lato',  sans-serif;;
+  font-family: 'Lato', sans-serif;
 }
 
 .drawer {
@@ -20,12 +20,12 @@ p {
 
 .search-suggestions {
   list-style-type: none;
-  color: #000000
+  color: #000;
 }
 
 .search-bar {
   width: 350px;
   border-radius: 20px;
-  border: 2px solid #F0F0F0;
+  border: 2px solid #f0f0f0;
   margin-top: 20px;
 }

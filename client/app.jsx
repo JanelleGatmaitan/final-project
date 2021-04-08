@@ -1,9 +1,7 @@
 import React from 'react';
 import Search from './pages/search';
 import Drawer from './components/drawer';
-import PageContainer from './components/page-container';
 import parseRoute from './lib/parse-route';
-import getAllVegetables from '../server/harvest-helper';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -27,11 +25,8 @@ export default class App extends React.Component {
 
   renderPage() {
     const { route } = this.state;
-    console.log('route: ', route);
     if (route.path === '') {
       return <Search />;
-    } else {
-      console.log('page not found');
     }
   }
 
@@ -39,9 +34,7 @@ export default class App extends React.Component {
     return (
       <>
         <Drawer />
-        <PageContainer>
           {this.renderPage()}
-        </PageContainer>
       </>
     );
   }
