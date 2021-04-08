@@ -1,5 +1,4 @@
 import React from 'react';
-import getAllVegetables from '../../server/harvest-helper';
 
 export default class Search extends React.Component {
   constructor(props) {
@@ -37,7 +36,7 @@ export default class Search extends React.Component {
 
   render() {
     const allPlants = this.state.plantData;
-    const searchTerm = this.state.searchTerm;
+    const { searchTerm } = this.state;
     const filteredPlants = allPlants.filter(plant => {
       return plant.name.includes(searchTerm);
     });
@@ -52,9 +51,13 @@ export default class Search extends React.Component {
             <input type="text" className="search-bar"
               value={this.state.value} onChange={this.handleChange} />
             <ul className="search-suggestions text-left">
-              <a href='#plants?plantId='>
-                suggestion
-              </a>
+              {
+                filteredPlants.map(plant => (
+                <li key={plant.plantId}>
+                    <Suggestion plant={plant} />
+                </li>
+                ))
+              }
             </ul>
           </form>
         </header>
@@ -63,6 +66,11 @@ export default class Search extends React.Component {
   }
 }
 
-// function Suggestion(props) {
-//   const plantId =
-// }
+function Suggestion(props) {
+  const { id, name } = props.plant;
+  return (
+  <a href={'#products?productId=' + `${id}`}>
+    {name}
+  </a>
+  );
+}
