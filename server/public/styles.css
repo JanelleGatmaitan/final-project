@@ -1,0 +1,66 @@
+h2 {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 30px;
+  line-height: 37.2px;
+  margin-top: 60px;
+}
+
+p,
+.search-suggestions {
+  font-family: 'Lato', sans-serif;
+}
+
+.drawer {
+  background-color: #61b15a;
+  height: 94px;
+}
+
+.drawer-icon {
+  font-size: 1.5rem;
+  margin-top: 40px;
+  margin-left: 20px;
+}
+
+.search-bar {
+  width: 293px;
+  height: 35px;
+  border-radius: 20px;
+  border: 2px solid #f0f0f0;
+  font-size: 20px;
+}
+
+.search-bar:focus {
+  outline: none;
+}
+
+.title {
+  text-align: center;
+}
+
+.search-suggestions,
+.search-bar {
+  font-size: 20px;
+  list-style-type: none;
+  color: #a0a3a8;
+}
+
+.search-bar {
+  padding-left: 12px;
+}
+
+.search-suggestions {
+  text-decoration: underline 1px;
+}
+.list-container {
+width: 150px;
+margin: 0 auto;
+}
+
+ul.search-list {
+  float: left;
+  position: relative;
+  left: -75%;
+  font-size: 20px;
+  list-style-type: none;
+  line-height: 1.75em ;
+}
