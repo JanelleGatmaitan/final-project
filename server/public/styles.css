@@ -7,7 +7,7 @@ h2 {
 
 p,
 .search-suggestions {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Lato', serif;
 }
 
 .drawer {
@@ -27,11 +27,9 @@ p,
   border-radius: 20px;
   border: 2px solid #f0f0f0;
   font-size: 20px;
+  padding-left: 12px;
 }
 
-.search-bar:focus {
-  outline: none;
-}
 
 .title {
   text-align: center;
@@ -44,12 +42,12 @@ p,
   color: #a0a3a8;
 }
 
-.search-bar {
-  padding-left: 12px;
-}
-
 .search-suggestions {
   text-decoration: underline 1px;
+}
+
+.search-bar:focus {
+  outline: none;
 }
 
 .list-container {
@@ -100,6 +98,7 @@ font-family: Libre Baskerville;
 
 .subtitle {
 font-size: 16px;
+margin-bottom: 0;
 }
 
 .add-remove-btn {
@@ -120,4 +119,9 @@ margin-left: 230px;
 .plant-img {
   width: 400px;
   height: 400px;
+}
+
+.plant-info {
+  margin: 0;
+  line-height: 22px;
 }

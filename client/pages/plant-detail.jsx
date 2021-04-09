@@ -21,7 +21,6 @@ export default class PlantDetail extends React.Component {
   render() {
     if (!this.state.plant) return null;
     const plant = this.state.plant;
-    console.log('plant.name', plant.name);
     const imgName = plant.name.replace(' ', '_');
     return (
       <>
