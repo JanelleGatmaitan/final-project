@@ -31,7 +31,6 @@ export default class App extends React.Component {
     }
     if (route.path === 'plants') {
       const plantId = route.params.get('plantId');
-      console.log('route.params.get(plantId)', plantId);
       return <PlantDetail plantId={plantId}/>;
     }
   }
