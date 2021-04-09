@@ -1,13 +1,17 @@
 h2 {
-  font-family: 'Libre Baskerville', serif;
   font-size: 30px;
   line-height: 37.2px;
   margin-top: 60px;
 }
 
+.subtitle,
+h2 {
+  font-family: 'Libre Baskerville', serif;
+}
+
 p,
 .search-suggestions {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Lato', serif;
 }
 
 .drawer {
@@ -27,10 +31,7 @@ p,
   border-radius: 20px;
   border: 2px solid #f0f0f0;
   font-size: 20px;
-}
-
-.search-bar:focus {
-  outline: none;
+  padding-left: 12px;
 }
 
 .title {
@@ -44,16 +45,17 @@ p,
   color: #a0a3a8;
 }
 
-.search-bar {
-  padding-left: 12px;
-}
-
 .search-suggestions {
   text-decoration: underline 1px;
 }
+
+.search-bar:focus {
+  outline: none;
+}
+
 .list-container {
-width: 150px;
-margin: 0 auto;
+  width: 150px;
+  margin: 0 auto;
 }
 
 ul.search-list {
@@ -62,5 +64,61 @@ ul.search-list {
   left: -75%;
   font-size: 20px;
   list-style-type: none;
-  line-height: 1.75em ;
+  line-height: 1.75em;
+}
+
+.plant-card {
+  width: 400px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.card-title {
+  font-size: 30px;
+  width: 71px;
+  margin: 0;
+}
+
+.subsection {
+  font-size: 20px;
+  margin-bottom: 0;
+}
+
+.about-text {
+  margin-top: 5px;
+}
+
+.subtitle {
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+.add-remove-btn {
+  width: 115px;
+  height: 33px;
+  background: #61b15a;
+  border-radius: 20px;
+  border: none;
+  color: white;
+  margin-top: 10px;
+  margin-left: 230px;
+}
+
+.card-body {
+  line-height: 22px;
+}
+
+.plant-img {
+  width: 400px;
+  height: 400px;
+}
+
+.plant-info {
+  margin: 0;
+  line-height: 22px;
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import Search from './pages/search';
 import Drawer from './components/drawer';
 import parseRoute from './lib/parse-route';
+import PlantDetail from './pages/plant-detail';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -28,13 +29,17 @@ export default class App extends React.Component {
     if (route.path === '') {
       return <Search />;
     }
+    if (route.path === 'plants') {
+      const plantId = route.params.get('plantId');
+      return <PlantDetail plantId={plantId}/>;
+    }
   }
 
   render() {
     return (
       <>
         <Drawer />
-          {this.renderPage()}
+        {this.renderPage()}
       </>
     );
   }
