@@ -12,15 +12,15 @@ export default class Search extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  // componentDidMount() {
-  //   fetch(`http://harvesthelper.herokuapp.com/api/v1/plants/?api_key=${process.env.HARVEST_HELPER_API_KEY}`)
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       this.setState({
-  //         plantData: data
-  //       });
-  //     });
-  // }
+  componentDidMount() {
+    fetch(`http://harvesthelper.herokuapp.com/api/v1/plants/?api_key=${process.env.HARVEST_HELPER_API_KEY}`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          plantData: data
+        });
+      });
+  }
 
   handleChange(event) {
     this.setState({

@@ -2,7 +2,6 @@ import React from 'react';
 import Search from './pages/search';
 import Drawer from './components/drawer';
 import parseRoute from './lib/parse-route';
-import PageContainer from './components/page-container';
 import PlantDetail from './pages/plant-detail';
 
 export default class App extends React.Component {
@@ -31,7 +30,9 @@ export default class App extends React.Component {
       return <Search />;
     }
     if (route.path === 'plants') {
-      return <PlantDetail />;
+      const plantId = route.params.get('plantId');
+      console.log('route.params.get(plantId)', plantId);
+      return <PlantDetail plantId={plantId}/>;
     }
   }
 
