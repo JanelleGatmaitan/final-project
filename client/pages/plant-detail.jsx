@@ -21,14 +21,13 @@ export default class PlantDetail extends React.Component {
   render() {
     if (!this.state.plant) return null;
     const plant = this.state.plant;
-    console.log('this.state.plant', plant);
-    console.log('this.state', this.state);
-    console.log('this.state.plant["name"]', this.state.plant.name);
+    console.log('plant.name', plant.name);
+    const imgName = plant.name.replace(' ', '_');
     return (
       <>
         <div className="plant-card">
-          <img className="card-img-top"
-            src="https://res-1.cloudinary.com/do6bw42am/image/upload/c_scale,f_auto,h_300/v1/harvest_helper_production/01_tomato"
+          <img className="plant-img"
+            src={`/images/${imgName}.jpg`}
             alt="vegetable" />
           <div className="row">
             <h5 className="card-title">{ plant.name }</h5>
