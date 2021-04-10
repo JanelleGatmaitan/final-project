@@ -3,6 +3,7 @@ import Search from './pages/search';
 import Drawer from './components/drawer';
 import parseRoute from './lib/parse-route';
 import PlantDetail from './pages/plant-detail';
+import GardenForm from './components/garden-form';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -27,7 +28,8 @@ export default class App extends React.Component {
   renderPage() {
     const { route } = this.state;
     if (route.path === '') {
-      return <Search />;
+      // return <Search />;
+      return <GardenForm />;
     }
     if (route.path === 'plants') {
       const plantId = route.params.get('plantId');

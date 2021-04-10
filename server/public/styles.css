@@ -10,7 +10,8 @@ h2 {
 }
 
 p,
-.search-suggestions {
+.search-suggestions,
+label {
   font-family: 'Lato', serif;
 }
 
@@ -98,15 +99,23 @@ ul.search-list {
   margin-bottom: 0;
 }
 
-.add-remove-btn {
-  width: 115px;
-  height: 33px;
+.add-remove-btn,
+.form-btn {
   background: #61b15a;
   border-radius: 20px;
   border: none;
   color: white;
+}
+.add-remove-btn {
   margin-top: 10px;
   margin-left: 230px;
+  width: 115px;
+  height: 33px;
+}
+
+.form-btn {
+  width: 79px;
+  height: 33px;
 }
 
 .card-body {
@@ -121,4 +130,20 @@ ul.search-list {
 .plant-info {
   margin: 0;
   line-height: 22px;
+}
+
+.garden-form-container {
+  height: 472px;
+  width: 348px;
+  background-color: #F0F0F0;
+  margin: 0 auto;
+}
+
+.garden-form-title {
+  font-size: 18px;
+  margin: 15px;
+  padding-top: 20px;
+}
+.garden-form {
+  text-align: left;
 }
