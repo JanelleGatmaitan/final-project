@@ -144,6 +144,19 @@ ul.search-list {
   margin: 15px;
   padding-top: 20px;
 }
+
 .garden-form {
   text-align: left;
+}
+
+#notes {
+  width: 314px;
+  height: 142px;
+  margin: 10px;
+}
+
+.form-btn {
+  float: right;
+  margin-right: 15px;
+  margin-top: 10px;
 }
