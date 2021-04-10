@@ -14,17 +14,20 @@ export default class GardenForm extends React.Component {
   }
 
   handleChange(event) {
+    console.log('event.target', event.target);
+    const target = event.target;
+    const value = target.value;
+    console.log('event.target.value', value);
+    const name = target.name;
     this.setState({
-      soil: event.target.value,
-      sun: event.target.value,
-      size: event.target.value,
-      notes: event.target.value
+      [name]: value
     });
     console.log('this.state', this.state);
   }
 
   handleSubmit(event) {
     event.preventDefault();
+    console.log('this.state', this.state);
   }
 
   render() {
