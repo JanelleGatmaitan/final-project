@@ -24,7 +24,6 @@ export default class GardenForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log('this.state', this.state);
     const gardenInfo = this.state;
     fetch('/api/gardenStats', {
       method: 'POST',
@@ -33,27 +32,29 @@ export default class GardenForm extends React.Component {
         'Content-Type': 'application/json'
       }
     })
+      .then(response => response.json())
+      .then(response => {
+        console.log('Garden successfully added: ' + response);
+      })
       .catch(err => console.error(err));
   }
 
   render() {
     return (
-      <>
-        <div className="garden-form-container">
+        <div className={this.props.className}>
           <h4 className="garden-form-title">Create New Garden</h4>
           <form className="garden-form">
             <label htmlFor="soil">Soil Quality:</label>
-            <input type="text" id="soil" name="soil" onChange={this.handleChange} value={this.state.soil} /><br />
+            <input required={this.props.required} type="text" id="soil" name="soil" onChange={this.handleChange} value={this.state.soil} /><br />
             <label htmlFor="sun">Sun Exposure:</label>
-            <input type="text" id="sun" name="sun" onChange={this.handleChange} value={this.state.sun}/><br />
+            <input type="text" id="sun" name="sun" onChange={this.handleChange} value={this.state.sun} /><br />
             <label htmlFor="size">Size:</label>
-            <input type="text" id="size" name="size" onChange={this.handleChange} value={this.state.size}/><br />
+            <input type="text" id="size" name="size" onChange={this.handleChange} value={this.state.size} /><br />
             <label htmlFor="notes">Notes</label><br />
             <input type="text" id="notes" name="notes" onChange={this.handleChange} value={this.state.notes} /><br />
-            <button className="form-btn" onClick={this.handleSubmit}>Save</button>
-         </form>
+            <button type="submit" className="form-btn" onClick={this.handleSubmit}>Save</button>
+          </form>
         </div>
-      </>
     );
   }
 }

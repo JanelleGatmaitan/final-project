@@ -10,7 +10,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       route: parseRoute(window.location.hash),
-      menu: false
+      menu: false,
+      gardenCreated: false
     };
   }
 
@@ -23,24 +24,30 @@ export default class App extends React.Component {
         });
       }
     );
+
+    // fetch('/api/gardenStats')
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     console.log(data);
+    //     if (data.length !== 0) {
+    //       this.setState({
+    //         gardenCreated: true
+    //       });
+    //     }
+    //   })
+    //   .catch(err => console.log(err));
   }
 
   renderPage() {
-    const { route } = this.state;
+    const { route, gardenCreated } = this.state;
     if (route.path === '') {
-      return (
-        <>
-          {/* <Search /> */}
-          <GardenForm className="users-garden" />;
-        </>
-      );
+      return <Search />;
     }
     if (route.path === 'plants') {
       const plantId = route.params.get('plantId');
       return (
         <>
           <PlantDetail plantId={plantId} />;
-          <GardenForm className="users-garden" />;
         </>
       );
     }

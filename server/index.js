@@ -35,8 +35,8 @@ app.get('/api/gardenStats', (req, res) => {
 });
 
 app.post('/api/gardenStats', (req, res) => {
-  const { soil, sun, size, notes } = req.body;
-  if (!soil || !sun || !size || !notes) {
+  const gardenInfo = req.body;
+  if (!gardenInfo.soil || !gardenInfo.sun || !gardenInfo.size || !gardenInfo.notes) {
     res.status(400).json({
       error: 'soil, sun, size, and notes are required fields'
     });
@@ -47,11 +47,11 @@ app.post('/api/gardenStats', (req, res) => {
     values ($1, $2, $3, $4)
     returning *
   `;
-  const params = [soil, sun, size, notes];
+  const params = [gardenInfo.soil, gardenInfo.sun, gardenInfo.size, gardenInfo.notes];
   db.query(sql, params)
     .then(result => {
-      const gardenInfo = result.rows;
-      res.status(200).json(gardenInfo);
+      const gardenInfo = result.rows[0];
+      res.status(200).json({ added: true, data: gardenInfo });
     })
     .catch(err => {
       console.error(err);
