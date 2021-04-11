@@ -22,11 +22,9 @@ export default class PlantDetail extends React.Component {
           plant: data
         });
       });
-    console.log('componentDidMount');
     fetch('/api/gardenStats')
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         if (data.length !== 0) {
           this.setState({
             gardenCreated: true
@@ -39,15 +37,13 @@ export default class PlantDetail extends React.Component {
     if (!this.state.gardenCreated) {
       this.setState({
         btnClicked: true,
-        modalClass: 'garden-form-container'
+        modalClass: 'shade'
       });
-      console.log('this.state.modalClass', this.state.modalClass);
     }
     this.setState({
       btnClicked: true,
-      modalClass: 'garden-form-container'
+      modalClass: 'shade'
     });
-    console.log('this.state.modalClass', this.state.modalClass);
   }
 
   render() {

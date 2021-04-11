@@ -41,20 +41,22 @@ export default class GardenForm extends React.Component {
 
   render() {
     return (
-        <div className={this.props.className}>
+      <div className={this.props.className}>
+        <div className="garden-form-container">
           <h4 className="garden-form-title">Create New Garden</h4>
           <form className="garden-form">
             <label htmlFor="soil">Soil Quality:</label>
-            <input required={this.props.required} type="text" id="soil" name="soil" onChange={this.handleChange} value={this.state.soil} /><br />
+            <input className="form-input" required={this.props.required} type="text" id="soil" name="soil" onChange={this.handleChange} value={this.state.soil} /><br />
             <label htmlFor="sun">Sun Exposure:</label>
-            <input type="text" id="sun" name="sun" onChange={this.handleChange} value={this.state.sun} /><br />
+            <input className="form-input" type="text" id="sun" name="sun" onChange={this.handleChange} value={this.state.sun} /><br />
             <label htmlFor="size">Size:</label>
-            <input type="text" id="size" name="size" onChange={this.handleChange} value={this.state.size} /><br />
+            <input className="form-input" type="text" id="size" name="size" onChange={this.handleChange} value={this.state.size} /><br />
             <label htmlFor="notes">Notes</label><br />
-            <input type="text" id="notes" name="notes" onChange={this.handleChange} value={this.state.notes} /><br />
+            <textarea rows="10" cols="42" className="form-input" type="text" id="notes" name="notes" onChange={this.handleChange} value={this.state.notes} /><br />
             <button type="submit" className="form-btn" onClick={this.handleSubmit}>Save</button>
           </form>
         </div>
+      </div>
     );
   }
 }

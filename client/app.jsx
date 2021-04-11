@@ -24,24 +24,13 @@ export default class App extends React.Component {
         });
       }
     );
-
-    // fetch('/api/gardenStats')
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     console.log(data);
-    //     if (data.length !== 0) {
-    //       this.setState({
-    //         gardenCreated: true
-    //       });
-    //     }
-    //   })
-    //   .catch(err => console.log(err));
   }
 
   renderPage() {
-    const { route, gardenCreated } = this.state;
+    const { route } = this.state;
     if (route.path === '') {
       return <Search />;
+      // return <GardenForm />;
     }
     if (route.path === 'plants') {
       const plantId = route.params.get('plantId');
