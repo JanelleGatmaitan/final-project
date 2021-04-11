@@ -36,9 +36,9 @@ app.get('/api/gardenStats', (req, res) => {
 
 app.post('/api/gardenStats', (req, res) => {
   const { soil, sun, size, notes } = req.body;
-  if (!soil || !sun || !size) {
+  if (!soil || !sun || !size || !notes) {
     res.status(400).json({
-      error: 'soil, sun, and size are required fields'
+      error: 'soil, sun, size, and notes are required fields'
     });
     return;
   }
