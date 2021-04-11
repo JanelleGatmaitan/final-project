@@ -6,12 +6,19 @@ export default class PlantDetail extends React.Component {
     super(props);
     this.state = {
       plant: null,
-      btnClicked: false,
       btnText: 'Add to garden',
       gardenCreated: null,
-      modalClass: 'hidden'
+      modalClass: 'hidden',
+      gardenInfo: {
+        soil: ' ',
+        sun: ' ',
+        size: ' ',
+        notes: ' '
+      }
     };
     this.handleClick = this.handleClick.bind(this);
+    this.handleSave = this.handleSave.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -36,7 +43,6 @@ export default class PlantDetail extends React.Component {
   handleClick() {
     if (!this.state.gardenCreated) {
       this.setState({
-        btnClicked: true,
         modalClass: 'shade'
       });
     }
@@ -46,13 +52,45 @@ export default class PlantDetail extends React.Component {
     });
   }
 
+  handleSave(event) {
+    event.preventDefault();
+    this.setState({
+      modalClass: 'hidden'
+    });
+    const gardenInfo = this.state.gardenInfo;
+    fetch('/api/gardenStats', {
+      method: 'POST',
+      body: JSON.stringify(gardenInfo),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => console.error(err));
+  }
+
+  handleChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    this.setState({
+      gardenInfo: {
+        [name]: value
+      }
+    });
+    console.log('this.state.gardenInfo', this.state.gardenInfo);
+  }
+
   render() {
     if (!this.state.plant) return null;
     const plant = this.state.plant;
     const imgName = plant.name.replace(' ', '_');
     return (
       <>
-      <GardenForm className={this.state.modalClass} />
+      <GardenForm className={this.state.modalClass} onSave={this.handleSave} values={this.state} handleChange={this.handleChange}/>
         <div className="plant-card">
           <img className="plant-img"
             src={`/images/${imgName}.jpg`}
