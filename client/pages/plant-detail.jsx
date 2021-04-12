@@ -83,7 +83,7 @@ export default class PlantDetail extends React.Component {
     return (
       <>
       <GardenForm className={this.state.modalClass} onSave={this.handleSave} values={this.state} handleChange={this.handleChange}/>
-        <div className="plant-card">
+        <div className="plant-card" plant-id={this.props.plantId}>
           <img className="plant-img"
             src={`/images/${imgName}.jpg`}
             alt="vegetable" />

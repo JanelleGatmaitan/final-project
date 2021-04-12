@@ -13,4 +13,14 @@ create table "public"."gardenStats" (
   "size"             text    not null,
   "notes"            text    not null,
   primary key ("gardenId")
-)
+);
+
+create table "plantsInGarden" (
+  "plantId"                         integer    not null,
+  "dateAdded"                       text       not null,
+  "expectedHarvestDate"             text       not null,
+  "gardenId"                        integer    not null,
+  primary key ("plantId"),
+  foreign key ("gardenId")
+    references "gardenStats"("gardenId")
+);
