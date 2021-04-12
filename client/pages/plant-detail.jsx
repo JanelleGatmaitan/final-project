@@ -10,9 +10,9 @@ export default class PlantDetail extends React.Component {
       gardenCreated: null,
       modalClass: 'hidden',
       gardenInfo: {
-        soil: ' ',
-        sun: ' ',
-        size: ' ',
+        soil: null,
+        sun: null,
+        size: null,
         notes: ' '
       }
     };
@@ -46,16 +46,13 @@ export default class PlantDetail extends React.Component {
         modalClass: 'shade'
       });
     }
-    this.setState({
-      btnClicked: true,
-      modalClass: 'shade'
-    });
   }
 
   handleSave(event) {
     event.preventDefault();
     this.setState({
-      modalClass: 'hidden'
+      modalClass: 'hidden',
+      btnText: 'Remove from garden'
     });
     const gardenInfo = this.state.gardenInfo;
     fetch('/api/gardenStats', {
@@ -65,23 +62,18 @@ export default class PlantDetail extends React.Component {
         'Content-Type': 'application/json'
       }
     })
-      .then(response => response.json())
-      .then(response => {
-        console.log(response);
-      })
       .catch(err => console.error(err));
   }
 
   handleChange(event) {
+    const gardenCopy = this.state.gardenInfo;
     const target = event.target;
     const value = target.value;
     const name = target.name;
+    gardenCopy[name] = value;
     this.setState({
-      gardenInfo: {
-        [name]: value
-      }
+      gardenInfo: gardenCopy
     });
-    console.log('this.state.gardenInfo', this.state.gardenInfo);
   }
 
   render() {

@@ -3,6 +3,8 @@ const express = require('express');
 const staticMiddleware = require('./static-middleware');
 const pg = require('pg');
 const jsonMiddleware = express.json();
+const ClientError = require('./client-error'); // eslint-disable-line
+const errorMiddleware = require('./error-middleware');
 
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -17,7 +19,7 @@ app.use(staticMiddleware);
 
 app.use(jsonMiddleware);
 
-app.get('/api/gardenStats', (req, res) => {
+app.get('/api/gardenStats', (req, res, next) => {
   const sql = `
     select *
       from "gardenStats"
@@ -26,21 +28,13 @@ app.get('/api/gardenStats', (req, res) => {
     .then(result => {
       res.json(result.rows);
     })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({
-        error: 'an unexpected error occurred'
-      });
-    });
+    .catch(err => next(err));
 });
 
-app.post('/api/gardenStats', (req, res) => {
+app.post('/api/gardenStats', (req, res, next) => {
   const gardenInfo = req.body;
-  if (!gardenInfo.soil || !gardenInfo.sun || !gardenInfo.size || !gardenInfo.notes) {
-    res.status(400).json({
-      error: 'soil, sun, size, and notes are required fields'
-    });
-    return;
+  if (!gardenInfo.soil || !gardenInfo.sun || !gardenInfo.size) {
+    throw new ClientError(400, 'soil, sun, and size required fields');
   }
   const sql = `
     insert into "gardenStats" ("soil", "sun", "size", "notes")
@@ -53,13 +47,10 @@ app.post('/api/gardenStats', (req, res) => {
       const gardenInfo = result.rows[0];
       res.status(200).json({ added: true, data: gardenInfo });
     })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({
-        error: 'an unexpected error occurred'
-      });
-    });
+    .catch(err => next(err));
 });
+
+app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
   // eslint-disable-next-line no-console

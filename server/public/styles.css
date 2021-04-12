@@ -106,10 +106,11 @@ ul.search-list {
   border: none;
   color: white;
 }
+
 .add-remove-btn {
   margin-top: 10px;
   margin-left: 230px;
-  width: 115px;
+  width: 100%;
   height: 33px;
 }
 
