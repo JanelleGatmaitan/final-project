@@ -50,6 +50,25 @@ app.post('/api/gardenStats', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.post('/api/plantsInGarden', (req, res, next) => {
+  const plantAdded = req.body;
+  if (!plantAdded.plantId || !plantAdded.dateAdded || !plantAdded.expectedHarvest) {
+    throw new ClientError(400, 'plantId, date added, and expected harvest date are required');
+  }
+  const sql = `
+  insert into "plantsInGarden" ("plantId". "dateAdded", "expectedHarvestDate", "gardenId")
+  values ($1, $2, $3, $4)
+  returning *
+  `;
+  const params = [plantAdded.plantId, plantAdded.dateAdded, plantAdded.expectedHarvest];
+  db.query(sql, params)
+    .then(result => {
+      const plantAdded = result.rows[0];
+      res.status(200).json({ added: true, data: plantAdded });
+    })
+    .catch(err => next(err));
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {

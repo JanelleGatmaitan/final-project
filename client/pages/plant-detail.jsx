@@ -16,7 +16,7 @@ export default class PlantDetail extends React.Component {
         notes: ' '
       }
     };
-    this.handleClick = this.handleClick.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
@@ -40,7 +40,7 @@ export default class PlantDetail extends React.Component {
       });
   }
 
-  handleClick() {
+  handleAdd() {
     if (!this.state.gardenCreated) {
       this.setState({
         modalClass: 'shade'
@@ -89,7 +89,7 @@ export default class PlantDetail extends React.Component {
             alt="vegetable" />
           <div className="row">
             <h5 className="card-title">{plant.name}</h5>
-            <button className="add-remove-btn" onClick={this.handleClick}>{this.state.btnText}</button>
+            <button className="add-remove-btn" onClick={this.handlAdd}>{this.state.btnText}</button>
           </div>
           <div className="card-body">
             <h4 className="subsection">About</h4>
