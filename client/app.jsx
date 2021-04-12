@@ -9,9 +9,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: parseRoute(window.location.hash),
-      menu: false,
-      gardenCreated: false
+      route: parseRoute(window.location.hash)
     };
   }
 
@@ -30,15 +28,10 @@ export default class App extends React.Component {
     const { route } = this.state;
     if (route.path === '') {
       return <Search />;
-      // return <GardenForm />;
     }
     if (route.path === 'plants') {
       const plantId = route.params.get('plantId');
-      return (
-        <>
-          <PlantDetail plantId={plantId} />;
-        </>
-      );
+      return <PlantDetail plantId={plantId} />;
     }
   }
 
