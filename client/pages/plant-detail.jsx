@@ -8,6 +8,7 @@ export default class PlantDetail extends React.Component {
       plant: null,
       btnText: 'Add to garden',
       gardenCreated: null,
+      gardenId: null,
       modalClass: 'hidden',
       gardenInfo: {
         soil: null,
@@ -31,13 +32,16 @@ export default class PlantDetail extends React.Component {
       });
     fetch('/api/gardenStats')
       .then(response => response.json())
-      .then(data => {
-        if (data.length !== 0) {
+      .then(gardenStats => {
+        if (gardenStats.length !== 0) {
           this.setState({
-            gardenCreated: true
+            gardenCreated: true,
+            gardenId: gardenStats[0].gardenId
           });
+          console.log('this.state', this.state);
         }
-      });
+      })
+      .catch(err => console.error(err));
   }
 
   handleAdd() {
@@ -46,6 +50,19 @@ export default class PlantDetail extends React.Component {
         modalClass: 'shade'
       });
     }
+    const plantAdded = {
+      plantId: this.props.plantId,
+      dateAdded: Date(),
+      expectedHarvestDate: 'June 12'
+    };
+    fetch('/api/plantsInGarden', {
+      method: 'POST',
+      body: JSON.stringify(plantAdded),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .catch(err => console.error(err));
   }
 
   handleSave(event) {
@@ -89,7 +106,7 @@ export default class PlantDetail extends React.Component {
             alt="vegetable" />
           <div className="row">
             <h5 className="card-title">{plant.name}</h5>
-            <button className="add-remove-btn" onClick={this.handlAdd}>{this.state.btnText}</button>
+            <button className="add-remove-btn" onClick={this.handleAdd}>{this.state.btnText}</button>
           </div>
           <div className="card-body">
             <h4 className="subsection">About</h4>

@@ -11,7 +11,7 @@ create table "public"."gardenStats" (
   "soil"             text    not null,
   "sun"              text    not null,
   "size"             text    not null,
-  "notes"            text    not null,
+  "notes"            text,
   primary key ("gardenId")
 );
 
