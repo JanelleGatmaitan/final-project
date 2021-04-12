@@ -66,7 +66,7 @@ export default class PlantDetail extends React.Component {
   }
 
   handleChange(event) {
-    const gardenCopy = this.state.gardenInfo;
+    const gardenCopy = Object.assign({}, this.state.gardenInfo);
     const target = event.target;
     const value = target.value;
     const name = target.name;
