@@ -10,7 +10,8 @@ h2 {
 }
 
 p,
-.search-suggestions {
+.search-suggestions,
+label {
   font-family: 'Lato', serif;
 }
 
@@ -98,15 +99,27 @@ ul.search-list {
   margin-bottom: 0;
 }
 
-.add-remove-btn {
-  width: 115px;
-  height: 33px;
+.add-remove-btn,
+.form-btn {
   background: #61b15a;
   border-radius: 20px;
   border: none;
   color: white;
+}
+
+.add-remove-btn {
   margin-top: 10px;
   margin-left: 230px;
+  width: 100%;
+  height: 33px;
+}
+
+.form-btn {
+  width: 79px;
+  height: 33px;
+  float: right;
+  margin-right: 15px;
+  outline: none;
 }
 
 .card-body {
@@ -121,4 +134,58 @@ ul.search-list {
 .plant-info {
   margin: 0;
   line-height: 22px;
+}
+
+.garden-form-container {
+  height: 472px;
+  width: 348px;
+  background-color: #F0F0F0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 6px;
+}
+
+.garden-form-title {
+  font-size: 18px;
+  margin: 15px;
+  margin-left: 20px;
+  padding-top: 10px;
+}
+
+.form-input {
+  margin: 15px;
+  border-radius: 4px;
+  border: 2px solid #f0f0f0;
+}
+
+.hidden {
+  display: none;
+}
+
+label {
+  margin-left: 20px;
+}
+
+#soil {
+  transform: translateX(18px);
+}
+
+#sun {
+  transform: translateX(2px);
+}
+
+#size {
+  transform: translateX(66px);
+}
+
+ .shade {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 5;
+  width: 100%;
+  height: 100%;
 }
