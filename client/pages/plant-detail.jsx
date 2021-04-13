@@ -8,6 +8,7 @@ export default class PlantDetail extends React.Component {
       plant: null,
       btnText: 'Add to garden',
       gardenCreated: null,
+      gardenId: null,
       modalClass: 'hidden',
       gardenInfo: {
         soil: null,
@@ -16,7 +17,7 @@ export default class PlantDetail extends React.Component {
         notes: ' '
       }
     };
-    this.handleClick = this.handleClick.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
@@ -31,21 +32,37 @@ export default class PlantDetail extends React.Component {
       });
     fetch('/api/gardenStats')
       .then(response => response.json())
-      .then(data => {
-        if (data.length !== 0) {
+      .then(gardenStats => {
+        if (gardenStats.length !== 0) {
           this.setState({
-            gardenCreated: true
+            gardenCreated: true,
+            gardenId: gardenStats[0].gardenId
           });
         }
-      });
+      })
+      .catch(err => console.error(err));
   }
 
-  handleClick() {
+  handleAdd() {
     if (!this.state.gardenCreated) {
       this.setState({
         modalClass: 'shade'
       });
     }
+    const plantAdded = {
+      plantId: parseInt(this.props.plantId),
+      dateAdded: Date(),
+      expectedHarvest: 'this is another feature',
+      gardenId: this.state.gardenId
+    };
+    fetch('/api/plantsInGarden', {
+      method: 'POST',
+      body: JSON.stringify(plantAdded),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .catch(err => console.error(err));
   }
 
   handleSave(event) {
@@ -83,13 +100,13 @@ export default class PlantDetail extends React.Component {
     return (
       <>
       <GardenForm className={this.state.modalClass} onSave={this.handleSave} values={this.state} handleChange={this.handleChange}/>
-        <div className="plant-card">
+        <div className="plant-card" plant-id={this.props.plantId}>
           <img className="plant-img"
             src={`/images/${imgName}.jpg`}
             alt="vegetable" />
           <div className="row">
             <h5 className="card-title">{plant.name}</h5>
-            <button className="add-remove-btn" onClick={this.handleClick}>{this.state.btnText}</button>
+            <button className="add-remove-btn" onClick={this.handleAdd}>{this.state.btnText}</button>
           </div>
           <div className="card-body">
             <h4 className="subsection">About</h4>

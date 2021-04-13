@@ -3,13 +3,13 @@ import Search from './pages/search';
 import Drawer from './components/drawer';
 import parseRoute from './lib/parse-route';
 import PlantDetail from './pages/plant-detail';
-import GardenForm from './components/garden-form';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      route: parseRoute(window.location.hash)
+      route: parseRoute(window.location.hash),
+      gardenId: null
     };
   }
 
