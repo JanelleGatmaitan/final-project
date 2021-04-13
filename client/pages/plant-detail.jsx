@@ -45,12 +45,10 @@ export default class PlantDetail extends React.Component {
       .then(response => response.json())
       .then(data => {
         if (!data.plantInGarden) {
-          console.log('plant not in garden');
-          return this.setState({
+          this.setState({
             btnText: 'Add to garden'
           });
         } else {
-          console.log('plant is in garden', data);
           this.setState({
             btnText: 'Remove from garden'
           });

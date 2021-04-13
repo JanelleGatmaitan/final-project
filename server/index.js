@@ -91,6 +91,21 @@ app.post('/api/plantsInGarden', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.delete('/api/plantsInGarden/:plantId', (req, res, next) => {
+  const plantId = req.params.plantId;
+  const sql = `
+  delete from "plantsInGarden"
+  where "plantId" = $1
+  returning *
+  `;
+  const params = [plantId];
+  db.query(sql, params)
+    .then(result => {
+      const deletedPlant = result.rows[0];
+      res.status(200).json({ deleted: deletedPlant }).end();
+    });
+});
+
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT, () => {
