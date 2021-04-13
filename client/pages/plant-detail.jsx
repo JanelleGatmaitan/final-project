@@ -42,6 +42,12 @@ export default class PlantDetail extends React.Component {
         }
       })
       .catch(err => console.error(err));
+    fetch(`/api/plantsInGarden/${this.props.plantId}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+      })
+      .catch(err => console.error(err));
   }
 
   handleAdd() {
