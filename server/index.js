@@ -32,12 +32,13 @@ app.get('/api/gardenStats', (req, res, next) => {
 });
 
 app.get('/api/plantsInGarden/:plantId', (req, res, next) => {
+  const plantId = req.params.plantId;
   const sql = `
   select *
     from "plantsInGarden"
   where "plantId" = $1
   `;
-  const params = [req.body.plantId];
+  const params = [plantId];
   db.query(sql, params)
     .then(result => {
       res.status(200).json(result.rows[0]);
