@@ -50,11 +50,14 @@ export default class PlantDetail extends React.Component {
         modalClass: 'shade'
       });
     }
+    console.log('this.state.gardenId', this.state.gardenId);
     const plantAdded = {
-      plantId: this.props.plantId,
-      dateAdded: Date(),
-      expectedHarvestDate: 'June 12'
+      plantId: parseInt(this.props.plantId),
+      dateAdded: 'April 12',
+      expectedHarvest: 'June 15',
+      gardenId: this.state.gardenId
     };
+    console.log('plantAdded', plantAdded);
     fetch('/api/plantsInGarden', {
       method: 'POST',
       body: JSON.stringify(plantAdded),

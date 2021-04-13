@@ -52,20 +52,19 @@ app.post('/api/gardenStats', (req, res, next) => {
 
 app.post('/api/plantsInGarden', (req, res, next) => {
   const plantAdded = req.body;
-  console.log('req', req);
   console.log('req.body', req.body);
   if (!plantAdded.plantId || !plantAdded.dateAdded || !plantAdded.expectedHarvest) {
-    throw new ClientError(400, 'plantId, date added, expected harvest date, and gardenId are required');
+    throw new ClientError(400, 'plantId, date added, expected harvest date are required fields');
   }
   const sql = `
-  insert into "plantsInGarden" ("plantId". "dateAdded", "expectedHarvestDate", "gardenId")
+  insert into "plantsInGarden" ("plantId", "dateAdded", "expectedHarvestDate", "gardenId")
   values ($1, $2, $3, $4)
   returning *
   `;
   const params = [plantAdded.plantId, plantAdded.dateAdded, plantAdded.expectedHarvest, plantAdded.gardenId];
   db.query(sql, params)
     .then(result => {
-      const plantAdded = result.rows;
+      const plantAdded = result.rows[0];
       res.status(200).json({ added: true, data: plantAdded });
     })
     .catch(err => next(err));
