@@ -103,7 +103,8 @@ app.delete('/api/plantsInGarden/:plantId', (req, res, next) => {
     .then(result => {
       const deletedPlant = result.rows[0];
       res.status(200).json({ deleted: deletedPlant }).end();
-    });
+    })
+    .catch(err => next(err));
 });
 
 app.use(errorMiddleware);
