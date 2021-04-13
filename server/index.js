@@ -26,7 +26,7 @@ app.get('/api/gardenStats', (req, res, next) => {
   `;
   db.query(sql)
     .then(result => {
-      res.json(result.rows);
+      res.status(200).json(result.rows);
     })
     .catch(err => next(err));
 });
@@ -35,11 +35,12 @@ app.get('/api/plantsInGarden/:plantId', (req, res, next) => {
   const sql = `
   select *
     from "plantsInGarden"
+  where "plantId" = $1
   `;
-  const params = [];
+  const params = [req.body.plantId];
   db.query(sql, params)
     .then(result => {
-      res.json(result.rows);
+      res.status(200).json(result.rows[0]);
     })
     .catch(err => next(err));
 });
@@ -65,8 +66,6 @@ app.post('/api/gardenStats', (req, res, next) => {
 
 app.post('/api/plantsInGarden', (req, res, next) => {
   const plantAdded = req.body;
-  console.log('req', req);
-  console.log('req.body', req.body);
   if (!plantAdded.plantId || !plantAdded.dateAdded || !plantAdded.expectedHarvest) {
     throw new ClientError(400, 'plantId, date added, expected harvest date are required');
   }

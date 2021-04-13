@@ -38,14 +38,7 @@ export default class PlantDetail extends React.Component {
             gardenCreated: true,
             gardenId: gardenStats[0].gardenId
           });
-          console.log('this.state', this.state);
         }
-      })
-      .catch(err => console.error(err));
-    fetch(`/api/plantsInGarden/${this.props.plantId}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
       })
       .catch(err => console.error(err));
   }
@@ -56,14 +49,12 @@ export default class PlantDetail extends React.Component {
         modalClass: 'shade'
       });
     }
-    console.log('this.state.gardenId', this.state.gardenId);
     const plantAdded = {
       plantId: parseInt(this.props.plantId),
       dateAdded: Date(),
-      expectedHarvest: 'June 15',
+      expectedHarvest: 'this is another feature',
       gardenId: this.state.gardenId
     };
-    console.log('plantAdded', plantAdded);
     fetch('/api/plantsInGarden', {
       method: 'POST',
       body: JSON.stringify(plantAdded),

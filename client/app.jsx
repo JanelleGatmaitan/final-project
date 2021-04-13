@@ -22,15 +22,6 @@ export default class App extends React.Component {
         });
       }
     );
-    // fetch('/api/gardenStats')
-    //   .then(response => response.json())
-    //   .then(gardenStats => {
-    //     console.log(gardenStats);
-    //     this.setState({
-    //       gardenId: gardenStats[0].gardenId
-    //     });
-    //     console.log('this.state', this.state);
-    //   });
   }
 
   renderPage() {
