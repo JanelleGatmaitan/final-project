@@ -53,7 +53,7 @@ export default class PlantDetail extends React.Component {
     console.log('this.state.gardenId', this.state.gardenId);
     const plantAdded = {
       plantId: parseInt(this.props.plantId),
-      dateAdded: 'April 12',
+      dateAdded: Date(),
       expectedHarvest: 'June 15',
       gardenId: this.state.gardenId
     };
