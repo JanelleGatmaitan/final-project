@@ -44,7 +44,11 @@ export default class PlantDetail extends React.Component {
     fetch(`/api/plantsInGarden/${this.props.plantId}`)
       .then(response => response.json())
       .then(data => {
-        console.log(data);
+        if (!data.plantinGarden) {
+          console.log('plant not in garden');
+        } else {
+          console.log(data);
+        }
       })
       .catch(err => console.error(err));
   }
