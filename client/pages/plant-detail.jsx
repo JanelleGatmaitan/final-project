@@ -6,7 +6,7 @@ export default class PlantDetail extends React.Component {
     super(props);
     this.state = {
       plant: null,
-      btnText: 'Add to garden',
+      btnText: null,
       gardenCreated: null,
       gardenId: null,
       modalClass: 'hidden',
@@ -44,10 +44,16 @@ export default class PlantDetail extends React.Component {
     fetch(`/api/plantsInGarden/${this.props.plantId}`)
       .then(response => response.json())
       .then(data => {
-        if (!data.plantinGarden) {
+        if (!data.plantInGarden) {
           console.log('plant not in garden');
+          return this.setState({
+            btnText: 'Add to garden'
+          });
         } else {
-          console.log(data);
+          console.log('plant is in garden', data);
+          this.setState({
+            btnText: 'Remove from garden'
+          });
         }
       })
       .catch(err => console.error(err));
@@ -73,6 +79,9 @@ export default class PlantDetail extends React.Component {
       }
     })
       .catch(err => console.error(err));
+    this.setState({
+      btnText: 'Remove from garden'
+    });
   }
 
   handleSave(event) {

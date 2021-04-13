@@ -27,7 +27,6 @@ app.get('/api/gardenStats', (req, res, next) => {
   db.query(sql)
     .then(result => {
       res.status(200).json(result.rows);
-      res.end();
     })
     .catch(err => next(err));
 });
@@ -43,8 +42,12 @@ app.get('/api/plantsInGarden/:plantId', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       if (!result.rows[0]) {
-        res.status(200).json({ error: `plant with id ${plantId} hasn't been added to garden`, plantinGarden: false });
+        res.status(200).json({
+          error: `plant with id ${plantId} hasn't been added to garden`,
+          plantInGarden: false
+        });
       }
+      result.rows[0].plantInGarden = true;
       res.status(200).json(result.rows[0]);
     })
     .catch(err => next(err));
