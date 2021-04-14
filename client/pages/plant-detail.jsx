@@ -120,6 +120,11 @@ export default class PlantDetail extends React.Component {
         'Content-Type': 'application/json'
       }
     })
+      .then(() => {
+        this.setState({
+          isInGarden: true
+        });
+      })
       .catch(err => console.error(err));
   }
 
