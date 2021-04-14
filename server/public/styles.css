@@ -230,10 +230,10 @@ p.delete-confirm-text,
   padding: 11px;
 }
 
-#yes {
+.yes {
   background: #C4E3CB;
 }
 
-#no {
+.no {
   background: #ED6666;
 }

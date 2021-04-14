@@ -7,11 +7,11 @@ export default class PlantDetail extends React.Component {
     super(props);
     this.state = {
       plant: null,
-      btnText: null,
       gardenCreated: null,
       gardenId: null,
-      gardenFormClass: 'hidden',
-      deleteConfirmationClass: 'hidden',
+      isInGarden: false,
+      isGardenFormOpen: false,
+      isDeleteModalOpen: false,
       gardenInfo: {
         soil: null,
         sun: null,
@@ -22,8 +22,11 @@ export default class PlantDetail extends React.Component {
     this.handleSave = this.handleSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
     this.cancelRemoval = this.cancelRemoval.bind(this);
+    this.getGardenFormClass = this.getGardenFormClass.bind(this);
+    this.getDeleteModalClass = this.getDeleteModalClass.bind(this);
   }
 
   componentDidMount() {
@@ -48,13 +51,9 @@ export default class PlantDetail extends React.Component {
     fetch(`/api/plantsInGarden/${this.props.plantId}`)
       .then(response => response.json())
       .then(data => {
-        if (!data.plantInGarden) {
+        if (data.plantInGarden) {
           this.setState({
-            btnText: 'Add to garden'
-          });
-        } else {
-          this.setState({
-            btnText: 'Remove from garden'
+            isInGarden: true
           });
         }
       })
@@ -64,7 +63,7 @@ export default class PlantDetail extends React.Component {
   handleAdd() {
     if (!this.state.gardenCreated) {
       this.setState({
-        gardenFormClass: 'shade'
+        isGardenFormOpen: true
       });
     }
     const plantAdded = {
@@ -82,7 +81,7 @@ export default class PlantDetail extends React.Component {
     })
       .catch(err => console.error(err));
     this.setState({
-      btnText: 'Remove from garden'
+      isInGarden: true
     });
   }
 
@@ -91,8 +90,8 @@ export default class PlantDetail extends React.Component {
       method: 'DELETE'
     })
       .then(this.setState({
-        deleteConfirmationClass: 'hidden',
-        btnText: 'Add to garden'
+        isDeleteModalOpen: false,
+        isInGarden: false
       }))
       .catch(err => console.error(err));
   }
@@ -100,8 +99,8 @@ export default class PlantDetail extends React.Component {
   handleSave(event) {
     event.preventDefault();
     this.setState({
-      gardenFormClass: 'hidden',
-      btnText: 'Remove from garden'
+      isGardenFormOpen: false,
+      gardenCreated: true
     });
     const gardenInfo = this.state.gardenInfo;
     fetch('/api/gardenStats', {
@@ -111,6 +110,9 @@ export default class PlantDetail extends React.Component {
         'Content-Type': 'application/json'
       }
     })
+      .then(() => {
+        this.handleAdd();
+      })
       .catch(err => console.error(err));
   }
 
@@ -126,18 +128,46 @@ export default class PlantDetail extends React.Component {
   }
 
   handleClick() {
-    if (this.state.btnText === 'Add to garden') {
+    if (!this.state.gardenCreated && !this.state.gardenCreated) {
+      this.setState({
+        isGardenFormOpen: true
+      });
+    }
+    if (!this.state.isInGarden && this.state.gardenCreated) {
       return this.handleAdd();
     }
-    this.setState({
-      deleteConfirmationClass: 'shade'
-    });
+    if (this.state.gardenCreated && this.state.isInGarden) {
+      this.setState({
+        isDeleteModalOpen: true
+      });
+    }
   }
 
   cancelRemoval() {
     this.setState({
-      deleteConfirmationClass: 'hidden'
+      isDeleteModalOpen: false
     });
+  }
+
+  getButtonText() {
+    if (this.state.isInGarden) {
+      return 'Remove from garden';
+    }
+    return 'Add to garden';
+  }
+
+  getGardenFormClass() {
+    if (!this.state.isGardenFormOpen) {
+      return 'hidden';
+    }
+    return 'shade';
+  }
+
+  getDeleteModalClass() {
+    if (this.state.isInGarden && this.state.isDeleteModalOpen) {
+      return 'shade';
+    }
+    return 'hidden';
   }
 
   render() {
@@ -146,15 +176,15 @@ export default class PlantDetail extends React.Component {
     const imgName = plant.name.replace(' ', '_');
     return (
       <>
-      <DeleteConfirmation className={this.state.deleteConfirmationClass} clickYes={this.handleRemove} clickNo={this.cancelRemoval}/>
-      <GardenForm className={this.state.gardenFormClass} onSave={this.handleSave} values={this.state} handleChange={this.handleChange}/>
+      <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval}/>
+      <GardenForm className={this.getGardenFormClass()} onSave={this.handleSave} values={this.state} handleChange={this.handleChange}/>
         <div className="plant-card" plant-id={this.props.plantId}>
           <img className="plant-img"
             src={`/images/${imgName}.jpg`}
             alt="vegetable" />
           <div className="row">
             <h5 className="card-title">{plant.name}</h5>
-            <button className="add-remove-btn" onClick={this.handleClick}>{this.state.btnText}</button>
+            <button className="add-remove-btn" onClick={this.handleClick}>{this.getButtonText()}</button>
           </div>
           <div className="card-body">
             <h4 className="subsection">About</h4>

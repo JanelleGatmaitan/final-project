@@ -3,7 +3,6 @@ import Search from './pages/search';
 import Drawer from './components/drawer';
 import parseRoute from './lib/parse-route';
 import PlantDetail from './pages/plant-detail';
-import DeleteConfirmation from './components/delete-confirmation';
 
 export default class App extends React.Component {
   constructor(props) {

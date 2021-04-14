@@ -43,7 +43,6 @@ app.get('/api/plantsInGarden/:plantId', (req, res, next) => {
     .then(result => {
       if (!result.rows[0]) {
         res.status(200).json({
-          error: `plant with id ${plantId} hasn't been added to garden`,
           plantInGarden: false
         });
       }
@@ -102,7 +101,7 @@ app.delete('/api/plantsInGarden/:plantId', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       const deletedPlant = result.rows[0];
-      res.status(200).json({ deleted: deletedPlant }).end();
+      res.status(200).json({ deleted: deletedPlant });
     })
     .catch(err => next(err));
 });
