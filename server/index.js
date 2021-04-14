@@ -42,7 +42,8 @@ app.get('/api/plantsInGarden/:plantId', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       if (!result.rows[0]) {
-        res.status(200).json({
+        res.status(404).json({
+          error: `plant with id ${plantId} hasn't been added to garden`,
           plantInGarden: false
         });
       }
