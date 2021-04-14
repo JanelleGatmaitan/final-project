@@ -48,16 +48,19 @@ export default class PlantDetail extends React.Component {
         }
       })
       .catch(err => console.error(err));
-    fetch(`/api/plantsInGarden/${this.props.plantId}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.plantInGarden) {
-          this.setState({
-            isInGarden: true
-          });
-        }
-      })
-      .catch(err => console.error(err));
+
+    if (this.state.gardenCreated) {
+      fetch(`/api/plantsInGarden/${this.props.plantId}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.plantInGarden) {
+            this.setState({
+              isInGarden: true
+            });
+          }
+        })
+        .catch(err => console.error(err));
+    }
   }
 
   handleAdd() {
@@ -102,17 +105,21 @@ export default class PlantDetail extends React.Component {
       isGardenFormOpen: false,
       gardenCreated: true
     });
+    const plantAdded = {
+      plantId: parseInt(this.props.plantId),
+      dateAdded: Date(),
+      expectedHarvest: 'this is another feature',
+      gardenId: this.state.gardenId
+    };
     const gardenInfo = this.state.gardenInfo;
+    const reqBody = { plantAdded, gardenInfo };
     fetch('/api/gardenStats', {
       method: 'POST',
-      body: JSON.stringify(gardenInfo),
+      body: JSON.stringify(reqBody),
       headers: {
         'Content-Type': 'application/json'
       }
     })
-      .then(() => {
-        this.handleAdd();
-      })
       .catch(err => console.error(err));
   }
 
