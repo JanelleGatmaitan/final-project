@@ -1,15 +1,17 @@
 import React from 'react';
 import GardenForm from '../components/garden-form';
+import DeleteConfirmation from '../components/delete-confirmation';
 
 export default class PlantDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       plant: null,
-      btnText: 'Add to garden',
       gardenCreated: null,
       gardenId: null,
-      modalClass: 'hidden',
+      isInGarden: false,
+      isGardenFormOpen: false,
+      isDeleteModalOpen: false,
       gardenInfo: {
         soil: null,
         sun: null,
@@ -17,9 +19,14 @@ export default class PlantDetail extends React.Component {
         notes: ' '
       }
     };
-    this.handleAdd = this.handleAdd.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
+    this.cancelRemoval = this.cancelRemoval.bind(this);
+    this.getGardenFormClass = this.getGardenFormClass.bind(this);
+    this.getDeleteModalClass = this.getDeleteModalClass.bind(this);
   }
 
   componentDidMount() {
@@ -41,12 +48,25 @@ export default class PlantDetail extends React.Component {
         }
       })
       .catch(err => console.error(err));
+
+    if (this.state.gardenCreated) {
+      fetch(`/api/plantsInGarden/${this.props.plantId}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.plantInGarden) {
+            this.setState({
+              isInGarden: true
+            });
+          }
+        })
+        .catch(err => console.error(err));
+    }
   }
 
   handleAdd() {
     if (!this.state.gardenCreated) {
       this.setState({
-        modalClass: 'shade'
+        isGardenFormOpen: true
       });
     }
     const plantAdded = {
@@ -63,22 +83,48 @@ export default class PlantDetail extends React.Component {
       }
     })
       .catch(err => console.error(err));
+    this.setState({
+      isInGarden: true
+    });
+  }
+
+  handleRemove() {
+    fetch(`/api/plantsInGarden/${this.props.plantId}`, {
+      method: 'DELETE'
+    })
+      .then(this.setState({
+        isDeleteModalOpen: false,
+        isInGarden: false
+      }))
+      .catch(err => console.error(err));
   }
 
   handleSave(event) {
     event.preventDefault();
     this.setState({
-      modalClass: 'hidden',
-      btnText: 'Remove from garden'
+      isGardenFormOpen: false,
+      gardenCreated: true
     });
+    const plantAdded = {
+      plantId: parseInt(this.props.plantId),
+      dateAdded: Date(),
+      expectedHarvest: 'this is another feature',
+      gardenId: this.state.gardenId
+    };
     const gardenInfo = this.state.gardenInfo;
+    const reqBody = { plantAdded, gardenInfo };
     fetch('/api/gardenStats', {
       method: 'POST',
-      body: JSON.stringify(gardenInfo),
+      body: JSON.stringify(reqBody),
       headers: {
         'Content-Type': 'application/json'
       }
     })
+      .then(() => {
+        this.setState({
+          isInGarden: true
+        });
+      })
       .catch(err => console.error(err));
   }
 
@@ -93,20 +139,64 @@ export default class PlantDetail extends React.Component {
     });
   }
 
+  handleClick() {
+    if (!this.state.gardenCreated && !this.state.gardenCreated) {
+      this.setState({
+        isGardenFormOpen: true
+      });
+    }
+    if (!this.state.isInGarden && this.state.gardenCreated) {
+      return this.handleAdd();
+    }
+    if (this.state.gardenCreated && this.state.isInGarden) {
+      this.setState({
+        isDeleteModalOpen: true
+      });
+    }
+  }
+
+  cancelRemoval() {
+    this.setState({
+      isDeleteModalOpen: false
+    });
+  }
+
+  getButtonText() {
+    if (this.state.isInGarden) {
+      return 'Remove from garden';
+    }
+    return 'Add to garden';
+  }
+
+  getGardenFormClass() {
+    if (!this.state.isGardenFormOpen) {
+      return 'hidden';
+    }
+    return 'shade';
+  }
+
+  getDeleteModalClass() {
+    if (this.state.isInGarden && this.state.isDeleteModalOpen) {
+      return 'shade';
+    }
+    return 'hidden';
+  }
+
   render() {
     if (!this.state.plant) return null;
     const plant = this.state.plant;
     const imgName = plant.name.replace(' ', '_');
     return (
       <>
-      <GardenForm className={this.state.modalClass} onSave={this.handleSave} values={this.state} handleChange={this.handleChange}/>
+      <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval}/>
+      <GardenForm className={this.getGardenFormClass()} onSave={this.handleSave} values={this.state} handleChange={this.handleChange}/>
         <div className="plant-card" plant-id={this.props.plantId}>
           <img className="plant-img"
             src={`/images/${imgName}.jpg`}
             alt="vegetable" />
           <div className="row">
             <h5 className="card-title">{plant.name}</h5>
-            <button className="add-remove-btn" onClick={this.handleAdd}>{this.state.btnText}</button>
+            <button className="add-remove-btn" onClick={this.handleClick}>{this.getButtonText()}</button>
           </div>
           <div className="card-body">
             <h4 className="subsection">About</h4>

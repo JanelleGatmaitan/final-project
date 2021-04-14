@@ -32,36 +32,56 @@ app.get('/api/gardenStats', (req, res, next) => {
 });
 
 app.get('/api/plantsInGarden/:plantId', (req, res, next) => {
+  const plantId = req.params.plantId;
   const sql = `
   select *
     from "plantsInGarden"
   where "plantId" = $1
   `;
-  const params = [req.body.plantId];
+  const params = [plantId];
   db.query(sql, params)
     .then(result => {
+      if (!result.rows[0]) {
+        res.status(404).json({
+          error: `plant with id ${plantId} hasn't been added to garden`,
+          plantInGarden: false
+        });
+      }
+      result.rows[0].plantInGarden = true;
       res.status(200).json(result.rows[0]);
     })
     .catch(err => next(err));
 });
 
 app.post('/api/gardenStats', (req, res, next) => {
-  const gardenInfo = req.body;
+  const { gardenInfo } = req.body;
   if (!gardenInfo.soil || !gardenInfo.sun || !gardenInfo.size) {
     throw new ClientError(400, 'soil, sun, and size required fields');
   }
-  const sql = `
+  const newGardenSql = `
     insert into "gardenStats" ("soil", "sun", "size", "notes")
     values ($1, $2, $3, $4)
     returning *
   `;
-  const params = [gardenInfo.soil, gardenInfo.sun, gardenInfo.size, gardenInfo.notes];
-  db.query(sql, params)
-    .then(result => {
-      const gardenInfo = result.rows[0];
-      res.status(200).json({ added: true, data: gardenInfo });
-    })
-    .catch(err => next(err));
+  const newGardenParams = [gardenInfo.soil, gardenInfo.sun, gardenInfo.size, gardenInfo.notes];
+  if (req.body.plantAdded) {
+    const { plantAdded } = req.body;
+    const plantSql = `
+    insert into "plantsInGarden" ("plantId", "dateAdded", "expectedHarvestDate", "gardenId")
+    values ($1, $2, $3, $4)
+    returning *
+    `;
+    db.query(newGardenSql, newGardenParams)
+      .then(result => {
+        const gardenInfo = result.rows[0];
+        const newPlantParams = [plantAdded.plantId, plantAdded.dateAdded, plantAdded.expectedHarvest, gardenInfo.gardenId];
+        db.query(plantSql, newPlantParams);
+      })
+      .then(plantAdded => {
+        res.status(200).json({ plantAdded: true, data: plantAdded });
+      })
+      .catch(err => next(err));
+  }
 });
 
 app.post('/api/plantsInGarden', (req, res, next) => {
@@ -79,6 +99,22 @@ app.post('/api/plantsInGarden', (req, res, next) => {
     .then(result => {
       const plantAdded = result.rows;
       res.status(200).json({ added: true, data: plantAdded });
+    })
+    .catch(err => next(err));
+});
+
+app.delete('/api/plantsInGarden/:plantId', (req, res, next) => {
+  const plantId = req.params.plantId;
+  const sql = `
+  delete from "plantsInGarden"
+  where "plantId" = $1
+  returning *
+  `;
+  const params = [plantId];
+  db.query(sql, params)
+    .then(result => {
+      const deletedPlant = result.rows[0];
+      res.status(200).json({ deleted: deletedPlant });
     })
     .catch(err => next(err));
 });
