@@ -206,7 +206,7 @@ label {
 p.delete-confirm-text {
   width: 250px;
   height: 55px;
-  margin: 35px auto;
+  margin: 50px auto 25px;
   font-family: Libre Baskerville;
   font-size: 18px;
 }
