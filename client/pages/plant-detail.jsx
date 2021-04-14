@@ -10,7 +10,8 @@ export default class PlantDetail extends React.Component {
       btnText: null,
       gardenCreated: null,
       gardenId: null,
-      modalClass: 'hidden',
+      gardenFormClass: 'hidden',
+      deleteConfirmationClass: 'hidden',
       gardenInfo: {
         soil: null,
         sun: null,
@@ -18,10 +19,11 @@ export default class PlantDetail extends React.Component {
         notes: ' '
       }
     };
-    this.handleAdd = this.handleAdd.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
+    this.cancelRemoval = this.cancelRemoval.bind(this);
   }
 
   componentDidMount() {
@@ -62,7 +64,7 @@ export default class PlantDetail extends React.Component {
   handleAdd() {
     if (!this.state.gardenCreated) {
       this.setState({
-        modalClass: 'shade'
+        gardenFormClass: 'shade'
       });
     }
     const plantAdded = {
@@ -84,10 +86,21 @@ export default class PlantDetail extends React.Component {
     });
   }
 
+  handleRemove() {
+    fetch(`/api/plantsInGarden/${this.props.plantId}`, {
+      method: 'DELETE'
+    })
+      .then(this.setState({
+        deleteConfirmationClass: 'hidden',
+        btnText: 'Add to garden'
+      }))
+      .catch(err => console.error(err));
+  }
+
   handleSave(event) {
     event.preventDefault();
     this.setState({
-      modalClass: 'hidden',
+      gardenFormClass: 'hidden',
       btnText: 'Remove from garden'
     });
     const gardenInfo = this.state.gardenInfo;
@@ -116,6 +129,15 @@ export default class PlantDetail extends React.Component {
     if (this.state.btnText === 'Add to garden') {
       return this.handleAdd();
     }
+    this.setState({
+      deleteConfirmationClass: 'shade'
+    });
+  }
+
+  cancelRemoval() {
+    this.setState({
+      deleteConfirmationClass: 'hidden'
+    });
   }
 
   render() {
@@ -124,8 +146,8 @@ export default class PlantDetail extends React.Component {
     const imgName = plant.name.replace(' ', '_');
     return (
       <>
-      <DeleteConfirmation className="hidden"/>
-      <GardenForm className={this.state.modalClass} onSave={this.handleSave} values={this.state} handleChange={this.handleChange}/>
+      <DeleteConfirmation className={this.state.deleteConfirmationClass} clickYes={this.handleRemove} clickNo={this.cancelRemoval}/>
+      <GardenForm className={this.state.gardenFormClass} onSave={this.handleSave} values={this.state} handleChange={this.handleChange}/>
         <div className="plant-card" plant-id={this.props.plantId}>
           <img className="plant-img"
             src={`/images/${imgName}.jpg`}
