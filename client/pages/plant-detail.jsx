@@ -36,7 +36,9 @@ export default class PlantDetail extends React.Component {
         return this.setState({
           plant: data
         });
-      });
+      })
+      .catch(err => console.error(err));
+
     fetch('/api/gardenStats')
       .then(response => response.json())
       .then(gardenStats => {

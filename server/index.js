@@ -31,6 +31,17 @@ app.get('/api/gardenStats', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/plantsInGarden', (req, res, next) => {
+  const sql = `
+  select *
+    from "plantsInGarden"
+  `;
+  db.query(sql)
+    .then(result => {
+      res.status(200).json(result.rows);
+    });
+});
+
 app.get('/api/plantsInGarden/:plantId', (req, res, next) => {
   const plantId = req.params.plantId;
   const sql = `
