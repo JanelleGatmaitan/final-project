@@ -270,3 +270,34 @@ a.navigation-link > h2:hover {
     width: 394px;
   }
 }
+
+.saved-plant {
+  display: flex;
+  margin: 0 auto;
+  width: 348px;
+  height: 123px;
+  background: #F0F0F0;
+}
+
+.list-img {
+  width: 120px;
+  height: 120px;
+  object-fit: scale-down;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+/* .column {
+  margin: 10px;
+} */
+
+.text-column {
+  line-height: 16.41px;
+  width: 165px;
+  height: 94px;
+}
+
+.list-text {
+  font-size: 14px;
+  font-family: 'Lato'
+}
