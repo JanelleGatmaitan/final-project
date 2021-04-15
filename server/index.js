@@ -78,14 +78,15 @@ app.post('/api/gardenStats', (req, res, next) => {
   if (req.body.plantAdded) {
     const { plantAdded } = req.body;
     const plantSql = `
-    insert into "plantsInGarden" ("plantId", "dateAdded", "expectedHarvestDate", "gardenId")
-    values ($1, $2, $3, $4)
+    insert into "plantsInGarden" ("plantId", "dateAdded", "expectedHarvestDate", "gardenId", "name")
+    values ($1, $2, $3, $4, $5)
     returning *
     `;
     db.query(newGardenSql, newGardenParams)
       .then(result => {
         const gardenInfo = result.rows[0];
-        const newPlantParams = [plantAdded.plantId, plantAdded.dateAdded, plantAdded.expectedHarvest, gardenInfo.gardenId];
+        const newPlantParams = [plantAdded.plantId, plantAdded.dateAdded,
+          plantAdded.expectedHarvest, gardenInfo.gardenId, plantAdded.name];
         db.query(plantSql, newPlantParams);
       })
       .then(plantAdded => {
@@ -101,11 +102,12 @@ app.post('/api/plantsInGarden', (req, res, next) => {
     throw new ClientError(400, 'plantId, date added, expected harvest date are required');
   }
   const sql = `
-  insert into "plantsInGarden" ("plantId", "dateAdded", "expectedHarvestDate", "gardenId")
-  values ($1, $2, $3, $4)
+  insert into "plantsInGarden" ("plantId", "dateAdded", "expectedHarvestDate", "gardenId", "name")
+  values ($1, $2, $3, $4, $5)
   returning *
   `;
-  const params = [plantAdded.plantId, plantAdded.dateAdded, plantAdded.expectedHarvest, plantAdded.gardenId];
+  const params = [plantAdded.plantId, plantAdded.dateAdded,
+    plantAdded.expectedHarvest, plantAdded.gardenId, plantAdded.name];
   db.query(sql, params)
     .then(result => {
       const plantAdded = result.rows;

@@ -73,7 +73,8 @@ export default class PlantDetail extends React.Component {
       plantId: parseInt(this.props.plantId),
       dateAdded: Date(),
       expectedHarvest: 'this is another feature',
-      gardenId: this.state.gardenId
+      gardenId: this.state.gardenId,
+      name: this.state.plant.name
     };
     fetch('/api/plantsInGarden', {
       method: 'POST',
@@ -109,7 +110,8 @@ export default class PlantDetail extends React.Component {
       plantId: parseInt(this.props.plantId),
       dateAdded: Date(),
       expectedHarvest: 'this is another feature',
-      gardenId: this.state.gardenId
+      gardenId: this.state.gardenId,
+      name: this.state.plant.name
     };
     const gardenInfo = this.state.gardenInfo;
     const reqBody = { plantAdded, gardenInfo };

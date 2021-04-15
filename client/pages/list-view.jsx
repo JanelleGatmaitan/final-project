@@ -4,9 +4,14 @@ export default class ListView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      gardenId: this.props.gardenId
+      gardenId: this.props.gardenId,
+      plantsInGarden: []
     };
   }
+
+  // componenetDidMount() {
+
+  // }
 
   render() {
     return (

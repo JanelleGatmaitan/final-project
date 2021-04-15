@@ -20,6 +20,7 @@ create table "plantsInGarden" (
   "dateAdded"                       text       not null,
   "expectedHarvestDate"             text       not null,
   "gardenId"                        integer    not null,
+  "name"                            text       not null,
   primary key ("plantId"),
   foreign key ("gardenId")
     references "gardenStats"("gardenId")
