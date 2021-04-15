@@ -271,33 +271,32 @@ a.navigation-link > h2:hover {
   }
 }
 
-.saved-plant {
+.garden {
+  list-style-type: none;
+}
+
+.saved-plant-data {
   display: flex;
-  margin: 0 auto;
+  margin: 20px auto;
   width: 348px;
   height: 123px;
   background: #F0F0F0;
+  padding: 15px;
 }
 
 .list-img {
   width: 120px;
   height: 120px;
-  object-fit: scale-down;
-  margin-right: 20px;
-  margin-left: 20px;
+  object-fit: cover;
 }
 
-/* .column {
-  margin: 10px;
-} */
-
 .text-column {
-  line-height: 16.41px;
-  width: 165px;
-  height: 94px;
+  margin-left: 15px;
 }
 
 .list-text {
   font-size: 14px;
-  font-family: 'Lato'
+  font-family: 'Lato';
+  margin: 0;
+  line-height: 18px;
 }
