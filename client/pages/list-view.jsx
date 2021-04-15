@@ -25,7 +25,7 @@ export default class ListView extends React.Component {
       <ul className="garden">
         {
           this.state.plantsInGarden.map(plant => (
-            <li key={plant.id}>
+            <li key={plant.plantId}>
               <SavedPlant plant={plant} />
             </li>
           ))
@@ -36,15 +36,16 @@ export default class ListView extends React.Component {
 }
 
 function SavedPlant(props) {
+  const { name, dateAdded, expectedHarvestDate } = props.plant;
   return (
     <div className="saved-plant">
       <div className="column">
-        <img src="/images/tomatoes.jpg" className="list-img" alt="vegetable"></img>
+        <img src={`/images/${name}.jpg`} className="list-img" alt="vegetable"></img>
       </div>
       <div className="text-column column">
-        <p className="list-text">Tomatoes</p>
-        <p className="list-text">Date</p>
-        <p className="list-text">Expected harvest</p>
+        <p className="list-text">{name}</p>
+        <p className="list-text">{`Date added: ${dateAdded}`}</p>
+        <p className="list-text">{`Expected harvest: ${expectedHarvestDate}`}</p>
       </div>
       <div className="column">
         <i className="fas fa-times"></i>
