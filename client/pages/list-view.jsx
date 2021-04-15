@@ -9,9 +9,15 @@ export default class ListView extends React.Component {
     };
   }
 
-  // componenetDidMount() {
-
-  // }
+  componentDidMount() {
+    fetch('/api/plantsInGarden')
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          plantsInGarden: data
+        });
+      });
+  }
 
   render() {
     return (
