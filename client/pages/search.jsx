@@ -72,7 +72,7 @@ export default class Search extends React.Component {
 function Suggestion(props) {
   const { id, name } = props.plant;
   return (
-    <a href={'#plants?plantId=' + `${id}`} className="search-suggestions">
+    <a href={`#plants?plantId=${id}`} className="search-suggestions">
       {name}
     </a>
   );

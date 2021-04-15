@@ -11,9 +11,8 @@ export default class Drawer extends React.Component {
   }
 
   handleClick() {
-    console.log('bars clicked');
     this.setState({
-      menuOpen: true
+      menuOpen: !this.state.menuOpen
     });
   }
 
@@ -25,11 +24,22 @@ export default class Drawer extends React.Component {
   }
 
   render() {
+    const gardenId = 1;
     return (
       <div className="drawer">
         <i className="fas fa-bars drawer-icon" onClick={this.handleClick}></i>
-        <div className={this.getMenuClass()}>
-          <p>werwerrwer</p>
+        <div className={this.getMenuClass()} onClick={this.handleClick}>
+          <div className="menu">
+            <div className="navigation-links-container">
+              <h2>Menu</h2>
+              <a className ="navigation-link" href='#'>
+                <h2 onClick={this.handleClick}>Search</h2>
+              </a>
+              <a className="navigation-link" href={`#garden?gardenId=${gardenId}`}>
+              <h2>My Garden</h2>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     );
