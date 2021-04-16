@@ -342,3 +342,7 @@ a.navigation-link > h2:hover {
   padding: 0;
   margin: 0;
 }
+
+.task-completed {
+  text-decoration: line-through;
+}
