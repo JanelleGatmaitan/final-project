@@ -5,8 +5,15 @@ export default class ListView extends React.Component {
     super(props);
     this.state = {
       gardenId: this.props.gardenId,
-      plantsInGarden: []
+      plantsInGarden: [],
+      taskNames: ['Water', 'Compost', 'Prune'],
+      tasksCompleted: {
+        Water: false,
+        Compost: false,
+        Prune: false
+      }
     };
+    this.onClick = this.onClick.bind(this);
   }
 
   componentDidMount() {
@@ -20,6 +27,19 @@ export default class ListView extends React.Component {
       .catch(err => console.error(err));
   }
 
+  onClick(event) {
+    console.log('event.target.innerText', event.target.innerText);
+    const taskToggled = event.target.innerText;
+    const previousStatus = this.state.tasksCompleted[taskToggled];
+    const tasksCompletedCopy = Object.assign({}, this.state.tasksCompleted);
+    tasksCompletedCopy[taskToggled] = !previousStatus;
+    console.log('this.state.tasksCompleted[taskToggled]', this.state.tasksCompleted[taskToggled]);
+    // console.log('tasksCompleted', tasksCompleted);
+    this.setState({
+      tasksCompleted: tasksCompletedCopy
+    });
+  }
+
   render() {
     return (
       <>
@@ -31,7 +51,7 @@ export default class ListView extends React.Component {
             <i className="fas fa-cut task-icon"></i>
         </div>
         <div className="row task-names">
-          <p className="task-name">Water</p>
+          <p className="task-name" onClick={this.onClick} value="Water">Water</p>
           <p className="task-name">Compost</p>
           <p className="task-name">Prune</p>
         </div>
