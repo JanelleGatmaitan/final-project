@@ -24,16 +24,16 @@ export default class ListView extends React.Component {
     return (
       <>
       <div className="tasks">
-        <h3>Daily Tasks</h3>
-        <div className="row">
-            <i className="fas fa-tint"></i>
-            <i className="fas fa-recycle"></i>
-            <i className="fas fa-cut"></i>
+        <h3 className="tasks-title">Daily Tasks</h3>
+        <div className="row task-icons">
+            <i className="fas fa-tint task-icon"></i>
+            <i className="fas fa-recycle task-icon"></i>
+            <i className="fas fa-cut task-icon"></i>
         </div>
-        <div className="row">
-          <p className="task-Name">Water</p>
-          <p className="task-Name">Compost</p>
-          <p className="task-Name">Prune</p>
+        <div className="row task-names">
+          <p className="task-name">Water</p>
+          <p className="task-name">Compost</p>
+          <p className="task-name">Prune</p>
         </div>
       </div>
         <ul className="garden">

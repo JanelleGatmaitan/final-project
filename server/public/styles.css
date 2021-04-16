@@ -301,6 +301,12 @@ a.navigation-link > h2:hover {
   height: 123px;
 }
 
+.tasks-title {
+  margin: 0;
+  padding: 12px;
+  padding-left: 20px;
+}
+
 .tasks,
 .garden {
   width: 348px;
@@ -308,5 +314,31 @@ a.navigation-link > h2:hover {
 }
 
 .tasks {
+  height: 149px;
   margin-top: 10px;
+}
+
+.task-icon {
+  font-size: 1.5rem;
+}
+
+.task-icons {
+  margin-top: 20px;
+}
+
+.fa-tint {
+  transform: translateX(-7px);
+}
+
+.fa-recycle {
+  transform: translateX(5px);
+}
+
+.fa-cut {
+  transform: translateX(10px);
+}
+
+.task-names {
+  padding: 0;
+  margin: 0;
 }
