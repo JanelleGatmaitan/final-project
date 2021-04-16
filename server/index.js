@@ -53,10 +53,7 @@ app.get('/api/plantsInGarden/:plantId', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       if (!result.rows[0]) {
-        res.status(404).json({
-          error: `plant with id ${plantId} hasn't been added to garden`,
-          plantInGarden: false
-        });
+        res.status(200).json({ plantInGarden: false });
       }
       result.rows[0].plantInGarden = true;
       res.status(200).json(result.rows[0]);

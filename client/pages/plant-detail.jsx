@@ -30,7 +30,7 @@ export default class PlantDetail extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`http://harvesthelper.herokuapp.com/api/v1/plants/${this.props.plantId}?api_key=${process.env.HARVEST_HELPER_API_KEY}`)
+    fetch(`https://harvesthelper.herokuapp.com/api/v1/plants/${this.props.plantId}?api_key=${process.env.HARVEST_HELPER_API_KEY}`)
       .then(res => res.json())
       .then(data => {
         return this.setState({

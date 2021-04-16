@@ -13,7 +13,7 @@ export default class Search extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`http://harvesthelper.herokuapp.com/api/v1/plants/?api_key=${process.env.HARVEST_HELPER_API_KEY}`)
+    fetch(`https://harvesthelper.herokuapp.com/api/v1/plants/?api_key=${process.env.HARVEST_HELPER_API_KEY}`)
       .then(res => res.json())
       .then(data => {
         this.setState({
