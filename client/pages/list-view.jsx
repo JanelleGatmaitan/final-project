@@ -51,11 +51,13 @@ export default class ListView extends React.Component {
 }
 
 function SavedPlant(props) {
-  const { name, dateAdded, expectedHarvestDate } = props.plant;
+  const { name, dateAdded, expectedHarvestDate, plantId } = props.plant;
   return (
     <div className="saved-plant-data">
       <div className="column">
-        <img src={`/images/${name}.jpg`} className="list-img" alt="vegetable"></img>
+        <a href={`#plants?plantId=${plantId}`}>
+          <img src={`/images/${name}.jpg`} className="list-img" alt="vegetable"></img>
+        </a>
       </div>
       <div className="text-column column">
         <p className="list-text">{name}</p>
