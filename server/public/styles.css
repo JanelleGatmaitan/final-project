@@ -74,11 +74,6 @@ ul.search-list {
   margin-top: 20px;
 }
 
-.row {
-  display: flex;
-  align-items: center;
-}
-
 .card-title {
   font-size: 30px;
   width: 71px;
