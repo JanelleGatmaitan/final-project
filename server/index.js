@@ -31,6 +31,17 @@ app.get('/api/gardenStats', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/plantsInGarden', (req, res, next) => {
+  const sql = `
+  select *
+    from "plantsInGarden"
+  `;
+  db.query(sql)
+    .then(result => {
+      res.status(200).json(result.rows);
+    });
+});
+
 app.get('/api/plantsInGarden/:plantId', (req, res, next) => {
   const plantId = req.params.plantId;
   const sql = `
@@ -42,10 +53,7 @@ app.get('/api/plantsInGarden/:plantId', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       if (!result.rows[0]) {
-        res.status(404).json({
-          error: `plant with id ${plantId} hasn't been added to garden`,
-          plantInGarden: false
-        });
+        res.status(200).json({ plantInGarden: false });
       }
       result.rows[0].plantInGarden = true;
       res.status(200).json(result.rows[0]);
@@ -67,14 +75,15 @@ app.post('/api/gardenStats', (req, res, next) => {
   if (req.body.plantAdded) {
     const { plantAdded } = req.body;
     const plantSql = `
-    insert into "plantsInGarden" ("plantId", "dateAdded", "expectedHarvestDate", "gardenId")
-    values ($1, $2, $3, $4)
+    insert into "plantsInGarden" ("plantId", "dateAdded", "expectedHarvestDate", "gardenId", "name")
+    values ($1, $2, $3, $4, $5)
     returning *
     `;
     db.query(newGardenSql, newGardenParams)
       .then(result => {
         const gardenInfo = result.rows[0];
-        const newPlantParams = [plantAdded.plantId, plantAdded.dateAdded, plantAdded.expectedHarvest, gardenInfo.gardenId];
+        const newPlantParams = [plantAdded.plantId, plantAdded.dateAdded,
+          plantAdded.expectedHarvest, gardenInfo.gardenId, plantAdded.name];
         db.query(plantSql, newPlantParams);
       })
       .then(plantAdded => {
@@ -90,11 +99,12 @@ app.post('/api/plantsInGarden', (req, res, next) => {
     throw new ClientError(400, 'plantId, date added, expected harvest date are required');
   }
   const sql = `
-  insert into "plantsInGarden" ("plantId", "dateAdded", "expectedHarvestDate", "gardenId")
-  values ($1, $2, $3, $4)
+  insert into "plantsInGarden" ("plantId", "dateAdded", "expectedHarvestDate", "gardenId", "name")
+  values ($1, $2, $3, $4, $5)
   returning *
   `;
-  const params = [plantAdded.plantId, plantAdded.dateAdded, plantAdded.expectedHarvest, plantAdded.gardenId];
+  const params = [plantAdded.plantId, plantAdded.dateAdded,
+    plantAdded.expectedHarvest, plantAdded.gardenId, plantAdded.name];
   db.query(sql, params)
     .then(result => {
       const plantAdded = result.rows;

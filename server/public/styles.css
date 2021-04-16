@@ -237,3 +237,66 @@ p.delete-confirm-text,
 .no {
   background: #ED6666;
 }
+
+.menu {
+  position: absolute;
+  width: 200px;
+  height: 100%;
+  background-color: #ffffff;
+}
+
+.navigation-links-container {
+  margin-left: 18px;
+}
+
+.navigation-link {
+  text-decoration: none;
+}
+
+a.navigation-link > h2 {
+  text-align: left;
+  font-family: 'Lato', serif;
+  font-size: 24px;
+  line-height: 28.8px;
+  color: black;
+}
+
+a.navigation-link > h2:hover {
+  color: #a0a3a8;
+}
+
+@media screen and (min-width: 600px) {
+  .menu {
+    width: 394px;
+  }
+}
+
+.garden {
+  list-style-type: none;
+}
+
+.saved-plant-data {
+  display: flex;
+  margin: 20px auto;
+  width: 348px;
+  height: 123px;
+  background: #F0F0F0;
+  padding: 15px;
+}
+
+.list-img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+}
+
+.text-column {
+  margin-left: 15px;
+}
+
+.list-text {
+  font-size: 14px;
+  font-family: 'Lato';
+  margin: 0;
+  line-height: 18px;
+}

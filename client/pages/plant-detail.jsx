@@ -30,13 +30,15 @@ export default class PlantDetail extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`http://harvesthelper.herokuapp.com/api/v1/plants/${this.props.plantId}?api_key=${process.env.HARVEST_HELPER_API_KEY}`)
+    fetch(`https://harvesthelper.herokuapp.com/api/v1/plants/${this.props.plantId}?api_key=${process.env.HARVEST_HELPER_API_KEY}`)
       .then(res => res.json())
       .then(data => {
         return this.setState({
           plant: data
         });
-      });
+      })
+      .catch(err => console.error(err));
+
     fetch('/api/gardenStats')
       .then(response => response.json())
       .then(gardenStats => {
@@ -49,18 +51,16 @@ export default class PlantDetail extends React.Component {
       })
       .catch(err => console.error(err));
 
-    if (this.state.gardenCreated) {
-      fetch(`/api/plantsInGarden/${this.props.plantId}`)
-        .then(response => response.json())
-        .then(data => {
-          if (data.plantInGarden) {
-            this.setState({
-              isInGarden: true
-            });
-          }
-        })
-        .catch(err => console.error(err));
-    }
+    fetch(`/api/plantsInGarden/${this.props.plantId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.plantInGarden) {
+          this.setState({
+            isInGarden: true
+          });
+        }
+      })
+      .catch(err => console.error(err));
   }
 
   handleAdd() {
@@ -73,7 +73,8 @@ export default class PlantDetail extends React.Component {
       plantId: parseInt(this.props.plantId),
       dateAdded: Date(),
       expectedHarvest: 'this is another feature',
-      gardenId: this.state.gardenId
+      gardenId: this.state.gardenId,
+      name: this.state.plant.name
     };
     fetch('/api/plantsInGarden', {
       method: 'POST',
@@ -109,7 +110,8 @@ export default class PlantDetail extends React.Component {
       plantId: parseInt(this.props.plantId),
       dateAdded: Date(),
       expectedHarvest: 'this is another feature',
-      gardenId: this.state.gardenId
+      gardenId: this.state.gardenId,
+      name: this.state.plant.name
     };
     const gardenInfo = this.state.gardenInfo;
     const reqBody = { plantAdded, gardenInfo };

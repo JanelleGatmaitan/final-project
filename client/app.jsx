@@ -3,12 +3,14 @@ import Search from './pages/search';
 import Drawer from './components/drawer';
 import parseRoute from './lib/parse-route';
 import PlantDetail from './pages/plant-detail';
+import ListView from './pages/list-view';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       route: parseRoute(window.location.hash),
+      gardenCreated: null,
       gardenId: null
     };
   }
@@ -22,6 +24,18 @@ export default class App extends React.Component {
         });
       }
     );
+
+    fetch('/api/gardenStats')
+      .then(response => response.json())
+      .then(gardenStats => {
+        if (gardenStats.length !== 0) {
+          this.setState({
+            gardenCreated: true,
+            gardenId: gardenStats[0].gardenId
+          });
+        }
+      })
+      .catch(err => console.error(err));
   }
 
   renderPage() {
@@ -32,6 +46,10 @@ export default class App extends React.Component {
     if (route.path === 'plants') {
       const plantId = route.params.get('plantId');
       return <PlantDetail plantId={plantId} />;
+    }
+    if (route.path === 'garden') {
+      const gardenId = this.state.gardenId;
+      return <ListView gardenId={gardenId} />;
     }
   }
 
