@@ -273,14 +273,13 @@ a.navigation-link > h2:hover {
 
 .garden {
   list-style-type: none;
+  padding: 0;
 }
 
 .saved-plant-data {
   display: flex;
   margin: 20px auto;
-  width: 348px;
   height: 123px;
-  background: #F0F0F0;
   padding: 15px;
 }
 
@@ -299,4 +298,20 @@ a.navigation-link > h2:hover {
   font-family: 'Lato';
   margin: 0;
   line-height: 18px;
+}
+
+.saved-plant-data,
+.tasks {
+  background-color: #f0f0f0;
+  height: 123px;
+}
+
+.tasks,
+.garden {
+  width: 348px;
+  margin: 0 auto;
+}
+
+.tasks {
+  margin-top: 10px;
 }

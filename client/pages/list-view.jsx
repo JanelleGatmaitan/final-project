@@ -22,15 +22,20 @@ export default class ListView extends React.Component {
 
   render() {
     return (
-      <ul className="garden">
-        {
-          this.state.plantsInGarden.map(plant => (
-            <li key={plant.plantId} className="listed-plant">
-              <SavedPlant plant={plant} />
-            </li>
-          ))
-        }
-      </ul>
+      <>
+      <div className="tasks">
+        dfsfd
+      </div>
+        <ul className="garden">
+          {
+            this.state.plantsInGarden.map(plant => (
+              <li key={plant.plantId} className="listed-plant">
+                <SavedPlant plant={plant} />
+              </li>
+            ))
+          }
+        </ul>
+      </>
     );
   }
 }
