@@ -7,9 +7,9 @@ export default class ListView extends React.Component {
       gardenId: this.props.gardenId,
       plantsInGarden: [],
       tasksCompleted: {
-        Water: false,
-        Compost: false,
-        Prune: false
+        Water: null,
+        Compost: null,
+        Prune: null
       }
     };
     this.onClick = this.onClick.bind(this);
@@ -24,6 +24,15 @@ export default class ListView extends React.Component {
         });
       })
       .catch(err => console.error(err));
+    fetch(`api/tasksCompleted/${this.props.gardenId}`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          tasksCompleted: data
+        });
+      })
+      .catch(err => console.error(err));
+
   }
 
   onClick(event) {
@@ -34,23 +43,53 @@ export default class ListView extends React.Component {
     this.setState({
       tasksCompleted: tasksCompletedCopy
     });
+    fetch(`/api/tasksCompleted/${this.props.gardenId}`, {
+      method: 'PUT',
+      body: JSON.stringify(tasksCompletedCopy),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .catch(err => console.error(err));
   }
 
-  getTaskClass(target, name) {
-    console.log(target);
-    console.log(name);
-    console.log('this.state.tasksCompleted[name]', this.state.tasksCompleted[name]);
-    if (this.state.tasksCompleted[name]) {
-      console.log('task completed');
-      target.className = 'task-completed';
+  getWaterClass() {
+    if (this.state.tasksCompleted.Water) {
+      return 'task-completed';
     }
-    target.className = 'tgggggge';
+    return 'task-incomplete';
+  }
+
+  getCompostClass() {
+    if (this.state.tasksCompleted.Compost) {
+      return 'task-completed';
+    }
+    return 'task-incomplete';
+  }
+
+  getPruneClass() {
+    if (this.state.tasksCompleted.Prune) {
+      return 'task-completed';
+    }
+    return 'task-incomplete';
   }
 
   render() {
     return (
       <>
-      <DailyTasks onClick={this.onClick} tasksStatus={this.state.tasksCompleted}/>
+      <div className="tasks">
+        <h3 className="tasks-title">Daily Tasks</h3>
+        <div className="row task-icons">
+            <i className="fas fa-tint task-icon"></i>
+            <i className="fas fa-recycle task-icon"></i>
+            <i className="fas fa-cut task-icon"></i>
+        </div>
+        <div className="row task-names">
+          <p className={this.getWaterClass()} onClick={this.onClick}>Water</p>
+          <p className={this.getCompostClass()} onClick={this.onClick}>Compost</p>
+          <p className={this.getPruneClass()} onClick={this.onClick}>Prune</p>
+        </div>
+      </div>
         <ul className="garden">
           {
             this.state.plantsInGarden.map(plant => (
@@ -71,7 +110,7 @@ function SavedPlant(props) {
     <div className="saved-plant-data">
       <div className="column">
         <a href={`#plants?plantId=${plantId}`}>
-          <img src={`/images/${name}.jpg`} className="list-img" alt="vegetable"></img>
+          <img src={`/images/${name.toLowerCase()}.jpg`} className="list-img" alt="vegetable"></img>
         </a>
       </div>
       <div className="text-column column">
@@ -81,24 +120,6 @@ function SavedPlant(props) {
       </div>
       <div className="column">
         <i className="fas fa-times delete"></i>
-      </div>
-    </div>
-  );
-}
-
-function DailyTasks(props) {
-  return (
-    <div className="tasks">
-      <h3 className="tasks-title">Daily Tasks</h3>
-      <div className="row task-icons">
-        <i className="fas fa-tint task-icon"></i>
-        <i className="fas fa-recycle task-icon"></i>
-        <i className="fas fa-cut task-icon"></i>
-      </div>
-      <div className="row task-names">
-        <p className="sdfsd" onClick={props.onClick}>Water</p>
-        <p className="task-incomplete" onClick={props.onClick}>Compost</p>
-        <p className="task-incomplete" onClick={props.onClick}>Prune</p>
       </div>
     </div>
   );

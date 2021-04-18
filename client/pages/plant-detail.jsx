@@ -40,7 +40,7 @@ export default class PlantDetail extends React.Component {
       .catch(err => console.error(err));
 
     fetch('/api/gardenStats')
-      .then(response => response.json())
+      .then(res => res.json())
       .then(gardenStats => {
         if (gardenStats.length !== 0) {
           this.setState({
@@ -187,7 +187,7 @@ export default class PlantDetail extends React.Component {
   render() {
     if (!this.state.plant) return null;
     const plant = this.state.plant;
-    const imgName = plant.name.replace(' ', '_');
+    const imgName = plant.name.replace(' ', '_').toLowerCase();
     return (
       <>
       <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval}/>

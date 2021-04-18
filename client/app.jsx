@@ -48,7 +48,7 @@ export default class App extends React.Component {
       return <PlantDetail plantId={plantId} />;
     }
     if (route.path === 'garden') {
-      const gardenId = this.state.gardenId;
+      const gardenId = route.params.get('gardenId');
       return <ListView gardenId={gardenId} />;
     }
   }
