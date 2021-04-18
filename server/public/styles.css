@@ -132,7 +132,7 @@ ul.search-list {
   line-height: 22px;
 }
 
-.garden-form-container {
+.garden-form-absolute {
   height: 472px;
   width: 348px;
   background-color: #f0f0f0;
@@ -140,6 +140,14 @@ ul.search-list {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  border-radius: 6px;
+}
+
+.garden-form-center {
+  height: 472px;
+  width: 348px;
+  background-color: #f0f0f0;
+  margin: 0 auto;
   border-radius: 6px;
 }
 

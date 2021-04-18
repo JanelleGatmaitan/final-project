@@ -4,8 +4,8 @@ export default class GardenForm extends React.Component {
   render() {
     return (
       <div className={this.props.className}>
-        <div className="garden-form-container">
-          <h4 className="garden-form-title">Create New Garden</h4>
+        <div className={this.props.position}>
+          <h4 className="garden-form-title">{this.props.title}</h4>
           <form className="garden-form">
             <label htmlFor="soil">Soil Quality:</label>
             <input className="form-input" type="text" id="soil" name="soil" onChange={this.props.handleChange} value={this.props.values.soil} /><br />
