@@ -191,7 +191,7 @@ export default class PlantDetail extends React.Component {
     return (
       <>
       <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval}/>
-      <GardenForm className={this.getGardenFormClass()} onSave={this.handleSave} values={this.state} handleChange={this.handleChange}/>
+        <GardenForm position="garden-form-absolute" title="Create New Garden" className={this.getGardenFormClass()} onSave={this.handleSave} values={this.state} handleChange={this.handleChange}/>
         <div className="plant-card" plant-id={this.props.plantId}>
           <img className="plant-img"
             src={`/images/${imgName}.jpg`}

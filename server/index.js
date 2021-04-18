@@ -90,28 +90,28 @@ app.post('/api/gardenStats', (req, res, next) => {
   values ($1)
   `;
   const newGardenParams = [gardenInfo.soil, gardenInfo.sun, gardenInfo.size, gardenInfo.notes];
-  if (req.body.plantAdded) {
-    const { plantAdded } = req.body;
-    const plantSql = `
+  const { plantAdded } = req.body;
+  const plantSql = `
     insert into "plantsInGarden" ("plantId", "dateAdded", "expectedHarvestDate", "gardenId", "name")
     values ($1, $2, $3, $4, $5)
     returning *
     `;
-    db.query(newGardenSql, newGardenParams)
-      .then(result => {
-        const gardenInfo = result.rows[0];
-        const gardenId = gardenInfo.gardenId;
-        const tasksParams = [gardenId];
-        const newPlantParams = [plantAdded.plantId, plantAdded.dateAdded,
-          plantAdded.expectedHarvest, gardenId, plantAdded.name];
+  db.query(newGardenSql, newGardenParams)
+    .then(result => {
+      const gardenInfo = result.rows[0];
+      const gardenId = gardenInfo.gardenId;
+      const tasksParams = [gardenId];
+      const newPlantParams = [plantAdded.plantId, plantAdded.dateAdded,
+        plantAdded.expectedHarvest, gardenId, plantAdded.name];
+      if (req.body.plantAdded) {
         db.query(plantSql, newPlantParams);
         db.query(tasksSql, tasksParams);
-      })
-      .then(plantAdded => {
-        res.status(200).json({ plantAdded: true, data: plantAdded });
-      })
-      .catch(err => next(err));
-  }
+      }
+    })
+    .then(plantAdded => {
+      res.status(200).json({ plantAdded: true, data: plantAdded });
+    })
+    .catch(err => next(err));
 });
 
 app.post('/api/plantsInGarden', (req, res, next) => {
@@ -151,6 +151,25 @@ app.put('/api/tasksCompleted/:gardenId', (req, res, next) => {
       res.status(200).json({ edited: true, newEntry: result.rows[0] });
     })
     .catch(err => next(err));
+});
+
+app.put('/api/gardenStats/:gardenId', (req, res, next) => {
+  const gardenId = req.params.gardenId;
+  const edits = req.body;
+  const sql = `
+  update "gardenStats"
+  set "soil" = $1,
+  "sun" = $2,
+  "size" = $3,
+  "notes" = $4
+  where "gardenId" = $5
+  returning *;
+  `;
+  const params = [edits.soil, edits.sun, edits.size, edits.notes, gardenId];
+  db.query(sql, params)
+    .then(result => {
+      res.status(200).json({ edited: true, gardenInfo: result.rows[0] });
+    });
 });
 
 app.delete('/api/plantsInGarden/:plantId', (req, res, next) => {
