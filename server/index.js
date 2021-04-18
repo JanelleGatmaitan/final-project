@@ -61,6 +61,20 @@ app.get('/api/plantsInGarden/:plantId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/api/tasksCompleted/:gardenId', (req, res, next) => {
+  const sql = `
+    select *
+      from "tasksCompleted"
+    where "gardenId" = $1
+  `;
+  const params = [req.params.gardenId];
+  db.query(sql, params)
+    .then(result => {
+      res.status(200).json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
 app.post('/api/gardenStats', (req, res, next) => {
   const { gardenInfo } = req.body;
   if (!gardenInfo.soil || !gardenInfo.sun || !gardenInfo.size) {
@@ -70,6 +84,10 @@ app.post('/api/gardenStats', (req, res, next) => {
     insert into "gardenStats" ("soil", "sun", "size", "notes")
     values ($1, $2, $3, $4)
     returning *
+  `;
+  const tasksSql = `
+  insert into "tasksCompleted" ("gardenId")
+  values ($1)
   `;
   const newGardenParams = [gardenInfo.soil, gardenInfo.sun, gardenInfo.size, gardenInfo.notes];
   if (req.body.plantAdded) {
@@ -82,9 +100,12 @@ app.post('/api/gardenStats', (req, res, next) => {
     db.query(newGardenSql, newGardenParams)
       .then(result => {
         const gardenInfo = result.rows[0];
+        const gardenId = gardenInfo.gardenId;
+        const tasksParams = [gardenId];
         const newPlantParams = [plantAdded.plantId, plantAdded.dateAdded,
-          plantAdded.expectedHarvest, gardenInfo.gardenId, plantAdded.name];
+          plantAdded.expectedHarvest, gardenId, plantAdded.name];
         db.query(plantSql, newPlantParams);
+        db.query(tasksSql, tasksParams);
       })
       .then(plantAdded => {
         res.status(200).json({ plantAdded: true, data: plantAdded });
@@ -109,6 +130,25 @@ app.post('/api/plantsInGarden', (req, res, next) => {
     .then(result => {
       const plantAdded = result.rows;
       res.status(200).json({ added: true, data: plantAdded });
+    })
+    .catch(err => next(err));
+});
+
+app.put('/api/tasksCompleted/:gardenId', (req, res, next) => {
+  const gardenId = req.params.gardenId;
+  const taskStatus = req.body;
+  const sql = `
+  update "tasksCompleted"
+  set "Water" = $1,
+  "Prune" = $2,
+  "Compost" = $3
+  where "gardenId" = $4
+  returning *;
+  `;
+  const params = [taskStatus.Water, taskStatus.Prune, taskStatus.Compost, gardenId];
+  db.query(sql, params)
+    .then(result => {
+      res.status(200).json({ edited: true, newEntry: result.rows[0] });
     })
     .catch(err => next(err));
 });

@@ -25,3 +25,12 @@ create table "plantsInGarden" (
   foreign key ("gardenId")
     references "gardenStats"("gardenId")
 );
+
+create table "public"."tasksCompleted" (
+  "gardenId"                      integer    not null,
+  "Water"                         boolean,
+  "Prune"                         boolean,
+  "Compost"                       boolean,
+   foreign key ("gardenId")
+    references "gardenStats"("gardenId")
+);
