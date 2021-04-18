@@ -108,7 +108,6 @@ export default class ListView extends React.Component {
 
   handleSave(event) {
     event.preventDefault();
-    console.log('this.state.gardenInfo', this.state.gardenInfo);
     fetch(`/api/gardenStats/${this.props.gardenId}`, {
       method: 'PUT',
       body: JSON.stringify(this.state.gardenInfo),
