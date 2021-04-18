@@ -139,14 +139,13 @@ app.put('/api/tasksCompleted/:gardenId', (req, res, next) => {
   const taskStatus = req.body;
   const sql = `
   update "tasksCompleted"
-  set "date" = $1,
-  "Water" = $2,
-  "Prune" = $3,
-  "Compost" = $4
-  where "gardenId" = $5
+  set "Water" = $1,
+  "Prune" = $2,
+  "Compost" = $3
+  where "gardenId" = $4
   returning *;
   `;
-  const params = [taskStatus.date, taskStatus.Water, taskStatus.Prune, taskStatus.Compost, gardenId];
+  const params = [taskStatus.Water, taskStatus.Prune, taskStatus.Compost, gardenId];
   db.query(sql, params)
     .then(result => {
       res.status(200).json({ edited: true, newEntry: result.rows[0] });
