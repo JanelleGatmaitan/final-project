@@ -5,7 +5,7 @@ const pg = require('pg');
 const jsonMiddleware = express.json();
 const ClientError = require('./client-error'); // eslint-disable-line
 const errorMiddleware = require('./error-middleware');
-
+const fetch = require('node-fetch');
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
@@ -18,6 +18,15 @@ const app = express();
 app.use(staticMiddleware);
 
 app.use(jsonMiddleware);
+
+app.post('/api/growStuff', async (req, res, next) => {
+  const url = `https://www.growstuff.org/crops/${req.body.plant}.json`;
+  const response = await fetch(url)
+    .then(res => res.json())
+    .catch(err => next(err));
+  // console.log('response: ', response);
+  res.status(200).json(response.median_days_to_first_harvest);
+});
 
 app.get('/api/gardenStats', (req, res, next) => {
   const sql = `

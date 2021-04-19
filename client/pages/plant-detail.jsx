@@ -6,6 +6,7 @@ export default class PlantDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      date: null,
       plant: null,
       gardenCreated: null,
       gardenId: null,
@@ -30,11 +31,14 @@ export default class PlantDetail extends React.Component {
   }
 
   componentDidMount() {
+    const date = new Date();
+    const formattedDate = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
     fetch(`https://harvesthelper.herokuapp.com/api/v1/plants/${this.props.plantId}?api_key=${process.env.HARVEST_HELPER_API_KEY}`)
       .then(res => res.json())
       .then(data => {
         return this.setState({
-          plant: data
+          plant: data,
+          date: formattedDate
         });
       })
       .catch(err => console.error(err));
@@ -64,15 +68,25 @@ export default class PlantDetail extends React.Component {
   }
 
   handleAdd() {
+    console.log('this.state.plant.name.toLowerCase()', this.state.plant.name.toLowerCase());
     if (!this.state.gardenCreated) {
       this.setState({
         isGardenFormOpen: true
       });
     }
+    fetch('/api/growStuff', {
+      method: 'POST',
+      body: JSON.stringify({ plant: this.state.plant.name.toLowerCase() })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+      })
+      .catch(err => console.error(err));
     const plantAdded = {
       plantId: parseInt(this.props.plantId),
-      dateAdded: Date(),
-      expectedHarvest: 'this is another feature',
+      dateAdded: this.state.date,
+      expectedHarvest: ' ',
       gardenId: this.state.gardenId,
       name: this.state.plant.name
     };
@@ -108,8 +122,8 @@ export default class PlantDetail extends React.Component {
     });
     const plantAdded = {
       plantId: parseInt(this.props.plantId),
-      dateAdded: Date(),
-      expectedHarvest: 'this is another feature',
+      dateAdded: this.state.date,
+      expectedHarvest: ' ',
       gardenId: this.state.gardenId,
       name: this.state.plant.name
     };
