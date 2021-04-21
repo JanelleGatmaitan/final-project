@@ -125,7 +125,7 @@ export default class ListView extends React.Component {
         <GardenForm position="garden-form-center" title="My Garden" className={this.getGardenFormClass()} onSave={this.handleSave}
         values={this.state.gardenInfo} handleChange={this.handleChange} />
       <div className="tasks">
-        <h3 className="tasks-title">Daily Tasks</h3>
+        <h4 className="tasks-title">Daily Tasks</h4>
         <div className="row task-icons">
             <i className="fas fa-tint task-icon"></i>
             <i className="fas fa-recycle task-icon"></i>
@@ -164,9 +164,6 @@ function SavedPlant(props) {
         <p className="list-text">{name}</p>
         <p className="list-text">{`Date added: ${dateAdded}`}</p>
         <p className="list-text">{`Expected harvest: ${expectedHarvestDate}`}</p>
-      </div>
-      <div className="column">
-        <i className="fas fa-times delete"></i>
       </div>
     </div>
   );

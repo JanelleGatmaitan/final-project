@@ -6,6 +6,7 @@ export default class PlantDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      date: null,
       plant: null,
       gardenCreated: null,
       gardenId: null,
@@ -30,11 +31,14 @@ export default class PlantDetail extends React.Component {
   }
 
   componentDidMount() {
+    const date = new Date();
+    const formattedDate = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
     fetch(`https://harvesthelper.herokuapp.com/api/v1/plants/${this.props.plantId}?api_key=${process.env.HARVEST_HELPER_API_KEY}`)
       .then(res => res.json())
       .then(data => {
         return this.setState({
-          plant: data
+          plant: data,
+          date: formattedDate
         });
       })
       .catch(err => console.error(err));
@@ -71,8 +75,8 @@ export default class PlantDetail extends React.Component {
     }
     const plantAdded = {
       plantId: parseInt(this.props.plantId),
-      dateAdded: Date(),
-      expectedHarvest: 'this is another feature',
+      dateAdded: this.state.date,
+      expectedHarvest: ' ',
       gardenId: this.state.gardenId,
       name: this.state.plant.name
     };
@@ -100,16 +104,23 @@ export default class PlantDetail extends React.Component {
       .catch(err => console.error(err));
   }
 
+  handleChange(event) {
+    const gardenCopy = Object.assign({}, this.state.gardenInfo);
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    gardenCopy[name] = value;
+    this.setState({
+      gardenInfo: gardenCopy
+    });
+  }
+
   handleSave(event) {
     event.preventDefault();
-    this.setState({
-      isGardenFormOpen: false,
-      gardenCreated: true
-    });
     const plantAdded = {
       plantId: parseInt(this.props.plantId),
-      dateAdded: Date(),
-      expectedHarvest: 'this is another feature',
+      dateAdded: this.state.date,
+      expectedHarvest: ' ',
       gardenId: this.state.gardenId,
       name: this.state.plant.name
     };
@@ -122,23 +133,15 @@ export default class PlantDetail extends React.Component {
         'Content-Type': 'application/json'
       }
     })
-      .then(() => {
+      .then(res => res.json())
+      .then(data => {
         this.setState({
-          isInGarden: true
+          isInGarden: data.plantAdded,
+          isGardenFormOpen: false,
+          gardenCreated: true
         });
       })
       .catch(err => console.error(err));
-  }
-
-  handleChange(event) {
-    const gardenCopy = Object.assign({}, this.state.gardenInfo);
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-    gardenCopy[name] = value;
-    this.setState({
-      gardenInfo: gardenCopy
-    });
   }
 
   handleClick() {
