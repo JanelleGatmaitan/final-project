@@ -68,21 +68,11 @@ export default class PlantDetail extends React.Component {
   }
 
   handleAdd() {
-    console.log('this.state.plant.name.toLowerCase()', this.state.plant.name.toLowerCase());
     if (!this.state.gardenCreated) {
       this.setState({
         isGardenFormOpen: true
       });
     }
-    fetch('/api/growStuff', {
-      method: 'POST',
-      body: JSON.stringify({ plant: this.state.plant.name.toLowerCase() })
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-      })
-      .catch(err => console.error(err));
     const plantAdded = {
       plantId: parseInt(this.props.plantId),
       dateAdded: this.state.date,
@@ -114,12 +104,19 @@ export default class PlantDetail extends React.Component {
       .catch(err => console.error(err));
   }
 
+  handleChange(event) {
+    const gardenCopy = Object.assign({}, this.state.gardenInfo);
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    gardenCopy[name] = value;
+    this.setState({
+      gardenInfo: gardenCopy
+    });
+  }
+
   handleSave(event) {
     event.preventDefault();
-    this.setState({
-      isGardenFormOpen: false,
-      gardenCreated: true
-    });
     const plantAdded = {
       plantId: parseInt(this.props.plantId),
       dateAdded: this.state.date,
@@ -136,23 +133,15 @@ export default class PlantDetail extends React.Component {
         'Content-Type': 'application/json'
       }
     })
-      .then(() => {
+      .then(res => res.json())
+      .then(data => {
         this.setState({
-          isInGarden: true
+          isInGarden: data.plantAdded,
+          isGardenFormOpen: false,
+          gardenCreated: true
         });
       })
       .catch(err => console.error(err));
-  }
-
-  handleChange(event) {
-    const gardenCopy = Object.assign({}, this.state.gardenInfo);
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-    gardenCopy[name] = value;
-    this.setState({
-      gardenInfo: gardenCopy
-    });
   }
 
   handleClick() {

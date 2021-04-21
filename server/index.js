@@ -24,7 +24,6 @@ app.post('/api/growStuff', async (req, res, next) => {
   const response = await fetch(url)
     .then(res => res.json())
     .catch(err => next(err));
-  // console.log('response: ', response);
   res.status(200).json(response.median_days_to_first_harvest);
 });
 
