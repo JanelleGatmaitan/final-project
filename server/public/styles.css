@@ -64,6 +64,11 @@ label {
 
 .search-suggestions {
   text-decoration: underline 1px;
+  transition: 0.5s color;
+}
+
+.search-suggestions:hover {
+  color: black
 }
 
 .search-bar:focus {
