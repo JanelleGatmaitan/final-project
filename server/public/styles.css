@@ -15,6 +15,22 @@ label {
   font-family: 'Lato', serif;
 }
 
+.add-remove-btn,
+.form-btn,
+.delete-button {
+  transition: 0.5s background;
+}
+
+.form-btn:hover,
+.yes:hover {
+  background: #367330;
+}
+
+.add-remove-btn:hover,
+.no:hover {
+  background: #c43d48;
+}
+
 .drawer {
   background-color: #61b15a;
   height: 94px;
