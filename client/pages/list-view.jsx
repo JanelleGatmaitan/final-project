@@ -161,7 +161,9 @@ function SavedPlant(props) {
         </a>
       </div>
       <div className="text-column column">
-        <p className="list-text">{name}</p>
+        <a className='detail-link' href={`#plants?plantId=${plantId}`}>
+          <p className="list-text">{name}</p>
+        </a>
         <p className="list-text">{`Date added: ${dateAdded}`}</p>
         <p className="list-text">{`Expected harvest: ${expectedHarvestDate}`}</p>
       </div>
