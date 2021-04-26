@@ -68,9 +68,13 @@ export default class ListView extends React.Component {
       }
     })
       .catch(err => console.error(err));
+    if (tasksCompletedCopy[taskName]) {
+      return 'task - completed';
+    }
+    return 'task-incomplete';
   }
 
-  getWaterClass() {
+  getWaterClass(event) {
     if (this.state.tasksCompleted.Water) {
       return 'task-completed';
     }
@@ -89,10 +93,6 @@ export default class ListView extends React.Component {
       return 'task-completed';
     }
     return 'task-incomplete';
-  }
-
-  getGardenFormClass() {
-    return 'asdasda';
   }
 
   handleChange(event) {
@@ -122,7 +122,7 @@ export default class ListView extends React.Component {
     if (!this.state.gardenInfo) return null;
     return (
       <>
-        <GardenForm position="garden-form-center" title="My Garden" className={this.getGardenFormClass()} onSave={this.handleSave}
+        <GardenForm position="garden-form-center" title="My Garden" onSave={this.handleSave}
         values={this.state.gardenInfo} handleChange={this.handleChange} />
       <div className="tasks">
         <h4 className="tasks-title">Daily Tasks</h4>
@@ -132,9 +132,9 @@ export default class ListView extends React.Component {
             <i className="fas fa-cut task-icon"></i>
         </div>
         <div className="row task-names">
-          <p className={this.getWaterClass()} onClick={this.onClick}>Water</p>
-          <p className={this.getCompostClass()} onClick={this.onClick}>Compost</p>
-          <p className={this.getPruneClass()} onClick={this.onClick}>Prune</p>
+          <p className={`task-name ${this.getWaterClass()}`} onClick={this.onClick}>Water</p>
+          <p className={`task-name ${this.getCompostClass()}`} onClick={this.onClick}>Compost</p>
+          <p className={`task-name ${this.getPruneClass()}`} onClick={this.onClick}>Prune</p>
         </div>
       </div>
         <ul className="garden">

@@ -371,6 +371,7 @@ a.navigation-link > h2:hover {
   margin: 0;
 }
 
-.task-completed {
+.task-completed,
+.task-name:hover {
   text-decoration: line-through;
 }
