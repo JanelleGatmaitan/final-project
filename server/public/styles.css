@@ -15,6 +15,22 @@ label {
   font-family: 'Lato', serif;
 }
 
+.add-remove-btn,
+.form-btn,
+.delete-button {
+  transition: 0.5s background;
+}
+
+.form-btn:hover,
+.yes:hover {
+  background: #367330;
+}
+
+.add-remove-btn:hover,
+.no:hover {
+  background: #c43d48;
+}
+
 .drawer {
   background-color: #61b15a;
   height: 94px;
@@ -48,6 +64,11 @@ label {
 
 .search-suggestions {
   text-decoration: underline 1px;
+  transition: 0.5s color;
+}
+
+.search-suggestions:hover {
+  color: black
 }
 
 .search-bar:focus {
@@ -249,8 +270,14 @@ p.delete-confirm-text,
   margin-left: 18px;
 }
 
-.navigation-link {
+.navigation-link,
+.detail-link {
   text-decoration: none;
+  color: black;
+}
+
+.detail-link:hover {
+  color:#367330;
 }
 
 a.navigation-link > h2 {
@@ -258,7 +285,6 @@ a.navigation-link > h2 {
   font-family: 'Lato', serif;
   font-size: 24px;
   line-height: 28.8px;
-  color: black;
 }
 
 a.navigation-link > h2:hover {
@@ -350,6 +376,7 @@ a.navigation-link > h2:hover {
   margin: 0;
 }
 
-.task-completed {
+.task-completed,
+.task-name:hover {
   text-decoration: line-through;
 }
