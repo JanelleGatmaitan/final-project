@@ -21,12 +21,12 @@ label {
   transition: 0.5s background;
 }
 
+.add-remove-btn:hover,
 .form-btn:hover,
 .yes:hover {
   background: #367330;
 }
 
-.add-remove-btn:hover,
 .no:hover {
   background: #c43d48;
 }
@@ -68,7 +68,7 @@ label {
 }
 
 .search-suggestions:hover {
-  color: black
+  color: black;
 }
 
 .search-bar:focus {
@@ -252,18 +252,18 @@ p.delete-confirm-text,
 }
 
 .yes {
-  background: #C4E3CB;
+  background: #c4e3cb;
 }
 
 .no {
-  background: #ED6666;
+  background: #ed6666;
 }
 
 .menu {
   position: absolute;
   width: 200px;
   height: 100%;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 
 .navigation-links-container {
@@ -277,7 +277,7 @@ p.delete-confirm-text,
 }
 
 .detail-link:hover {
-  color:#367330;
+  color: #367330;
 }
 
 a.navigation-link > h2 {
@@ -316,14 +316,14 @@ a.navigation-link > h2:hover {
 }
 
 .text-column {
-  margin-left: 15px;
+  margin: 0 15px;
 }
 
 .list-text {
   font-size: 14px;
   font-family: 'Lato';
   margin: 0;
-  line-height: 18px;
+  line-height: 35px;
 }
 
 .saved-plant-data,
@@ -379,4 +379,8 @@ a.navigation-link > h2:hover {
 .task-completed,
 .task-name:hover {
   text-decoration: line-through;
+}
+
+.delete-list {
+  margin-left: 10px;
 }

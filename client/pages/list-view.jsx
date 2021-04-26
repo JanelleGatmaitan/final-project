@@ -1,5 +1,6 @@
 import React from 'react';
 import GardenForm from '../components/garden-form';
+import DeleteConfirmation from '../components/delete-confirmation';
 
 export default class ListView extends React.Component {
   constructor(props) {
@@ -22,6 +23,9 @@ export default class ListView extends React.Component {
     this.onClick = this.onClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
+    this.cancelRemoval = this.cancelRemoval.bind(this);
+    this.getDeleteModalClass = this.getDeleteModalClass.bind(this);
   }
 
   componentDidMount() {
@@ -118,10 +122,35 @@ export default class ListView extends React.Component {
       .catch(err => console.error(err));
   }
 
+  getDeleteModalClass() {
+    if (this.state.isInGarden && this.state.isDeleteModalOpen) {
+      return 'shade';
+    }
+    return 'hidden';
+  }
+
+  cancelRemoval() {
+    this.setState({
+      isDeleteModalOpen: false
+    });
+  }
+
+  handleRemove() {
+    fetch(`/api/plantsInGarden/${this.props.plantId}`, {
+      method: 'DELETE'
+    })
+      .then(this.setState({
+        isDeleteModalOpen: false,
+        isInGarden: false
+      }))
+      .catch(err => console.error(err));
+  }
+
   render() {
     if (!this.state.gardenInfo) return null;
     return (
       <>
+        <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval} />
         <GardenForm position="garden-form-center" title="My Garden" onSave={this.handleSave}
         values={this.state.gardenInfo} handleChange={this.handleChange} />
       <div className="tasks">
@@ -160,13 +189,14 @@ function SavedPlant(props) {
           <img src={`/images/${name.toLowerCase()}.jpg`} className="list-img" alt="vegetable"></img>
         </a>
       </div>
-      <div className="text-column column">
+      <div className="text-column">
         <a className='detail-link' href={`#plants?plantId=${plantId}`}>
           <p className="list-text">{name}</p>
         </a>
         <p className="list-text">{`Date added: ${dateAdded}`}</p>
         <p className="list-text">{`Expected harvest: ${expectedHarvestDate}`}</p>
       </div>
+        <i className="delete-list fas fa-times"></i>
     </div>
   );
 }
