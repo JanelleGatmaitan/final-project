@@ -1,5 +1,6 @@
 import React from 'react';
 import GardenForm from '../components/garden-form';
+import DeleteConfirmation from '../components/delete-confirmation';
 
 export default class ListView extends React.Component {
   constructor(props) {
@@ -17,11 +18,16 @@ export default class ListView extends React.Component {
         sun: '',
         size: '',
         notes: ''
-      }
+      },
+      isDeleteModalOpen: false,
+      toDeleteId: null
     };
     this.onClick = this.onClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
+    this.cancelRemoval = this.cancelRemoval.bind(this);
+    this.clickDeleteBtn = this.clickDeleteBtn.bind(this);
   }
 
   componentDidMount() {
@@ -49,7 +55,6 @@ export default class ListView extends React.Component {
         });
       })
       .catch(err => console.error(err));
-
   }
 
   onClick(event) {
@@ -68,28 +73,10 @@ export default class ListView extends React.Component {
       }
     })
       .catch(err => console.error(err));
-    if (tasksCompletedCopy[taskName]) {
-      return 'task - completed';
-    }
-    return 'task-incomplete';
   }
 
-  getWaterClass(event) {
-    if (this.state.tasksCompleted.Water) {
-      return 'task-completed';
-    }
-    return 'task-incomplete';
-  }
-
-  getCompostClass() {
-    if (this.state.tasksCompleted.Compost) {
-      return 'task-completed';
-    }
-    return 'task-incomplete';
-  }
-
-  getPruneClass() {
-    if (this.state.tasksCompleted.Prune) {
+  getTaskClass(taskName) {
+    if (this.state.tasksCompleted[taskName]) {
       return 'task-completed';
     }
     return 'task-incomplete';
@@ -118,10 +105,47 @@ export default class ListView extends React.Component {
       .catch(err => console.error(err));
   }
 
+  clickDeleteBtn(event) {
+    this.setState({
+      isDeleteModalOpen: true,
+      toDeleteId: event.target.getAttribute('plantid')
+    });
+  }
+
+  getDeleteModalClass() {
+    if (this.state.isDeleteModalOpen) {
+      return 'shade';
+    }
+    return 'hidden';
+  }
+
+  cancelRemoval() {
+    this.setState({
+      isDeleteModalOpen: false
+    });
+  }
+
+  handleRemove() {
+    const deletedPlantId = this.state.toDeleteId;
+    const deletedPlant = document.querySelector(`li.listed-plant[plantid='${deletedPlantId}']`);
+    deletedPlant.className = 'hidden';
+    fetch(`/api/plantsInGarden/${deletedPlantId}`, {
+      method: 'DELETE'
+    })
+      .then(() => {
+        this.setState({
+          isDeleteModalOpen: false
+        });
+      }
+      )
+      .catch(err => console.error(err));
+  }
+
   render() {
     if (!this.state.gardenInfo) return null;
     return (
       <>
+        <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval} />
         <GardenForm position="garden-form-center" title="My Garden" onSave={this.handleSave}
         values={this.state.gardenInfo} handleChange={this.handleChange} />
       <div className="tasks">
@@ -132,16 +156,16 @@ export default class ListView extends React.Component {
             <i className="fas fa-cut task-icon"></i>
         </div>
         <div className="row task-names">
-          <p className={`task-name ${this.getWaterClass()}`} onClick={this.onClick}>Water</p>
-          <p className={`task-name ${this.getCompostClass()}`} onClick={this.onClick}>Compost</p>
-          <p className={`task-name ${this.getPruneClass()}`} onClick={this.onClick}>Prune</p>
+          <p className={`task-name ${this.getTaskClass('Water')}`} onClick={this.onClick}>Water</p>
+          <p className={`task-name ${this.getTaskClass('Compost')}`} onClick={this.onClick}>Compost</p>
+          <p className={`task-name ${this.getTaskClass('Prune')}`} onClick={this.onClick}>Prune</p>
         </div>
       </div>
         <ul className="garden">
           {
             this.state.plantsInGarden.map(plant => (
-              <li key={plant.plantId} className="listed-plant">
-                <SavedPlant plant={plant} />
+              <li key={plant.plantId} className="listed-plant" plantid={plant.plantId} onClick={this.clickDeleteBtn}>
+                <SavedPlant plant={plant}/>
               </li>
             ))
           }
@@ -160,13 +184,14 @@ function SavedPlant(props) {
           <img src={`/images/${name.toLowerCase()}.jpg`} className="list-img" alt="vegetable"></img>
         </a>
       </div>
-      <div className="text-column column">
+      <div className="text-column">
         <a className='detail-link' href={`#plants?plantId=${plantId}`}>
           <p className="list-text">{name}</p>
         </a>
         <p className="list-text">{`Date added: ${dateAdded}`}</p>
         <p className="list-text">{`Expected harvest: ${expectedHarvestDate}`}</p>
       </div>
+        <i plantid={plantId} className="delete-list fas fa-times"></i>
     </div>
   );
 }
