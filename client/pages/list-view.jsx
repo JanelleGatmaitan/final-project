@@ -29,6 +29,7 @@ export default class ListView extends React.Component {
     this.handleRemove = this.handleRemove.bind(this);
     this.cancelRemoval = this.cancelRemoval.bind(this);
     this.clickDeleteBtn = this.clickDeleteBtn.bind(this);
+    this.getTaskClass = this.getTaskClass.bind(this);
   }
 
   componentDidMount() {
@@ -60,6 +61,7 @@ export default class ListView extends React.Component {
   }
 
   onClick(event) {
+    console.log('event.target', event.target);
     const taskName = event.target.innerText;
     const previousStatus = this.state.tasksCompleted[taskName];
     const tasksCompletedCopy = Object.assign({}, this.state.tasksCompleted);
@@ -75,17 +77,15 @@ export default class ListView extends React.Component {
       }
     })
       .catch(err => console.error(err));
-    if (tasksCompletedCopy[taskName]) {
-      return 'task - completed';
-    }
-    return 'task-incomplete';
+    this.getTaskClass(taskName, event.target);
   }
 
-  getWaterClass(event) {
-    if (this.state.tasksCompleted.Water) {
-      return 'task-completed';
+  getTaskClass(taskName, target) {
+    console.log(this.state.tasksCompleted);
+    if (this.state.tasksCompleted[taskName]) {
+      target.className = 'task-complete';
     }
-    return 'task-incomplete';
+    target.className = 'task-incomplete';
   }
 
   getCompostClass() {
@@ -147,8 +147,8 @@ export default class ListView extends React.Component {
 
   handleRemove() {
     const deletedPlantId = this.state.toDeleteId;
-    const deleted = document.querySelector(`li.listed-plant[plantid='${deletedPlantId}']`);
-    deleted.className = 'hidden';
+    const deletedPlant = document.querySelector(`li.listed-plant[plantid='${deletedPlantId}']`);
+    deletedPlant.className = 'hidden';
     fetch(`/api/plantsInGarden/${deletedPlantId}`, {
       method: 'DELETE'
     })
@@ -160,13 +160,6 @@ export default class ListView extends React.Component {
       }
       )
       .catch(err => console.error(err));
-  }
-
-  hideDeletedPlant(plant) {
-    if (this.state.hasBeenDeleted) {
-      return 'hidden';
-    }
-    return 'listed-plant';
   }
 
   render() {
@@ -184,7 +177,7 @@ export default class ListView extends React.Component {
             <i className="fas fa-cut task-icon"></i>
         </div>
         <div className="row task-names">
-          <p className={`task-name ${this.getWaterClass()}`} onClick={this.onClick}>Water</p>
+          <p className="task-name" onClick={this.onClick}>Water</p>
           <p className={`task-name ${this.getCompostClass()}`} onClick={this.onClick}>Compost</p>
           <p className={`task-name ${this.getPruneClass()}`} onClick={this.onClick}>Prune</p>
         </div>
