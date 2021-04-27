@@ -18,14 +18,17 @@ export default class ListView extends React.Component {
         sun: '',
         size: '',
         notes: ''
-      }
+      },
+      isDeleteModalOpen: false,
+      toDeleteId: null,
+      hasBeenDeleted: false
     };
     this.onClick = this.onClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
     this.cancelRemoval = this.cancelRemoval.bind(this);
-    this.getDeleteModalClass = this.getDeleteModalClass.bind(this);
+    this.clickDeleteBtn = this.clickDeleteBtn.bind(this);
   }
 
   componentDidMount() {
@@ -122,8 +125,15 @@ export default class ListView extends React.Component {
       .catch(err => console.error(err));
   }
 
+  clickDeleteBtn(event) {
+    this.setState({
+      isDeleteModalOpen: true,
+      toDeleteId: event.target.getAttribute('plantid')
+    });
+  }
+
   getDeleteModalClass() {
-    if (this.state.isInGarden && this.state.isDeleteModalOpen) {
+    if (this.state.isDeleteModalOpen) {
       return 'shade';
     }
     return 'hidden';
@@ -136,14 +146,27 @@ export default class ListView extends React.Component {
   }
 
   handleRemove() {
-    fetch(`/api/plantsInGarden/${this.props.plantId}`, {
+    const deletedPlantId = this.state.toDeleteId;
+    const deleted = document.querySelector(`li.listed-plant[plantid='${deletedPlantId}']`);
+    deleted.className = 'hidden';
+    fetch(`/api/plantsInGarden/${deletedPlantId}`, {
       method: 'DELETE'
     })
-      .then(this.setState({
-        isDeleteModalOpen: false,
-        isInGarden: false
-      }))
+      .then(() => {
+        this.setState({
+          isDeleteModalOpen: false,
+          hasBeenDeleted: true
+        });
+      }
+      )
       .catch(err => console.error(err));
+  }
+
+  hideDeletedPlant(plant) {
+    if (this.state.hasBeenDeleted) {
+      return 'hidden';
+    }
+    return 'listed-plant';
   }
 
   render() {
@@ -169,8 +192,8 @@ export default class ListView extends React.Component {
         <ul className="garden">
           {
             this.state.plantsInGarden.map(plant => (
-              <li key={plant.plantId} className="listed-plant">
-                <SavedPlant plant={plant} />
+              <li key={plant.plantId} className="listed-plant" plantid={plant.plantId} onClick={this.clickDeleteBtn}>
+                <SavedPlant plant={plant}/>
               </li>
             ))
           }
@@ -196,7 +219,7 @@ function SavedPlant(props) {
         <p className="list-text">{`Date added: ${dateAdded}`}</p>
         <p className="list-text">{`Expected harvest: ${expectedHarvestDate}`}</p>
       </div>
-        <i className="delete-list fas fa-times"></i>
+        <i plantid={plantId} className="delete-list fas fa-times"></i>
     </div>
   );
 }

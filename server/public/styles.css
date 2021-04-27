@@ -21,6 +21,15 @@ label {
   transition: 0.5s background;
 }
 
+.delete-list {
+  transition: 0.5s color;
+  font-size: 22px;
+}
+
+.delete-list:hover {
+  color: #c43d48;
+}
+
 .add-remove-btn:hover,
 .form-btn:hover,
 .yes:hover {
