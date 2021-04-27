@@ -20,8 +20,7 @@ export default class ListView extends React.Component {
         notes: ''
       },
       isDeleteModalOpen: false,
-      toDeleteId: null,
-      hasBeenDeleted: false
+      toDeleteId: null
     };
     this.onClick = this.onClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -29,7 +28,6 @@ export default class ListView extends React.Component {
     this.handleRemove = this.handleRemove.bind(this);
     this.cancelRemoval = this.cancelRemoval.bind(this);
     this.clickDeleteBtn = this.clickDeleteBtn.bind(this);
-    this.getTaskClass = this.getTaskClass.bind(this);
   }
 
   componentDidMount() {
@@ -57,11 +55,9 @@ export default class ListView extends React.Component {
         });
       })
       .catch(err => console.error(err));
-
   }
 
   onClick(event) {
-    console.log('event.target', event.target);
     const taskName = event.target.innerText;
     const previousStatus = this.state.tasksCompleted[taskName];
     const tasksCompletedCopy = Object.assign({}, this.state.tasksCompleted);
@@ -77,26 +73,10 @@ export default class ListView extends React.Component {
       }
     })
       .catch(err => console.error(err));
-    this.getTaskClass(taskName, event.target);
   }
 
-  getTaskClass(taskName, target) {
-    console.log(this.state.tasksCompleted);
+  getTaskClass(taskName) {
     if (this.state.tasksCompleted[taskName]) {
-      target.className = 'task-complete';
-    }
-    target.className = 'task-incomplete';
-  }
-
-  getCompostClass() {
-    if (this.state.tasksCompleted.Compost) {
-      return 'task-completed';
-    }
-    return 'task-incomplete';
-  }
-
-  getPruneClass() {
-    if (this.state.tasksCompleted.Prune) {
       return 'task-completed';
     }
     return 'task-incomplete';
@@ -154,8 +134,7 @@ export default class ListView extends React.Component {
     })
       .then(() => {
         this.setState({
-          isDeleteModalOpen: false,
-          hasBeenDeleted: true
+          isDeleteModalOpen: false
         });
       }
       )
@@ -177,9 +156,9 @@ export default class ListView extends React.Component {
             <i className="fas fa-cut task-icon"></i>
         </div>
         <div className="row task-names">
-          <p className="task-name" onClick={this.onClick}>Water</p>
-          <p className={`task-name ${this.getCompostClass()}`} onClick={this.onClick}>Compost</p>
-          <p className={`task-name ${this.getPruneClass()}`} onClick={this.onClick}>Prune</p>
+          <p className={`task-name ${this.getTaskClass('Water')}`} onClick={this.onClick}>Water</p>
+          <p className={`task-name ${this.getTaskClass('Compost')}`} onClick={this.onClick}>Compost</p>
+          <p className={`task-name ${this.getTaskClass('Prune')}`} onClick={this.onClick}>Prune</p>
         </div>
       </div>
         <ul className="garden">
