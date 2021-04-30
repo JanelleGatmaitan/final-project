@@ -420,6 +420,7 @@ a.navigation-link > h2:hover {
   height: 40px;
   border-radius: 20px;
   margin: 12px;
+  padding-left: 15px;
 }
 
 .auth-btn-container {

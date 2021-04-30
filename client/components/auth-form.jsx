@@ -20,7 +20,7 @@ export default class AuthForm extends React.Component {
 
   handleSubmit() {
     event.preventDefault();
-
+    console.log('submit');
   }
 
   render() {
@@ -53,8 +53,8 @@ export default class AuthForm extends React.Component {
             onChange={this.handleChange}
             className="auth-row auth-form-control" />
           <div className="auth-btn-container">
-            <button type="submit" className="auth-btn">
-              Sign in
+            <button type="submit" className="auth-btn" onClick={this.handleSubmit}>
+              Sign Up
           </button>
           </div>
       </form>
