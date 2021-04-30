@@ -19,8 +19,15 @@ export default class AuthForm extends React.Component {
   }
 
   handleSubmit() {
-    event.preventDefault();
-    console.log('submit');
+    fetch('/api/auth/sign-up', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(this.state)
+    })
+      .then(res => res.json())
+      .then(result => {
+        console.log(result);
+      });
   }
 
   render() {

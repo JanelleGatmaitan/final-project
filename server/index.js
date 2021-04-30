@@ -6,6 +6,7 @@ const jsonMiddleware = express.json();
 const ClientError = require('./client-error'); // eslint-disable-line
 const errorMiddleware = require('./error-middleware');
 const fetch = require('node-fetch');
+const argon2 = require('argon2');
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
@@ -25,6 +26,28 @@ app.post('/api/growStuff', async (req, res, next) => {
     .then(res => res.json())
     .catch(err => next(err));
   res.status(200).json(response.median_days_to_first_harvest);
+});
+
+app.post('/api/auth/sign-up', (req, res, next) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    throw new ClientError(400, 'username and password are required fields');
+  }
+  argon2
+    .hash(password)
+    .then(hashedPassword => {
+      const sql = `
+      insert into "users" ("username", "hashedPassword")
+      values ($1, $2)
+      returning "userId", "username"
+    `;
+      const params = [username, hashedPassword];
+      return db.query(sql, params);
+    })
+    .then(result => {
+      res.status(201).json(result.rows);
+    })
+    .catch(err => next(err));
 });
 
 app.get('/api/gardenStats', (req, res, next) => {
