@@ -4,6 +4,7 @@ import Drawer from './components/drawer';
 import parseRoute from './lib/parse-route';
 import PlantDetail from './pages/plant-detail';
 import ListView from './pages/list-view';
+import Auth from './pages/auth';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -50,6 +51,9 @@ export default class App extends React.Component {
     if (route.path === 'garden') {
       const gardenId = route.params.get('gardenId');
       return <ListView gardenId={gardenId} />;
+    }
+    if (route.path === 'sign-in') {
+      return <Auth />;
     }
   }
 
