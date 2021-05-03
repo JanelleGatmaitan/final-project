@@ -21,13 +21,24 @@ export default class App extends React.Component {
 
   handleSignIn(result) {
     const { user, token } = result;
+    fetch(`api/gardenStats/${user.username}`)
+      .then(res => res.json())
+      .then(gardenStats => {
+        if (gardenStats) {
+          this.setState({ gardenId: gardenStats.gardenId });
+        }
+      })
+      .catch(err => console.error(err));
     window.localStorage.setItem('react-context-jwt', token);
     this.setState({ user });
   }
 
   handleSignOut() {
     window.localStorage.removeItem('react-context-jwt');
-    this.setState({ user: null });
+    this.setState({
+      user: null,
+      gardenId: null
+    });
   }
 
   componentDidMount() {
@@ -60,9 +71,9 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { user, route } = this.state;
+    const { user, route, gardenId } = this.state;
     const { handleSignIn, handleSignOut } = this;
-    const contextValue = { user, route, handleSignIn, handleSignOut };
+    const contextValue = { user, route, gardenId, handleSignIn, handleSignOut };
     return (
     <AppContext.Provider value={contextValue}>
       <>

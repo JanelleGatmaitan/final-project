@@ -44,24 +44,26 @@ export default class PlantDetail extends React.Component {
       })
       .catch(err => console.error(err));
 
+    if (!this.context.user) {
+      return null;
+    }
     fetch(`api/gardenStats/${this.context.user.username}`)
       .then(res => res.json())
       .then(gardenStats => {
-        if (gardenStats.length !== 0) {
+        if (gardenStats) {
+          fetch(`/api/plantsInGarden/${this.context.gardenId}/${this.props.plantId}`)
+            .then(response => response.json())
+            .then(data => {
+              if (data.plantInGarden) {
+                this.setState({
+                  isInGarden: true
+                });
+              }
+            })
+            .catch(err => console.error(err));
           this.setState({
             gardenCreated: true,
             gardenId: gardenStats.gardenId
-          });
-        }
-      })
-      .catch(err => console.error(err));
-
-    fetch(`/api/plantsInGarden/${this.props.plantId}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.plantInGarden) {
-          this.setState({
-            isInGarden: true
           });
         }
       })
@@ -81,7 +83,7 @@ export default class PlantDetail extends React.Component {
       gardenId: this.state.gardenId,
       name: this.state.plant.name
     };
-    fetch('/api/plantsInGarden', {
+    fetch(`/api/plantsInGarden/${this.props.gardenId}`, {
       method: 'POST',
       body: JSON.stringify(plantAdded),
       headers: {
@@ -126,8 +128,9 @@ export default class PlantDetail extends React.Component {
       name: this.state.plant.name
     };
     const gardenInfo = this.state.gardenInfo;
-    const reqBody = { plantAdded, gardenInfo };
-    fetch('/api/gardenStats', {
+    const userInfo = this.context.user;
+    const reqBody = { plantAdded, gardenInfo, userInfo };
+    fetch('/api/gardenStats/', {
       method: 'POST',
       body: JSON.stringify(reqBody),
       headers: {
@@ -136,6 +139,7 @@ export default class PlantDetail extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
+        this.context.gardenId = data.gardenId;
         this.setState({
           isInGarden: data.plantAdded,
           isGardenFormOpen: false,

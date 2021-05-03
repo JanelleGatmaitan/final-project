@@ -1,6 +1,7 @@
 import React from 'react';
 import GardenForm from '../components/garden-form';
 import DeleteConfirmation from '../components/delete-confirmation';
+import AppContext from '../lib/app-context';
 
 export default class ListView extends React.Component {
   constructor(props) {
@@ -31,7 +32,7 @@ export default class ListView extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/api/plantsInGarden')
+    fetch(`/api/plantsInGarden/${this.props.gardenId}`)
       .then(res => res.json())
       .then(plantData => {
         this.setState({
@@ -39,19 +40,19 @@ export default class ListView extends React.Component {
         });
       })
       .catch(err => console.error(err));
-    fetch(`api/tasksCompleted/${this.props.gardenId}`)
-      .then(res => res.json())
-      .then(data => {
-        this.setState({
-          tasksCompleted: data
-        });
-      })
-      .catch(err => console.error(err));
-    fetch('/api/gardenStats')
+    // fetch(`api/tasksCompleted/${this.context.gardenId}`)
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     this.setState({
+    //       tasksCompleted: data
+    //     });
+    //   })
+    //   .catch(err => console.error(err));
+    fetch(`/api/gardenStats/${this.context.user.username}`)
       .then(res => res.json())
       .then(gardenInfo => {
         this.setState({
-          gardenInfo: gardenInfo[0]
+          gardenInfo: gardenInfo
         });
       })
       .catch(err => console.error(err));
@@ -95,7 +96,7 @@ export default class ListView extends React.Component {
 
   handleSave(event) {
     event.preventDefault();
-    fetch(`/api/gardenStats/${this.props.gardenId}`, {
+    fetch(`/api/gardenStats/${this.context.user.username}`, {
       method: 'PUT',
       body: JSON.stringify(this.state.gardenInfo),
       headers: {
@@ -195,3 +196,4 @@ function SavedPlant(props) {
     </div>
   );
 }
+ListView.contextType = AppContext;
