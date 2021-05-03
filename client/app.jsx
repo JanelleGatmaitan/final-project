@@ -13,9 +13,7 @@ export default class App extends React.Component {
     this.state = {
       user: null,
       isAuthorizing: true,
-      route: parseRoute(window.location.hash),
-      gardenCreated: null,
-      gardenId: null
+      route: parseRoute(window.location.hash)
     };
     this.handleSignIn = this.handleSignIn.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
@@ -25,7 +23,6 @@ export default class App extends React.Component {
     const { user, token } = result;
     window.localStorage.setItem('react-context-jwt', token);
     this.setState({ user });
-    console.log('successful sign in');
   }
 
   handleSignOut() {
@@ -42,18 +39,6 @@ export default class App extends React.Component {
         });
       }
     );
-
-    fetch('/api/gardenStats')
-      .then(response => response.json())
-      .then(gardenStats => {
-        if (gardenStats.length !== 0) {
-          this.setState({
-            gardenCreated: true,
-            gardenId: gardenStats[0].gardenId
-          });
-        }
-      })
-      .catch(err => console.error(err));
   }
 
   renderPage() {
@@ -80,8 +65,10 @@ export default class App extends React.Component {
     const contextValue = { user, route, handleSignIn, handleSignOut };
     return (
     <AppContext.Provider value={contextValue}>
+      <>
         <Drawer />
         {this.renderPage()}
+      </>
     </AppContext.Provider>
     );
   }

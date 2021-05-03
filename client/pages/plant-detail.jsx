@@ -1,6 +1,7 @@
 import React from 'react';
 import GardenForm from '../components/garden-form';
 import DeleteConfirmation from '../components/delete-confirmation';
+import AppContext from '../lib/app-context';
 
 export default class PlantDetail extends React.Component {
   constructor(props) {
@@ -43,13 +44,13 @@ export default class PlantDetail extends React.Component {
       })
       .catch(err => console.error(err));
 
-    fetch('/api/gardenStats')
+    fetch(`api/gardenStats/${this.context.user.username}`)
       .then(res => res.json())
       .then(gardenStats => {
         if (gardenStats.length !== 0) {
           this.setState({
             gardenCreated: true,
-            gardenId: gardenStats[0].gardenId
+            gardenId: gardenStats.gardenId
           });
         }
       })
@@ -241,3 +242,4 @@ export default class PlantDetail extends React.Component {
     );
   }
 }
+PlantDetail.contextType = AppContext;

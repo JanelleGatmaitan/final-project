@@ -84,14 +84,16 @@ app.post('/api/auth/sign-in', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.get('/api/gardenStats', (req, res, next) => {
+app.get('/api/gardenStats/:username', (req, res, next) => {
   const sql = `
     select *
       from "gardenStats"
+      where "username" = $1
   `;
-  db.query(sql)
+  const params = [req.params.username];
+  db.query(sql, params)
     .then(result => {
-      res.status(200).json(result.rows);
+      res.status(200).json(result.rows[0]);
     })
     .catch(err => next(err));
 });
