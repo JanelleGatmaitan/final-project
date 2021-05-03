@@ -55,7 +55,7 @@ export default class AuthForm extends React.Component {
             required
             autoFocus
             id="password"
-            type="text"
+            type="password"
             name="password"
             onChange={this.handleChange}
             className="auth-row auth-form-control" />
