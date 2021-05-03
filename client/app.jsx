@@ -25,6 +25,7 @@ export default class App extends React.Component {
     const { user, token } = result;
     window.localStorage.setItem('react-context-jwt', token);
     this.setState({ user });
+    console.log('successful sign in');
   }
 
   handleSignOut() {
@@ -68,13 +69,12 @@ export default class App extends React.Component {
       const gardenId = route.params.get('gardenId');
       return <ListView gardenId={gardenId} />;
     }
-    if (route.path === 'sign-in') {
+    if (route.path === 'sign-in' || route.path === 'sign-up') {
       return <Auth />;
     }
   }
 
   render() {
-    // if (this.state.isAuthorizing) return null;
     const { user, route } = this.state;
     const { handleSignIn, handleSignOut } = this;
     const contextValue = { user, route, handleSignIn, handleSignOut };

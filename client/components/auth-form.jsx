@@ -1,4 +1,5 @@
 import React from 'react';
+import AppContext from '../lib/app-context';
 
 export default class AuthForm extends React.Component {
   constructor(props) {
@@ -19,18 +20,29 @@ export default class AuthForm extends React.Component {
   }
 
   handleSubmit() {
-    fetch('/api/auth/sign-up', {
+    event.preventDefault();
+    const { action } = this.props;
+    fetch(`/api/auth/${action}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(this.state)
     })
       .then(res => res.json())
       .then(result => {
-        console.log(result);
+        if (action === 'sign-up') {
+          window.location.hash = 'sign-in';
+        } else if (result.user && result.token) {
+          this.props.onSignIn(result);
+        }
       });
   }
 
   render() {
+    const { action } = this.props;
+    let submitBtnText = 'Sign Up';
+    if (action === 'sign-in') {
+      submitBtnText = 'Sign In';
+    }
     return (
       <div className="auth-container">
         <h2 className="title">
@@ -61,7 +73,7 @@ export default class AuthForm extends React.Component {
             className="auth-row auth-form-control" />
           <div className="auth-btn-container">
             <button type="submit" className="auth-btn" onClick={this.handleSubmit}>
-              Sign Up
+              {submitBtnText}
           </button>
           </div>
       </form>
@@ -69,3 +81,4 @@ export default class AuthForm extends React.Component {
     );
   }
 }
+AuthForm.contextType = AppContext;
