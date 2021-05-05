@@ -32,7 +32,7 @@ export default class ListView extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/plantsInGarden/${this.props.gardenId}`)
+    fetch(`/api/plantsInGarden/${this.context.gardenId}`)
       .then(res => res.json())
       .then(plantData => {
         this.setState({
@@ -40,14 +40,14 @@ export default class ListView extends React.Component {
         });
       })
       .catch(err => console.error(err));
-    // fetch(`api/tasksCompleted/${this.context.gardenId}`)
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     this.setState({
-    //       tasksCompleted: data
-    //     });
-    //   })
-    //   .catch(err => console.error(err));
+    fetch(`api/tasksCompleted/${this.context.gardenId}`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          tasksCompleted: data
+        });
+      })
+      .catch(err => console.error(err));
     fetch(`/api/gardenStats/${this.context.user.username}`)
       .then(res => res.json())
       .then(gardenInfo => {
@@ -96,7 +96,7 @@ export default class ListView extends React.Component {
 
   handleSave(event) {
     event.preventDefault();
-    fetch(`/api/gardenStats/${this.context.user.username}`, {
+    fetch(`/api/gardenStats/${this.context.gardenId}`, {
       method: 'PUT',
       body: JSON.stringify(this.state.gardenInfo),
       headers: {
