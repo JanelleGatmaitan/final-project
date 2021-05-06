@@ -130,7 +130,7 @@ export default class ListView extends React.Component {
     const deletedPlantId = this.state.toDeleteId;
     const deletedPlant = document.querySelector(`li.listed-plant[plantid='${deletedPlantId}']`);
     deletedPlant.className = 'hidden';
-    fetch(`/api/plantsInGarden/${deletedPlantId}`, {
+    fetch(`/api/plantsInGarden/${this.context.gardenId}/${deletedPlantId}`, {
       method: 'DELETE'
     })
       .then(() => {
