@@ -26,11 +26,15 @@ export default class Drawer extends React.Component {
 
   render() {
     const { user } = this.context;
-    let navigationItem = 'Sign In / Register';
-    let navLink = '#sign-in';
+    let navigationItem1 = 'Register';
+    let navLink1 = '#sign-up';
+    let navigationItem2 = 'Sign In';
+    let navLink2 = '#sign-in';
     if (user) {
-      navigationItem = 'My Garden';
-      navLink = `#garden?gardenId=${this.context.gardenId}`;
+      navigationItem1 = 'My Garden';
+      navLink1 = `#garden?gardenId=${this.context.gardenId}`;
+      navigationItem2 = 'Sign Out';
+      navLink2 = '#';
     }
     return (
       <div className="drawer">
@@ -42,8 +46,11 @@ export default class Drawer extends React.Component {
               <a className ="navigation-link" href='#'>
                 <h2 onClick={this.handleClick}>Search</h2>
               </a>
-              <a className="navigation-link" href={navLink}>
-              <h2>{navigationItem}</h2>
+              <a className="navigation-link" href={navLink1}>
+              <h2>{navigationItem1}</h2>
+              </a>
+              <a className="navigation-link" href={navLink2} onClick={this.context.handleSignOut}>
+                <h2>{navigationItem2}</h2>
               </a>
             </div>
           </div>

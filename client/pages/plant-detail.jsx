@@ -47,11 +47,12 @@ export default class PlantDetail extends React.Component {
     if (!this.context.user) {
       return null;
     }
+
     fetch(`api/gardenStats/${this.context.user.username}`)
       .then(res => res.json())
       .then(gardenStats => {
         if (gardenStats) {
-          fetch(`/api/plantsInGarden/${this.context.gardenId}/${this.props.plantId}`)
+          fetch(`/api/plantsInGarden/${gardenStats.gardenId}/${this.props.plantId}`)
             .then(response => response.json())
             .then(data => {
               if (data.plantInGarden) {
@@ -83,7 +84,7 @@ export default class PlantDetail extends React.Component {
       gardenId: this.state.gardenId,
       name: this.state.plant.name
     };
-    fetch(`/api/plantsInGarden/${this.props.gardenId}`, {
+    fetch(`/api/plantsInGarden/${this.state.gardenId}`, {
       method: 'POST',
       body: JSON.stringify(plantAdded),
       headers: {
@@ -97,7 +98,7 @@ export default class PlantDetail extends React.Component {
   }
 
   handleRemove() {
-    fetch(`/api/plantsInGarden/${this.props.plantId}`, {
+    fetch(`/api/plantsInGarden/${this.state.gardenId}`, {
       method: 'DELETE'
     })
       .then(this.setState({
@@ -143,7 +144,8 @@ export default class PlantDetail extends React.Component {
         this.setState({
           isInGarden: data.plantAdded,
           isGardenFormOpen: false,
-          gardenCreated: true
+          gardenCreated: true,
+          gardenId: data.gardenId
         });
       })
       .catch(err => console.error(err));

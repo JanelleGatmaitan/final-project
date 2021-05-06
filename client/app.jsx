@@ -6,6 +6,7 @@ import PlantDetail from './pages/plant-detail';
 import ListView from './pages/list-view';
 import Auth from './pages/auth';
 import AppContext from './lib/app-context';
+import decodeToken from './lib/decode-token';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -48,8 +49,10 @@ export default class App extends React.Component {
         this.setState({
           route: parseRoute(window.location.hash)
         });
-      }
-    );
+      });
+    const token = window.localStorage.getItem('react-context-jwt');
+    const user = token ? decodeToken(token) : null;
+    this.setState({ user, isAuthorizing: false });
   }
 
   renderPage() {

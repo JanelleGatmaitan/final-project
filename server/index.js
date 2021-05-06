@@ -187,18 +187,16 @@ app.post('/api/gardenStats', (req, res, next) => {
 
 app.post('/api/plantsInGarden/:gardenId', (req, res, next) => {
   const plantAdded = req.body;
-  const gardenId = req.params.gardenId;
   if (!plantAdded.plantId || !plantAdded.dateAdded || !plantAdded.expectedHarvest) {
     throw new ClientError(400, 'plantId, date added, expected harvest date are required');
   }
   const sql = `
   insert into "plantsInGarden" ("plantId", "dateAdded", "expectedHarvestDate", "gardenId", "name")
   values ($1, $2, $3, $4, $5)
-  where "gardenId" = $6
   returning *
   `;
   const params = [plantAdded.plantId, plantAdded.dateAdded,
-    plantAdded.expectedHarvest, plantAdded.gardenId, plantAdded.name, gardenId];
+    plantAdded.expectedHarvest, plantAdded.gardenId, plantAdded.name];
   db.query(sql, params)
     .then(result => {
       const plantAdded = result.rows;
