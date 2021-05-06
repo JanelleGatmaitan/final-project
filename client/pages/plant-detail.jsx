@@ -84,7 +84,7 @@ export default class PlantDetail extends React.Component {
       gardenId: this.state.gardenId,
       name: this.state.plant.name
     };
-    fetch(`/api/plantsInGarden/${this.state.gardenId}`, {
+    fetch(`/api/plantsInGarden/${this.state.gardenId}/`, {
       method: 'POST',
       body: JSON.stringify(plantAdded),
       headers: {
@@ -98,7 +98,7 @@ export default class PlantDetail extends React.Component {
   }
 
   handleRemove() {
-    fetch(`/api/plantsInGarden/${this.state.gardenId}`, {
+    fetch(`/api/plantsInGarden/${this.state.gardenId}/${this.props.plantId}`, {
       method: 'DELETE'
     })
       .then(this.setState({

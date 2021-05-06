@@ -113,13 +113,14 @@ app.get('/api/plantsInGarden/:gardenId', (req, res, next) => {
 });
 
 app.get('/api/plantsInGarden/:gardenId/:plantId', (req, res, next) => {
-  const { gardenId } = req.params;
+  const { gardenId, plantId } = req.params;
   const sql = `
   select *
     from "plantsInGarden"
   where "gardenId" = $1
+  and "plantId" = $2
   `;
-  const params = [gardenId];
+  const params = [gardenId, plantId];
   db.query(sql, params)
     .then(result => {
       if (!result.rows[0]) {
@@ -243,14 +244,15 @@ app.put('/api/gardenStats/:gardenId', (req, res, next) => {
     });
 });
 
-app.delete('/api/plantsInGarden/:plantId', (req, res, next) => {
-  const plantId = req.params.plantId;
+app.delete('/api/plantsInGarden/:gardenId/:plantId', (req, res, next) => {
+  const { gardenId, plantId } = req.params;
   const sql = `
   delete from "plantsInGarden"
-  where "plantId" = $1
+  where "gardenId" = $1
+  and "plantId" = $2
   returning *
   `;
-  const params = [plantId];
+  const params = [gardenId, plantId];
   db.query(sql, params)
     .then(result => {
       const deletedPlant = result.rows[0];
