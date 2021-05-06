@@ -427,3 +427,9 @@ a.navigation-link > h2:hover {
   text-align: right;
   margin-top: 20px;
 }
+
+.prompt {
+  width: 348px;
+  margin: 50px auto;
+  text-align: center;
+}

@@ -32,7 +32,10 @@ export default class ListView extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`/api/plantsInGarden/${this.context.gardenId}`)
+    if (!this.context.gardenId) {
+      return null;
+    }
+    fetch(`/api/plantsInGarden/${this.state.gardenId}`)
       .then(res => res.json())
       .then(plantData => {
         this.setState({
@@ -40,7 +43,7 @@ export default class ListView extends React.Component {
         });
       })
       .catch(err => console.error(err));
-    fetch(`api/tasksCompleted/${this.context.gardenId}`)
+    fetch(`api/tasksCompleted/${this.state.gardenId}`)
       .then(res => res.json())
       .then(data => {
         this.setState({
@@ -143,7 +146,16 @@ export default class ListView extends React.Component {
   }
 
   render() {
-    if (!this.state.gardenInfo) return null;
+    if (!this.context.gardenId) {
+      return (
+        <div className="prompt">
+          <p>Plant something to create a garden!</p>
+          <a href="#">
+            <p>Find a plant.</p>
+          </a>
+        </div>
+      );
+    }
     return (
       <>
         <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval} />

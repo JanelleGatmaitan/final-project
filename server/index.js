@@ -93,7 +93,14 @@ app.get('/api/gardenStats/:username', (req, res, next) => {
   const params = [req.params.username];
   db.query(sql, params)
     .then(result => {
-      res.status(200).json(result.rows[0]);
+      if (!result.rows[0]) {
+        res.status(200).json({ gardenCreated: false });
+      }
+      const gardenStats = result.rows[0];
+      res.status(200).json({
+        gardenCreated: true,
+        gardenStats
+      });
     })
     .catch(err => next(err));
 });

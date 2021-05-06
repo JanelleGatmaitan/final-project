@@ -50,9 +50,9 @@ export default class PlantDetail extends React.Component {
 
     fetch(`api/gardenStats/${this.context.user.username}`)
       .then(res => res.json())
-      .then(gardenStats => {
-        if (gardenStats) {
-          fetch(`/api/plantsInGarden/${gardenStats.gardenId}/${this.props.plantId}`)
+      .then(data => {
+        if (data.gardenCreated) {
+          fetch(`/api/plantsInGarden/${data.gardenId}/${this.props.plantId}`)
             .then(response => response.json())
             .then(data => {
               if (data.plantInGarden) {
@@ -64,7 +64,7 @@ export default class PlantDetail extends React.Component {
             .catch(err => console.error(err));
           this.setState({
             gardenCreated: true,
-            gardenId: gardenStats.gardenId
+            gardenId: data.gardenId
           });
         }
       })
