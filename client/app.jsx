@@ -24,9 +24,9 @@ export default class App extends React.Component {
     const { user, token } = result;
     fetch(`api/gardenStats/${user.username}`)
       .then(res => res.json())
-      .then(gardenStats => {
-        if (gardenStats) {
-          this.setState({ gardenId: gardenStats.gardenId });
+      .then(data => {
+        if (data.gardenCreated) {
+          this.setState({ gardenId: data.gardenStats.gardenId });
         }
       })
       .catch(err => console.error(err));
@@ -58,7 +58,7 @@ export default class App extends React.Component {
   renderPage() {
     const { route } = this.state;
     if (route.path === '') {
-      return <Search />;
+      // return <Search />;
     }
     if (route.path === 'plants') {
       const plantId = route.params.get('plantId');
