@@ -7,8 +7,8 @@ export default class ListView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      gardenId: this.props.gardenId,
-      plantsInGarden: [],
+      gardenId: null,
+      plantsInGarden: null,
       tasksCompleted: {
         Water: null,
         Compost: null,
@@ -29,36 +29,55 @@ export default class ListView extends React.Component {
     this.handleRemove = this.handleRemove.bind(this);
     this.cancelRemoval = this.cancelRemoval.bind(this);
     this.clickDeleteBtn = this.clickDeleteBtn.bind(this);
+    this.getGardenData = this.getGardenData.bind(this);
   }
 
   componentDidMount() {
-    if (!this.context.gardenId) {
-      return null;
+    console.log('this.context: ', this.context);
+    this.getGardenData();
+    // fetch(`/api/gardenStats/${this.context.user.username}`)
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     console.log('data: ', data);
+    //     if (data.gardenCreated) {
+    //       const gardenId = data.gardenStats.gardenId;
+    //       this.setState({
+    //         gardenInfo: data.gardenStats,
+    //         gardenId: gardenId
+    //       });
+    //     }
+    //   })
+    //   .catch(err => console.error(err));
+    // fetch(`/api/plantsInGarden/${this.props.gardenId}`)
+    //   .then(res => res.json())
+    //   .then(plantData => {
+    //     this.setState({
+    //       plantsInGarden: plantData
+    //     });
+    // //   })
+    // //   .catch(err => console.error(err));
+    // fetch(`api/tasksCompleted/${this.props.gardenId}`)
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     this.setState({
+    //       tasksCompleted: data
+    //     });
+    //   })
+    //   .catch(err => console.error(err));
+  }
+
+  async getGardenData() {
+    const response = await fetch(`/api/gardenStats/${this.context.user.username}`);
+    const gardenData = await response.json();
+    if (gardenData.gardenCreated) {
+      const plantData = await fetch(`/api/plantsInGarden/${gardenData.gardenStats.gardenId}`);
+      const plantsInGarden = await plantData.json();
+      this.setState({
+        gardenInfo: gardenData.gardenStats,
+        gardenId: gardenData.gardenStats.gardenId,
+        plantsInGarden: plantsInGarden
+      });
     }
-    fetch(`/api/plantsInGarden/${this.state.gardenId}`)
-      .then(res => res.json())
-      .then(plantData => {
-        this.setState({
-          plantsInGarden: plantData
-        });
-      })
-      .catch(err => console.error(err));
-    fetch(`api/tasksCompleted/${this.state.gardenId}`)
-      .then(res => res.json())
-      .then(data => {
-        this.setState({
-          tasksCompleted: data
-        });
-      })
-      .catch(err => console.error(err));
-    fetch(`/api/gardenStats/${this.context.user.username}`)
-      .then(res => res.json())
-      .then(gardenInfo => {
-        this.setState({
-          gardenInfo: gardenInfo
-        });
-      })
-      .catch(err => console.error(err));
   }
 
   onClick(event) {
@@ -99,7 +118,7 @@ export default class ListView extends React.Component {
 
   handleSave(event) {
     event.preventDefault();
-    fetch(`/api/gardenStats/${this.context.gardenId}`, {
+    fetch(`/api/gardenStats/${this.props.gardenId}`, {
       method: 'PUT',
       body: JSON.stringify(this.state.gardenInfo),
       headers: {
@@ -133,7 +152,7 @@ export default class ListView extends React.Component {
     const deletedPlantId = this.state.toDeleteId;
     const deletedPlant = document.querySelector(`li.listed-plant[plantid='${deletedPlantId}']`);
     deletedPlant.className = 'hidden';
-    fetch(`/api/plantsInGarden/${this.context.gardenId}/${deletedPlantId}`, {
+    fetch(`/api/plantsInGarden/${this.props.gardenId}/${deletedPlantId}`, {
       method: 'DELETE'
     })
       .then(() => {
@@ -146,7 +165,7 @@ export default class ListView extends React.Component {
   }
 
   render() {
-    if (!this.context.gardenId) {
+    if (!this.state.gardenId) {
       return (
         <div className="prompt">
           <p>Plant something to create a garden!</p>

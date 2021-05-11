@@ -32,6 +32,7 @@ export default class PlantDetail extends React.Component {
   }
 
   componentDidMount() {
+    console.log('this.context: ', this.context);
     const date = new Date();
     const formattedDate = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
     fetch(`https://harvesthelper.herokuapp.com/api/v1/plants/${this.props.plantId}?api_key=${process.env.HARVEST_HELPER_API_KEY}`)
@@ -52,7 +53,7 @@ export default class PlantDetail extends React.Component {
       .then(res => res.json())
       .then(data => {
         if (data.gardenCreated) {
-          fetch(`/api/plantsInGarden/${data.gardenId}/${this.props.plantId}`)
+          fetch(`/api/plantsInGarden/${data.gardenStats.gardenId}/${this.props.plantId}`)
             .then(response => response.json())
             .then(data => {
               if (data.plantInGarden) {
@@ -64,7 +65,7 @@ export default class PlantDetail extends React.Component {
             .catch(err => console.error(err));
           this.setState({
             gardenCreated: true,
-            gardenId: data.gardenId
+            gardenId: data.gardenStats.gardenId
           });
         }
       })
@@ -140,6 +141,7 @@ export default class PlantDetail extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
+        console.log('data: ', data);
         this.context.gardenId = data.gardenId;
         this.setState({
           isInGarden: data.plantAdded,

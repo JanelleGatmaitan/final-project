@@ -13,6 +13,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       user: null,
+      gardenId: null,
       isAuthorizing: true,
       route: parseRoute(window.location.hash)
     };
@@ -22,24 +23,32 @@ export default class App extends React.Component {
 
   handleSignIn(result) {
     const { user, token } = result;
+    let userData = {
+      user: user
+    };
+    console.log('token: ', token);
     fetch(`api/gardenStats/${user.username}`)
       .then(res => res.json())
       .then(data => {
         if (data.gardenCreated) {
-          this.setState({ gardenId: data.gardenStats.gardenId });
+          userData = {
+            username: user,
+            gardenId: data.gardenStats.gardenId
+          };
+          this.setState({
+            gardenId: data.gardenStats.gardenId,
+            user: user
+          });
         }
       })
       .catch(err => console.error(err));
     window.localStorage.setItem('react-context-jwt', token);
-    this.setState({ user });
+    window.localStorage.setItem('user-data', JSON.stringify(userData));
   }
 
   handleSignOut() {
-    window.localStorage.removeItem('react-context-jwt');
-    this.setState({
-      user: null,
-      gardenId: null
-    });
+    window.localStorage.clear();
+    this.setState({ user: null });
   }
 
   componentDidMount() {
@@ -58,7 +67,7 @@ export default class App extends React.Component {
   renderPage() {
     const { route } = this.state;
     if (route.path === '') {
-      // return <Search />;
+      return <Search />;
     }
     if (route.path === 'plants') {
       const plantId = route.params.get('plantId');
@@ -74,9 +83,9 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { user, route, gardenId } = this.state;
+    const { user, route } = this.state;
     const { handleSignIn, handleSignOut } = this;
-    const contextValue = { user, route, gardenId, handleSignIn, handleSignOut };
+    const contextValue = { user, route, handleSignIn, handleSignOut };
     return (
     <AppContext.Provider value={contextValue}>
       <>
