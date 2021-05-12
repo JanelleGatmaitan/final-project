@@ -17,6 +17,7 @@ export default class PlantDetail extends React.Component {
       isInGarden: false,
       isGardenFormOpen: false,
       isDeleteModalOpen: false,
+      isPromptOpen: false,
       gardenInfo: {
         soil: null,
         sun: null,
@@ -67,7 +68,6 @@ export default class PlantDetail extends React.Component {
     if (gardenData.gardenCreated) {
       const plantData = await fetch(`/api/plantsInGarden/${gardenData.gardenStats.gardenId}/${this.props.plantId}`);
       const plantsInGarden = await plantData.json();
-      console.log('plantsIngarden: ', plantsInGarden);
       this.setState({
         isInGarden: plantsInGarden.plantInGarden,
         gardenCreated: gardenData.gardenCreated,
@@ -153,7 +153,9 @@ export default class PlantDetail extends React.Component {
 
   handleClick() {
     if (!this.state.user) {
-      console.log('prompt sign in');
+      this.setState({
+        isPromptOpen: true
+      });
     }
     if (!this.state.gardenCreated && this.state.user) {
       this.setState({
@@ -198,7 +200,7 @@ export default class PlantDetail extends React.Component {
   }
 
   getPromptClass() {
-    if (this.state.isInGarden && this.state.isDeleteModalOpen) {
+    if (this.state.isPromptOpen) {
       return 'shade';
     }
     return 'hidden';
