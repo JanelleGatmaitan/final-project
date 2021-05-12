@@ -32,7 +32,7 @@ export default class Drawer extends React.Component {
     let navLink2 = '#sign-in';
     if (user) {
       navigationItem1 = 'My Garden';
-      navLink1 = `#garden?gardenId=${this.context.gardenId}`;
+      navLink1 = '#garden';
       navigationItem2 = 'Sign Out';
       navLink2 = '#';
     }

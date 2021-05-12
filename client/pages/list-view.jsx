@@ -2,6 +2,7 @@ import React from 'react';
 import GardenForm from '../components/garden-form';
 import DeleteConfirmation from '../components/delete-confirmation';
 import AppContext from '../lib/app-context';
+import getLocalStorage from '../lib/get-localStorage';
 
 export default class ListView extends React.Component {
   constructor(props) {
@@ -33,49 +34,24 @@ export default class ListView extends React.Component {
   }
 
   componentDidMount() {
-    console.log('this.context: ', this.context);
     this.getGardenData();
-    // fetch(`/api/gardenStats/${this.context.user.username}`)
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     console.log('data: ', data);
-    //     if (data.gardenCreated) {
-    //       const gardenId = data.gardenStats.gardenId;
-    //       this.setState({
-    //         gardenInfo: data.gardenStats,
-    //         gardenId: gardenId
-    //       });
-    //     }
-    //   })
-    //   .catch(err => console.error(err));
-    // fetch(`/api/plantsInGarden/${this.props.gardenId}`)
-    //   .then(res => res.json())
-    //   .then(plantData => {
-    //     this.setState({
-    //       plantsInGarden: plantData
-    //     });
-    // //   })
-    // //   .catch(err => console.error(err));
-    // fetch(`api/tasksCompleted/${this.props.gardenId}`)
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     this.setState({
-    //       tasksCompleted: data
-    //     });
-    //   })
-    //   .catch(err => console.error(err));
   }
 
   async getGardenData() {
-    const response = await fetch(`/api/gardenStats/${this.context.user.username}`);
+    const data = getLocalStorage('user-data');
+    const username = data.user.username;
+    const response = await fetch(`/api/gardenStats/${username}`);
     const gardenData = await response.json();
     if (gardenData.gardenCreated) {
       const plantData = await fetch(`/api/plantsInGarden/${gardenData.gardenStats.gardenId}`);
       const plantsInGarden = await plantData.json();
+      const tasks = await fetch(`api/tasksCompleted/${gardenData.gardenStats.gardenId}`);
+      const tasksStatus = await tasks.json();
       this.setState({
         gardenInfo: gardenData.gardenStats,
         gardenId: gardenData.gardenStats.gardenId,
-        plantsInGarden: plantsInGarden
+        plantsInGarden: plantsInGarden,
+        tasksCompleted: tasksStatus
       });
     }
   }
@@ -88,7 +64,7 @@ export default class ListView extends React.Component {
     this.setState({
       tasksCompleted: tasksCompletedCopy
     });
-    fetch(`/api/tasksCompleted/${this.props.gardenId}`, {
+    fetch(`/api/tasksCompleted/${this.state.gardenId}`, {
       method: 'PUT',
       body: JSON.stringify(tasksCompletedCopy),
       headers: {
@@ -118,7 +94,7 @@ export default class ListView extends React.Component {
 
   handleSave(event) {
     event.preventDefault();
-    fetch(`/api/gardenStats/${this.props.gardenId}`, {
+    fetch(`/api/gardenStats/${this.state.gardenId}`, {
       method: 'PUT',
       body: JSON.stringify(this.state.gardenInfo),
       headers: {
@@ -152,7 +128,7 @@ export default class ListView extends React.Component {
     const deletedPlantId = this.state.toDeleteId;
     const deletedPlant = document.querySelector(`li.listed-plant[plantid='${deletedPlantId}']`);
     deletedPlant.className = 'hidden';
-    fetch(`/api/plantsInGarden/${this.props.gardenId}/${deletedPlantId}`, {
+    fetch(`/api/plantsInGarden/${this.state.gardenId}/${deletedPlantId}`, {
       method: 'DELETE'
     })
       .then(() => {

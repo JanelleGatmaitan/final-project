@@ -154,7 +154,7 @@ app.get('/api/tasksCompleted/:gardenId', (req, res, next) => {
 });
 
 app.post('/api/gardenStats', (req, res, next) => {
-  const { plantAdded, gardenInfo, userInfo } = req.body;
+  const { plantAdded, gardenInfo, username } = req.body;
   if (!gardenInfo.soil || !gardenInfo.sun || !gardenInfo.size) {
     throw new ClientError(400, 'soil, sun, and size required fields');
   }
@@ -167,7 +167,7 @@ app.post('/api/gardenStats', (req, res, next) => {
   insert into "tasksCompleted" ("gardenId")
   values ($1)
   `;
-  const newGardenParams = [gardenInfo.soil, gardenInfo.sun, gardenInfo.size, gardenInfo.notes, userInfo.username];
+  const newGardenParams = [gardenInfo.soil, gardenInfo.sun, gardenInfo.size, gardenInfo.notes, username];
   const plantSql = `
     insert into "plantsInGarden" ("plantId", "dateAdded", "expectedHarvestDate", "gardenId", "name")
     values ($1, $2, $3, $4, $5)

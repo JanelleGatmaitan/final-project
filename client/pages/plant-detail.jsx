@@ -2,6 +2,7 @@ import React from 'react';
 import GardenForm from '../components/garden-form';
 import DeleteConfirmation from '../components/delete-confirmation';
 import AppContext from '../lib/app-context';
+import getLocalStorage from '../lib/get-localStorage';
 
 export default class PlantDetail extends React.Component {
   constructor(props) {
@@ -9,6 +10,7 @@ export default class PlantDetail extends React.Component {
     this.state = {
       date: null,
       plant: null,
+      user: null,
       gardenCreated: null,
       gardenId: null,
       isInGarden: false,
@@ -32,7 +34,7 @@ export default class PlantDetail extends React.Component {
   }
 
   componentDidMount() {
-    console.log('this.context: ', this.context);
+    const user = getLocalStorage('user-data');
     const date = new Date();
     const formattedDate = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
     fetch(`https://harvesthelper.herokuapp.com/api/v1/plants/${this.props.plantId}?api_key=${process.env.HARVEST_HELPER_API_KEY}`)
@@ -45,31 +47,31 @@ export default class PlantDetail extends React.Component {
       })
       .catch(err => console.error(err));
 
-    if (!this.context.user) {
+    if (!user) {
       return null;
     }
 
-    fetch(`api/gardenStats/${this.context.user.username}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.gardenCreated) {
-          fetch(`/api/plantsInGarden/${data.gardenStats.gardenId}/${this.props.plantId}`)
-            .then(response => response.json())
-            .then(data => {
-              if (data.plantInGarden) {
-                this.setState({
-                  isInGarden: true
-                });
-              }
-            })
-            .catch(err => console.error(err));
-          this.setState({
-            gardenCreated: true,
-            gardenId: data.gardenStats.gardenId
-          });
-        }
-      })
-      .catch(err => console.error(err));
+    this.getGardenData();
+  }
+
+  async getGardenData() {
+    const data = getLocalStorage('user-data');
+    const username = data.user.username;
+    const response = await fetch(`/api/gardenStats/${username}`);
+    const gardenData = await response.json();
+    this.setState({
+      gardenCreated: gardenData.gardenCreated,
+      user: username
+    });
+    if (gardenData.gardenCreated) {
+      const plantData = await fetch(`/api/plantsInGarden/${gardenData.gardenStats.gardenId}/${this.props.plantId}`);
+      const plantsInGarden = plantData.json();
+      this.setState({
+        isInGarden: plantsInGarden.plantInGarden,
+        gardenCreated: gardenData.gardenCreated,
+        gardenId: gardenData.gardenStats.gardenId
+      });
+    }
   }
 
   handleAdd() {
@@ -130,9 +132,9 @@ export default class PlantDetail extends React.Component {
       name: this.state.plant.name
     };
     const gardenInfo = this.state.gardenInfo;
-    const userInfo = this.context.user;
-    const reqBody = { plantAdded, gardenInfo, userInfo };
-    fetch('/api/gardenStats/', {
+    const username = this.state.user;
+    const reqBody = { plantAdded, gardenInfo, username };
+    fetch('/api/gardenStats', {
       method: 'POST',
       body: JSON.stringify(reqBody),
       headers: {
@@ -141,7 +143,6 @@ export default class PlantDetail extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-        console.log('data: ', data);
         this.context.gardenId = data.gardenId;
         this.setState({
           isInGarden: data.plantAdded,

@@ -23,27 +23,10 @@ export default class App extends React.Component {
 
   handleSignIn(result) {
     const { user, token } = result;
-    let userData = {
-      user: user
-    };
-    console.log('token: ', token);
-    fetch(`api/gardenStats/${user.username}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.gardenCreated) {
-          userData = {
-            username: user,
-            gardenId: data.gardenStats.gardenId
-          };
-          this.setState({
-            gardenId: data.gardenStats.gardenId,
-            user: user
-          });
-        }
-      })
-      .catch(err => console.error(err));
+    const userData = { user: user };
     window.localStorage.setItem('react-context-jwt', token);
     window.localStorage.setItem('user-data', JSON.stringify(userData));
+    this.setState({ user: userData });
   }
 
   handleSignOut() {
@@ -74,8 +57,7 @@ export default class App extends React.Component {
       return <PlantDetail plantId={plantId} />;
     }
     if (route.path === 'garden') {
-      const gardenId = route.params.get('gardenId');
-      return <ListView gardenId={gardenId} />;
+      return <ListView />;
     }
     if (route.path === 'sign-in' || route.path === 'sign-up') {
       return <Auth />;
