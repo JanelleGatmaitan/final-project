@@ -1,4 +1,5 @@
 import React from 'react';
+import AppContext from '../lib/app-context';
 
 export default class Drawer extends React.Component {
   constructor(props) {
@@ -24,7 +25,17 @@ export default class Drawer extends React.Component {
   }
 
   render() {
-    const gardenId = 1;
+    const { user } = this.context;
+    let navigationItem1 = 'Register';
+    let navLink1 = '#sign-up';
+    let navigationItem2 = 'Sign In';
+    let navLink2 = '#sign-in';
+    if (user) {
+      navigationItem1 = 'My Garden';
+      navLink1 = '#garden';
+      navigationItem2 = 'Sign Out';
+      navLink2 = '#';
+    }
     return (
       <div className="drawer">
         <i className="fas fa-bars drawer-icon" onClick={this.handleClick}></i>
@@ -35,8 +46,11 @@ export default class Drawer extends React.Component {
               <a className ="navigation-link" href='#'>
                 <h2 onClick={this.handleClick}>Search</h2>
               </a>
-              <a className="navigation-link" href={`#garden?gardenId=${gardenId}`}>
-              <h2>My Garden</h2>
+              <a className="navigation-link" href={navLink1}>
+              <h2>{navigationItem1}</h2>
+              </a>
+              <a className="navigation-link" href={navLink2} onClick={this.context.handleSignOut}>
+                <h2>{navigationItem2}</h2>
               </a>
             </div>
           </div>
@@ -45,3 +59,4 @@ export default class Drawer extends React.Component {
     );
   }
 }
+Drawer.contextType = AppContext;

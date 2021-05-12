@@ -8,6 +8,7 @@ create schema "public";
 
 create table "public"."gardenStats" (
   "gardenId"        serial,
+  "username"         text    not null,
   "soil"             text    not null,
   "sun"              text    not null,
   "size"             text    not null,
@@ -33,4 +34,12 @@ create table "public"."tasksCompleted" (
   "Compost"                       boolean,
    foreign key ("gardenId")
     references "gardenStats"("gardenId")
+);
+
+create table "public"."users" (
+  "userId"         serial,
+  "username"       text           not null,
+  "hashedPassword" text           not null,
+  primary key ("userId"),
+  unique ("username")
 );

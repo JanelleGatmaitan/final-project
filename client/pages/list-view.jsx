@@ -1,13 +1,15 @@
 import React from 'react';
 import GardenForm from '../components/garden-form';
 import DeleteConfirmation from '../components/delete-confirmation';
+import AppContext from '../lib/app-context';
+import getLocalStorage from '../lib/get-localStorage';
 
 export default class ListView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      gardenId: this.props.gardenId,
-      plantsInGarden: [],
+      gardenId: null,
+      plantsInGarden: null,
       tasksCompleted: {
         Water: null,
         Compost: null,
@@ -28,33 +30,30 @@ export default class ListView extends React.Component {
     this.handleRemove = this.handleRemove.bind(this);
     this.cancelRemoval = this.cancelRemoval.bind(this);
     this.clickDeleteBtn = this.clickDeleteBtn.bind(this);
+    this.getGardenData = this.getGardenData.bind(this);
   }
 
   componentDidMount() {
-    fetch('/api/plantsInGarden')
-      .then(res => res.json())
-      .then(plantData => {
-        this.setState({
-          plantsInGarden: plantData
-        });
-      })
-      .catch(err => console.error(err));
-    fetch(`api/tasksCompleted/${this.props.gardenId}`)
-      .then(res => res.json())
-      .then(data => {
-        this.setState({
-          tasksCompleted: data
-        });
-      })
-      .catch(err => console.error(err));
-    fetch('/api/gardenStats')
-      .then(res => res.json())
-      .then(gardenInfo => {
-        this.setState({
-          gardenInfo: gardenInfo[0]
-        });
-      })
-      .catch(err => console.error(err));
+    this.getGardenData();
+  }
+
+  async getGardenData() {
+    const data = getLocalStorage('user-data');
+    const username = data.user.username;
+    const response = await fetch(`/api/gardenStats/${username}`);
+    const gardenData = await response.json();
+    if (gardenData.gardenCreated) {
+      const plantData = await fetch(`/api/plantsInGarden/${gardenData.gardenStats.gardenId}`);
+      const plantsInGarden = await plantData.json();
+      const tasks = await fetch(`api/tasksCompleted/${gardenData.gardenStats.gardenId}`);
+      const tasksStatus = await tasks.json();
+      this.setState({
+        gardenInfo: gardenData.gardenStats,
+        gardenId: gardenData.gardenStats.gardenId,
+        plantsInGarden: plantsInGarden,
+        tasksCompleted: tasksStatus
+      });
+    }
   }
 
   onClick(event) {
@@ -65,7 +64,7 @@ export default class ListView extends React.Component {
     this.setState({
       tasksCompleted: tasksCompletedCopy
     });
-    fetch(`/api/tasksCompleted/${this.props.gardenId}`, {
+    fetch(`/api/tasksCompleted/${this.state.gardenId}`, {
       method: 'PUT',
       body: JSON.stringify(tasksCompletedCopy),
       headers: {
@@ -95,7 +94,7 @@ export default class ListView extends React.Component {
 
   handleSave(event) {
     event.preventDefault();
-    fetch(`/api/gardenStats/${this.props.gardenId}`, {
+    fetch(`/api/gardenStats/${this.state.gardenId}`, {
       method: 'PUT',
       body: JSON.stringify(this.state.gardenInfo),
       headers: {
@@ -129,7 +128,7 @@ export default class ListView extends React.Component {
     const deletedPlantId = this.state.toDeleteId;
     const deletedPlant = document.querySelector(`li.listed-plant[plantid='${deletedPlantId}']`);
     deletedPlant.className = 'hidden';
-    fetch(`/api/plantsInGarden/${deletedPlantId}`, {
+    fetch(`/api/plantsInGarden/${this.state.gardenId}/${deletedPlantId}`, {
       method: 'DELETE'
     })
       .then(() => {
@@ -142,7 +141,16 @@ export default class ListView extends React.Component {
   }
 
   render() {
-    if (!this.state.gardenInfo) return null;
+    if (!this.state.gardenId) {
+      return (
+        <div className="prompt">
+          <p>Plant something to create a garden!</p>
+          <a href="#">
+            <p>Find a plant.</p>
+          </a>
+        </div>
+      );
+    }
     return (
       <>
         <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval} />
@@ -195,3 +203,4 @@ function SavedPlant(props) {
     </div>
   );
 }
+ListView.contextType = AppContext;

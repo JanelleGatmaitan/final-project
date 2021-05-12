@@ -47,7 +47,7 @@ export default class Search extends React.Component {
         <header className="title">
           <h2>
             Start Planting
-        </h2>
+          </h2>
           <form onSubmit={this.handleSubmit}>
             <input type="text" className="search-bar"
               value={this.state.value} onChange={this.handleChange} />

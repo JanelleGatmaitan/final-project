@@ -1,6 +1,8 @@
 import React from 'react';
 import GardenForm from '../components/garden-form';
 import DeleteConfirmation from '../components/delete-confirmation';
+import AppContext from '../lib/app-context';
+import getLocalStorage from '../lib/get-localStorage';
 
 export default class PlantDetail extends React.Component {
   constructor(props) {
@@ -8,6 +10,7 @@ export default class PlantDetail extends React.Component {
     this.state = {
       date: null,
       plant: null,
+      user: null,
       gardenCreated: null,
       gardenId: null,
       isInGarden: false,
@@ -31,6 +34,7 @@ export default class PlantDetail extends React.Component {
   }
 
   componentDidMount() {
+    const user = getLocalStorage('user-data');
     const date = new Date();
     const formattedDate = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
     fetch(`https://harvesthelper.herokuapp.com/api/v1/plants/${this.props.plantId}?api_key=${process.env.HARVEST_HELPER_API_KEY}`)
@@ -43,28 +47,31 @@ export default class PlantDetail extends React.Component {
       })
       .catch(err => console.error(err));
 
-    fetch('/api/gardenStats')
-      .then(res => res.json())
-      .then(gardenStats => {
-        if (gardenStats.length !== 0) {
-          this.setState({
-            gardenCreated: true,
-            gardenId: gardenStats[0].gardenId
-          });
-        }
-      })
-      .catch(err => console.error(err));
+    if (!user) {
+      return null;
+    }
 
-    fetch(`/api/plantsInGarden/${this.props.plantId}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.plantInGarden) {
-          this.setState({
-            isInGarden: true
-          });
-        }
-      })
-      .catch(err => console.error(err));
+    this.getGardenData();
+  }
+
+  async getGardenData() {
+    const data = getLocalStorage('user-data');
+    const username = data.user.username;
+    const response = await fetch(`/api/gardenStats/${username}`);
+    const gardenData = await response.json();
+    this.setState({
+      gardenCreated: gardenData.gardenCreated,
+      user: username
+    });
+    if (gardenData.gardenCreated) {
+      const plantData = await fetch(`/api/plantsInGarden/${gardenData.gardenStats.gardenId}/${this.props.plantId}`);
+      const plantsInGarden = plantData.json();
+      this.setState({
+        isInGarden: plantsInGarden.plantInGarden,
+        gardenCreated: gardenData.gardenCreated,
+        gardenId: gardenData.gardenStats.gardenId
+      });
+    }
   }
 
   handleAdd() {
@@ -80,7 +87,7 @@ export default class PlantDetail extends React.Component {
       gardenId: this.state.gardenId,
       name: this.state.plant.name
     };
-    fetch('/api/plantsInGarden', {
+    fetch(`/api/plantsInGarden/${this.state.gardenId}/`, {
       method: 'POST',
       body: JSON.stringify(plantAdded),
       headers: {
@@ -94,7 +101,7 @@ export default class PlantDetail extends React.Component {
   }
 
   handleRemove() {
-    fetch(`/api/plantsInGarden/${this.props.plantId}`, {
+    fetch(`/api/plantsInGarden/${this.state.gardenId}/${this.props.plantId}`, {
       method: 'DELETE'
     })
       .then(this.setState({
@@ -125,7 +132,8 @@ export default class PlantDetail extends React.Component {
       name: this.state.plant.name
     };
     const gardenInfo = this.state.gardenInfo;
-    const reqBody = { plantAdded, gardenInfo };
+    const username = this.state.user;
+    const reqBody = { plantAdded, gardenInfo, username };
     fetch('/api/gardenStats', {
       method: 'POST',
       body: JSON.stringify(reqBody),
@@ -135,10 +143,12 @@ export default class PlantDetail extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
+        this.context.gardenId = data.gardenId;
         this.setState({
           isInGarden: data.plantAdded,
           isGardenFormOpen: false,
-          gardenCreated: true
+          gardenCreated: true,
+          gardenId: data.gardenId
         });
       })
       .catch(err => console.error(err));
@@ -241,3 +251,4 @@ export default class PlantDetail extends React.Component {
     );
   }
 }
+PlantDetail.contextType = AppContext;

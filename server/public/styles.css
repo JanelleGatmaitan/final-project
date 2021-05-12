@@ -17,7 +17,8 @@ label {
 
 .add-remove-btn,
 .form-btn,
-.delete-button {
+.delete-button,
+.auth-btn {
   transition: 0.5s background;
 }
 
@@ -32,7 +33,8 @@ label {
 
 .add-remove-btn:hover,
 .form-btn:hover,
-.yes:hover {
+.yes:hover,
+.auth-btn:hover {
   background: #367330;
 }
 
@@ -54,10 +56,14 @@ label {
 .search-bar {
   width: 293px;
   height: 35px;
+  padding-left: 12px;
+}
+
+.search-bar,
+.auth-form-control {
   border-radius: 20px;
   border: 2px solid #f0f0f0;
   font-size: 20px;
-  padding-left: 12px;
 }
 
 .title {
@@ -124,7 +130,8 @@ ul.search-list {
 }
 
 .add-remove-btn,
-.form-btn {
+.form-btn,
+.auth-btn {
   background: #61b15a;
   border-radius: 20px;
   border: none;
@@ -135,7 +142,8 @@ ul.search-list {
   width: 50%;
 }
 
-.form-btn {
+.form-btn,
+.auth-btn {
   width: 79px;
   height: 33px;
   float: right;
@@ -392,4 +400,36 @@ a.navigation-link > h2:hover {
 
 .delete-list {
   margin-left: 10px;
+}
+
+.auth-container {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.auth-row {
+  display: flex;
+}
+
+.auth-form {
+  margin-top: 50px;
+}
+
+.auth-form-control {
+  width: 293px;
+  height: 40px;
+  border-radius: 20px;
+  margin: 12px;
+  padding-left: 15px;
+}
+
+.auth-btn-container {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.prompt {
+  width: 348px;
+  margin: 50px auto;
+  text-align: center;
 }
