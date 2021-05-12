@@ -1,6 +1,7 @@
 import React from 'react';
 import GardenForm from '../components/garden-form';
 import DeleteConfirmation from '../components/delete-confirmation';
+import Prompt from '../components/prompt-sign-in';
 import AppContext from '../lib/app-context';
 import getLocalStorage from '../lib/get-localStorage';
 
@@ -65,7 +66,8 @@ export default class PlantDetail extends React.Component {
     });
     if (gardenData.gardenCreated) {
       const plantData = await fetch(`/api/plantsInGarden/${gardenData.gardenStats.gardenId}/${this.props.plantId}`);
-      const plantsInGarden = plantData.json();
+      const plantsInGarden = await plantData.json();
+      console.log('plantsIngarden: ', plantsInGarden);
       this.setState({
         isInGarden: plantsInGarden.plantInGarden,
         gardenCreated: gardenData.gardenCreated,
@@ -75,11 +77,6 @@ export default class PlantDetail extends React.Component {
   }
 
   handleAdd() {
-    if (!this.state.gardenCreated) {
-      this.setState({
-        isGardenFormOpen: true
-      });
-    }
     const plantAdded = {
       plantId: parseInt(this.props.plantId),
       dateAdded: this.state.date,
@@ -155,7 +152,10 @@ export default class PlantDetail extends React.Component {
   }
 
   handleClick() {
-    if (!this.state.gardenCreated && !this.state.gardenCreated) {
+    if (!this.state.user) {
+      console.log('prompt sign in');
+    }
+    if (!this.state.gardenCreated && this.state.user) {
       this.setState({
         isGardenFormOpen: true
       });
@@ -197,6 +197,13 @@ export default class PlantDetail extends React.Component {
     return 'hidden';
   }
 
+  getPromptClass() {
+    if (this.state.isInGarden && this.state.isDeleteModalOpen) {
+      return 'shade';
+    }
+    return 'hidden';
+  }
+
   render() {
     if (!this.state.plant) return null;
     const plant = this.state.plant;
@@ -204,6 +211,7 @@ export default class PlantDetail extends React.Component {
     return (
       <>
       <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval}/>
+      <Prompt className={this.getPromptClass()}/>
         <GardenForm position="garden-form-absolute" title="Create New Garden" className={this.getGardenFormClass()} onSave={this.handleSave} values={this.state} handleChange={this.handleChange}/>
         <div className="plant-card" plant-id={this.props.plantId}>
           <img className="plant-img"

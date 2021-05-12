@@ -17,7 +17,7 @@ label {
 
 .add-remove-btn,
 .form-btn,
-.delete-button,
+.modal-button,
 .auth-btn {
   transition: 0.5s background;
 }
@@ -229,7 +229,7 @@ label {
   height: 100%;
 }
 
-.delete-modal {
+.modal {
   text-align: center;
   height: 222px;
   width: 348px;
@@ -241,7 +241,7 @@ label {
   border-radius: 6px;
 }
 
-p.delete-confirm-text {
+p.modal-text {
   width: 250px;
   height: 55px;
   margin: 50px auto 25px;
@@ -249,8 +249,8 @@ p.delete-confirm-text {
   font-size: 18px;
 }
 
-p.delete-confirm-text,
-.delete-button {
+p.modal-text,
+.modal-button {
   font-family: Libre Baskerville;
   font-size: 18px;
 }
@@ -260,7 +260,7 @@ p.delete-confirm-text,
   justify-content: space-evenly;
 }
 
-.delete-button {
+.modal-button {
   width: 88px;
   height: 41px;
   border-radius: 6px;
