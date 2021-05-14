@@ -42,7 +42,7 @@ export default class PlantDetail extends React.Component {
     fetch(`https://harvesthelper.herokuapp.com/api/v1/plants/${this.props.plantId}?api_key=${process.env.HARVEST_HELPER_API_KEY}`)
       .then(res => res.json())
       .then(data => {
-        return this.setState({
+        this.setState({
           plant: data,
           date: formattedDate
         });
@@ -76,13 +76,26 @@ export default class PlantDetail extends React.Component {
     }
   }
 
+  getHarvestDate(plantName) {
+    fetch(`api/growStuff/${plantName.toLowerCase()}`)
+      .then(res => res.json())
+      .then(data => {
+        const days = data.daysUntilHarvest;
+        return days;
+      })
+      .catch(err => console.error(err));
+  }
+
   handleAdd() {
+    const plantName = this.state.plant.name;
+    const days = this.getHarvestDate(plantName);
+    console.log(days);
     const plantAdded = {
       plantId: parseInt(this.props.plantId),
       dateAdded: this.state.date,
       expectedHarvest: ' ',
       gardenId: this.state.gardenId,
-      name: this.state.plant.name
+      name: plantName
     };
     fetch(`/api/plantsInGarden/${this.state.gardenId}/`, {
       method: 'POST',

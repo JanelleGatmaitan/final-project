@@ -21,12 +21,13 @@ app.use(staticMiddleware);
 
 app.use(jsonMiddleware);
 
-app.post('/api/growStuff', async (req, res, next) => {
-  const url = `https://www.growstuff.org/crops/${req.body.plant}.json`;
+app.get('/api/growStuff/:plantName', async (req, res, next) => {
+  const url = `https://www.growstuff.org/crops/${req.params.plantName}.json`;
   const response = await fetch(url)
     .then(res => res.json())
     .catch(err => next(err));
-  res.status(200).json(response.median_days_to_first_harvest);
+  // const growStuff = await response.json();
+  res.status(200).json({ daysUntilHarvest: response.median_days_to_first_harvest });
 });
 
 app.post('/api/auth/sign-up', (req, res, next) => {
