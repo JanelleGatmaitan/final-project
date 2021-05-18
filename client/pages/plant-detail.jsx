@@ -81,15 +81,17 @@ export default class PlantDetail extends React.Component {
       .then(res => res.json())
       .then(data => {
         const days = data.daysUntilHarvest;
-        return days;
+        this.setState({
+          daysUntilHarvest: days
+        });
       })
       .catch(err => console.error(err));
   }
 
   handleAdd() {
     const plantName = this.state.plant.name;
-    const days = this.getHarvestDate(plantName);
-    console.log(days);
+    this.getHarvestDate(plantName);
+    console.log(this.state);
     const plantAdded = {
       plantId: parseInt(this.props.plantId),
       dateAdded: this.state.date,
