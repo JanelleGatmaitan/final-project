@@ -5,7 +5,11 @@ import {
   FormLabel,
   FormErrorMessage,
   FormHelperText,
-  Heading
+  Select,
+  Textarea,
+  Input,
+  Heading,
+  Button
 } from '@chakra-ui/react';
 
 export default class ChakraGarden extends React.Component {
@@ -16,9 +20,16 @@ export default class ChakraGarden extends React.Component {
     };
   }
 
+  handleChange(e) {
+    const { name, value } = e.target;
+    this.setState({
+
+    });
+  }
+
   render() {
     return (
-     <FormControl>
+     <FormControl padding={5}>
        <VStack
        bgColor="gray"
        mx="auto"
@@ -26,8 +37,54 @@ export default class ChakraGarden extends React.Component {
        borderRadius='lg'
        maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
        width='100%'>
-         <Heading>Create New Garden</Heading>
-         <p>sddfdsf</p>
+         <Heading my={3}>Create New Garden</Heading>
+         <FormControl id="soil">
+           <FormLabel>Soil</FormLabel>
+           <Select
+           placeholder="Select soil quality"
+           onChange={this.props.handleChange}
+           >
+             <option>Loamy</option>
+             <option>Clay</option>
+             <option>Sandy</option>
+             <option>Silty</option>
+             <option>Chalky</option>
+             <option>Peaky</option>
+           </Select>
+         </FormControl>
+         <FormControl id="sun">
+           <FormLabel>Sun</FormLabel>
+           <Select
+           placeholder="Select sun exposure"
+           onChange={this.props.handleChange}
+           >
+             <option>Full sun</option>
+             <option>Part sun</option>
+             <option>Part shade</option>
+             <option>Full shade</option>
+           </Select>
+         </FormControl>
+         <FormControl id="size">
+           <FormLabel>Garden bed size</FormLabel>
+           <Input
+           onChange={this.props.handleChange}
+           placeholder="eg. 3 x 6 "></Input>
+         </FormControl>
+         <FormControl id="notes">
+           <FormLabel>Notes</FormLabel>
+           <Textarea
+           resize="none"
+           onChange={this.props.handleChange}
+           ></Textarea>
+         </FormControl>
+         <Button
+         type="submit"
+         bgColor="green"
+         color="white"
+         onClick={this.props.onSave}
+         >
+           Save
+        </Button>
        </VStack>
      </FormControl>
     );

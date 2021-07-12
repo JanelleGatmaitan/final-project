@@ -1,5 +1,6 @@
 import React from 'react';
 import GardenForm from '../components/garden-form';
+import ChakraGarden from '../components/chakra-garden-form';
 import DeleteConfirmation from '../components/delete-confirmation';
 import Prompt from '../components/prompt-sign-in';
 import AppContext from '../lib/app-context';
@@ -109,10 +110,11 @@ export default class PlantDetail extends React.Component {
   }
 
   handleChange(event) {
+    console.log('handleChange');
     const gardenCopy = Object.assign({}, this.state.gardenInfo);
     const target = event.target;
     const value = target.value;
-    const name = target.name;
+    const name = target.id;
     gardenCopy[name] = value;
     this.setState({
       gardenInfo: gardenCopy
@@ -214,7 +216,7 @@ export default class PlantDetail extends React.Component {
       <>
       <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval}/>
       <Prompt className={this.getPromptClass()}/>
-        <GardenForm position="garden-form-absolute" title="Create New Garden" className={this.getGardenFormClass()} onSave={this.handleSave} values={this.state} handleChange={this.handleChange}/>
+        <ChakraGarden title="Create New Garden" display="none" onSave={this.handleSave} values={this.state} handleChange={this.handleChange}/>
         <div className="plant-card" plant-id={this.props.plantId}>
           <img className="plant-img"
             src={`/images/${imgName}.jpg`}
