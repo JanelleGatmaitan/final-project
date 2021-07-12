@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from '@chakra-ui/react';
 
 export default class Prompt extends React.Component {
   render() {

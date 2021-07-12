@@ -45,9 +45,6 @@ export default class AuthForm extends React.Component {
     }
     return (
       <div className="auth-container">
-        <h2 className="title">
-          Start Planting
-        </h2>
         <form className="auth-form">
           <label htmlFor="username" className="auth-form-label">
             Username
@@ -81,4 +78,5 @@ export default class AuthForm extends React.Component {
     );
   }
 }
+
 AuthForm.contextType = AppContext;

@@ -146,9 +146,12 @@ ul.search-list {
 .auth-btn {
   width: 79px;
   height: 33px;
-  float: right;
   margin-right: 15px;
   outline: none;
+}
+
+.form-btn {
+  float: right;
 }
 
 .card-body {
@@ -245,13 +248,13 @@ p.modal-text {
   width: 250px;
   height: 55px;
   margin: 50px auto 25px;
-  font-family: Libre Baskerville;
+  font-family: 'Libre Baskerville';
   font-size: 18px;
 }
 
 p.modal-text,
 .modal-button {
-  font-family: Libre Baskerville;
+  font-family: 'Libre Baskerville';
   font-size: 18px;
 }
 

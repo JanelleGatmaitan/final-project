@@ -261,4 +261,5 @@ export default class PlantDetail extends React.Component {
     );
   }
 }
+
 PlantDetail.contextType = AppContext;
