@@ -1,12 +1,15 @@
 import React from 'react';
 import Search from './pages/search';
-import Drawer from './components/drawer';
 import parseRoute from './lib/parse-route';
 import PlantDetail from './pages/plant-detail';
 import ListView from './pages/list-view';
 import Auth from './pages/auth';
 import AppContext from './lib/app-context';
 import decodeToken from './lib/decode-token';
+import { ChakraProvider } from '@chakra-ui/react';
+import theme from '../client/lib/theme';
+import Nav from '../client/components/nav';
+import ChakraGarden from './components/chakra-garden-form';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -32,6 +35,7 @@ export default class App extends React.Component {
   handleSignOut() {
     window.localStorage.clear();
     this.setState({ user: null });
+    window.location.hash = 'sign-in';
   }
 
   componentDidMount() {
@@ -57,7 +61,8 @@ export default class App extends React.Component {
       return <PlantDetail plantId={plantId} />;
     }
     if (route.path === 'garden') {
-      return <ListView />;
+      // return <ListView />;
+      return <ChakraGarden />;
     }
     if (route.path === 'sign-in' || route.path === 'sign-up') {
       return <Auth />;
@@ -69,12 +74,12 @@ export default class App extends React.Component {
     const { handleSignIn, handleSignOut } = this;
     const contextValue = { user, route, handleSignIn, handleSignOut };
     return (
-    <AppContext.Provider value={contextValue}>
-      <>
-        <Drawer />
-        {this.renderPage()}
-      </>
-    </AppContext.Provider>
+      <ChakraProvider theme={theme}>
+        <AppContext.Provider value={contextValue}>
+            <Nav />
+            {this.renderPage()}
+        </AppContext.Provider>
+      </ChakraProvider>
     );
   }
 }

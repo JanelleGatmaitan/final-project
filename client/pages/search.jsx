@@ -1,4 +1,9 @@
 import React from 'react';
+import {
+  VStack,
+  Heading,
+  Input
+} from '@chakra-ui/react';
 
 export default class Search extends React.Component {
   constructor(props) {
@@ -36,35 +41,60 @@ export default class Search extends React.Component {
   render() {
     const allPlants = this.state.plantData;
     const { searchTerm } = this.state;
-    let filteredPlants = allPlants.filter(plant => {
-      return plant.name.includes(searchTerm);
-    });
-    if (!this.state.hasUserTyped || searchTerm === '') {
+    let filteredPlants;
+    if (searchTerm.length !== 0) {
+      filteredPlants = allPlants.filter(plant => {
+        return plant.name.includes(searchTerm[0].toUpperCase());
+      });
+    }
+    if (searchTerm.length === 0) {
       filteredPlants = [];
     }
     return (
-      <>
-        <header className="title">
-          <h2>
-            Start Planting
-          </h2>
-          <form onSubmit={this.handleSubmit}>
-            <input type="text" className="search-bar"
-              value={this.state.value} onChange={this.handleChange} />
-          </form>
-        </header>
-        <div className="list-container">
-          <ul className="search-list">
-            {
-              filteredPlants.map(plant => (
-                <li key={plant.id}>
-                  <Suggestion plant={plant} />
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-      </>
+      <VStack>
+            <Heading
+            mt={10}
+            mb={5}
+            >
+              Start Planting
+            </Heading>
+            {/* <Select
+            onChange={() => window.location.redirect(this.value)}
+            placeholder="Select a plant"
+            w="200px"
+            >
+              {
+                this.state.plantData.map(plant => (
+                  <option
+                  key={plant.id}
+                  value={`#plants?plantId=${plant.id}`}
+                  >
+                    {plant.name}
+                  </option>
+                ))
+              }
+            </Select> */}
+            <form onSubmit={this.handleSubmit}>
+              <input
+              placeholder="search for a plant"
+              type="text"
+              className="search-bar"
+              value={this.state.value}
+              onChange={this.handleChange}
+              />
+            </form>
+          <div className="list-container">
+            <ul className="search-list">
+              {
+                filteredPlants.map(plant => (
+                  <li key={plant.id}>
+                    <Suggestion plant={plant} />
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+      </VStack>
     );
   }
 }
@@ -77,3 +107,12 @@ function Suggestion(props) {
     </a>
   );
 }
+
+// function Options(props) {
+//   const { id, name } = props.plant;
+//   return (
+//     <a href={`#plants?plantId=${id}`} className="search-suggestions">
+//       {name}
+//     </a>
+//   );
+// }
