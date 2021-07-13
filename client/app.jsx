@@ -61,8 +61,7 @@ export default class App extends React.Component {
       return <PlantDetail plantId={plantId} />;
     }
     if (route.path === 'garden') {
-      // return <ListView />;
-      return <ChakraGarden />;
+      return <ListView />;
     }
     if (route.path === 'sign-in' || route.path === 'sign-up') {
       return <Auth />;

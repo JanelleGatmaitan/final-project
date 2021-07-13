@@ -3,8 +3,6 @@ import {
   VStack,
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Select,
   Textarea,
   Input,
@@ -13,23 +11,13 @@ import {
 } from '@chakra-ui/react';
 
 export default class ChakraGarden extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: null
-    };
-  }
-
-  handleChange(e) {
-    const { name, value } = e.target;
-    this.setState({
-
-    });
-  }
-
   render() {
     return (
-     <FormControl padding={5}>
+     <FormControl
+     padding={5}
+     display={this.props.hide}
+     position="aboslute"
+     >
        <VStack
        bgColor="gray"
        mx="auto"
@@ -37,7 +25,7 @@ export default class ChakraGarden extends React.Component {
        borderRadius='lg'
        maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
        width='100%'>
-         <Heading my={3}>Create New Garden</Heading>
+         <Heading my={3}>{this.props.title}</Heading>
          <FormControl id="soil">
            <FormLabel>Soil</FormLabel>
            <Select

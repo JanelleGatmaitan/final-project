@@ -1,10 +1,12 @@
 import React from 'react';
-import GardenForm from '../components/garden-form';
 import ChakraGarden from '../components/chakra-garden-form';
 import DeleteConfirmation from '../components/delete-confirmation';
 import Prompt from '../components/prompt-sign-in';
 import AppContext from '../lib/app-context';
 import getLocalStorage from '../lib/get-localStorage';
+import {
+  Modal
+} from '@chakra-ui/react';
 
 export default class PlantDetail extends React.Component {
   constructor(props) {
@@ -32,7 +34,7 @@ export default class PlantDetail extends React.Component {
     this.handleAdd = this.handleAdd.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
     this.cancelRemoval = this.cancelRemoval.bind(this);
-    this.getGardenFormClass = this.getGardenFormClass.bind(this);
+    this.getGardenFormDisplay = this.getGardenFormDisplay.bind(this);
     this.getDeleteModalClass = this.getDeleteModalClass.bind(this);
   }
 
@@ -110,7 +112,6 @@ export default class PlantDetail extends React.Component {
   }
 
   handleChange(event) {
-    console.log('handleChange');
     const gardenCopy = Object.assign({}, this.state.gardenInfo);
     const target = event.target;
     const value = target.value;
@@ -187,18 +188,18 @@ export default class PlantDetail extends React.Component {
     return 'Add to garden';
   }
 
-  getGardenFormClass() {
-    if (!this.state.isGardenFormOpen) {
-      return 'hidden';
+  getGardenFormDisplay() {
+    if (this.state.isGardenFormOpen && !this.context.user) {
+      return '';
     }
-    return 'shade';
+    return 'none';
   }
 
   getDeleteModalClass() {
     if (this.state.isInGarden && this.state.isDeleteModalOpen) {
       return 'shade';
     }
-    return 'hidden';
+    return 'none';
   }
 
   getPromptClass() {
@@ -214,10 +215,16 @@ export default class PlantDetail extends React.Component {
     const imgName = plant.name.replace(' ', '_').toLowerCase();
     return (
       <>
-      <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval}/>
-      <Prompt className={this.getPromptClass()}/>
-        <ChakraGarden title="Create New Garden" display="none" onSave={this.handleSave} values={this.state} handleChange={this.handleChange}/>
-        <div className="plant-card" plant-id={this.props.plantId}>
+        <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval} />
+        <Prompt className={this.getPromptClass()} />
+        <ChakraGarden
+        title="Create New Garden"
+        onSave={this.handleSave}
+        values={this.state}
+        handleChange={this.handleChange}
+        hide={this.getGardenFormDisplay}
+        />
+        <div className="plant-card" plant-id={this.props.plantId} display="none">
           <img className="plant-img"
             src={`/images/${imgName}.jpg`}
             alt="vegetable" />
