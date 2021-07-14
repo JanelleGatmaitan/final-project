@@ -10,6 +10,10 @@ const theme = extendTheme({
     gray: '#f0f0f0',
     green: '#61b15a',
     red: '#c43d48'
+  },
+
+  fixed: {
+    position: 'fixed'
   }
 });
 

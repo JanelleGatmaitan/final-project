@@ -17,19 +17,7 @@ export default class ChakraGarden extends React.Component {
       <FormControl
         padding={5}
         display={this.props.hide}
-        height="440px"
-        width="440px"
-        // position="aboslute"
-        // top="50%"
-        // left="50%"
-        // transform="translate(-50%, -50%)"
-        position="fixed"
-        top="0"
-        left="0"
-    // background: rgba(0, 0, 0, 0.6);
-    // z - index=5;
-    // width: 100 %;
-    // height: 100 %;
+        position={this.props.positioning}
       >
         <VStack
           bgColor="gray"
@@ -39,7 +27,9 @@ export default class ChakraGarden extends React.Component {
           maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
           width='100%'>
           <Heading my={3}>{this.props.title}</Heading>
-          <FormControl id="soil">
+          <FormControl
+          id="soil"
+          isRequired>
             <FormLabel>Soil</FormLabel>
             <Select
               placeholder="Select soil quality"

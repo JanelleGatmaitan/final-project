@@ -4,15 +4,6 @@ import DeleteConfirmation from '../components/delete-confirmation';
 import Prompt from '../components/prompt-sign-in';
 import AppContext from '../lib/app-context';
 import getLocalStorage from '../lib/get-localStorage';
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton
-} from '@chakra-ui/react';
 
 export default class PlantDetail extends React.Component {
   constructor(props) {
@@ -41,6 +32,7 @@ export default class PlantDetail extends React.Component {
     this.handleRemove = this.handleRemove.bind(this);
     this.cancelRemoval = this.cancelRemoval.bind(this);
     this.getGardenFormDisplay = this.getGardenFormDisplay.bind(this);
+    this.getGardenFormPosition = this.getGardenFormPosition.bind(this);
     this.cancelGarden = this.cancelGarden.bind(this);
     this.getDeleteModalClass = this.getDeleteModalClass.bind(this);
   }
@@ -158,7 +150,13 @@ export default class PlantDetail extends React.Component {
           gardenId: data.gardenId
         });
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.log('ann error occurred while creating garden');
+        console.error(err);
+        this.setState({
+          gardenCreated: false
+        });
+      });
   }
 
   handleClick() {
@@ -202,6 +200,13 @@ export default class PlantDetail extends React.Component {
     return 'none';
   }
 
+  getGardenFormPosition() {
+    if (this.state.isGardenFormOpen) {
+      return 'fixed';
+    }
+    return '';
+  }
+
   cancelGarden() {
     this.setState({
       isGardenFormOpen: false
@@ -236,14 +241,8 @@ export default class PlantDetail extends React.Component {
           values={this.state}
           handleChange={this.handleChange}
           hide={this.getGardenFormDisplay}
+          positioning={this.getGardenFormPosition}
           cancel={this.cancelGarden}
-          // position="fixed"
-          // top="0"
-          // left="0"
-          // position="aboslute"
-          // top="50%"
-          // left="50%"
-          // transform="translate(-50%, -50%)"
         />
         <div className="plant-card" plant-id={this.props.plantId} display="none">
           <img className="plant-img"
