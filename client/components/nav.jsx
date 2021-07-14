@@ -65,14 +65,18 @@ export default class Nav extends React.Component {
             </MenuList>
           </Menu>
           <Spacer />
-          <Button bgColor="gray"
+          <Button
+            bgColor="gray"
             onClick={() => {
               this.context.handleSignOut();
             }
             }>
             {this.getButtonText()}
           </Button>
-          <Button bgColor="gray" onClick={() => { window.location.hash = 'sign-up'; }} display={this.hideNewAcc()}>
+          <Button
+            bgColor="gray"
+            onClick={() => { window.location.hash = 'sign-up'; }}
+            display={this.hideNewAcc()}>
             Create new account
           </Button>
         </HStack>

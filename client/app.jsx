@@ -9,7 +9,6 @@ import decodeToken from './lib/decode-token';
 import { ChakraProvider } from '@chakra-ui/react';
 import theme from '../client/lib/theme';
 import Nav from '../client/components/nav';
-import ChakraGarden from './components/chakra-garden-form';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -61,8 +60,7 @@ export default class App extends React.Component {
       return <PlantDetail plantId={plantId} />;
     }
     if (route.path === 'garden') {
-      // return <ListView />;
-      return <ChakraGarden />;
+      return <ListView />;
     }
     if (route.path === 'sign-in' || route.path === 'sign-up') {
       return <Auth />;

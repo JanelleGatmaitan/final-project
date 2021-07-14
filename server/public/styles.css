@@ -206,23 +206,23 @@ ul.search-list {
   display: none;
 }
 
-label {
+/* label {
   margin-left: 20px;
-}
+} */
 
-#soil {
+/* #soil {
   transform: translateX(18px);
-}
+} */
 
-#sun {
+/* #sun {
   transform: translateX(2px);
 }
 
 #size {
   transform: translateX(66px);
-}
+} */
 
-.shade {
+/* .shade {
   position: fixed;
   top: 0;
   left: 0;
@@ -230,7 +230,7 @@ label {
   z-index: 5;
   width: 100%;
   height: 100%;
-}
+} */
 
 .modal {
   text-align: center;

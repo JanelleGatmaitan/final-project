@@ -1,5 +1,5 @@
 import React from 'react';
-import GardenForm from '../components/garden-form';
+import ChakraGarden from '../components/chakra-garden-form';
 import DeleteConfirmation from '../components/delete-confirmation';
 import Prompt from '../components/prompt-sign-in';
 import AppContext from '../lib/app-context';
@@ -31,7 +31,9 @@ export default class PlantDetail extends React.Component {
     this.handleAdd = this.handleAdd.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
     this.cancelRemoval = this.cancelRemoval.bind(this);
-    this.getGardenFormClass = this.getGardenFormClass.bind(this);
+    this.getGardenFormDisplay = this.getGardenFormDisplay.bind(this);
+    this.getGardenFormPosition = this.getGardenFormPosition.bind(this);
+    this.cancelGarden = this.cancelGarden.bind(this);
     this.getDeleteModalClass = this.getDeleteModalClass.bind(this);
   }
 
@@ -112,7 +114,7 @@ export default class PlantDetail extends React.Component {
     const gardenCopy = Object.assign({}, this.state.gardenInfo);
     const target = event.target;
     const value = target.value;
-    const name = target.name;
+    const name = target.id;
     gardenCopy[name] = value;
     this.setState({
       gardenInfo: gardenCopy
@@ -148,7 +150,13 @@ export default class PlantDetail extends React.Component {
           gardenId: data.gardenId
         });
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.log('ann error occurred while creating garden');
+        console.error(err);
+        this.setState({
+          gardenCreated: false
+        });
+      });
   }
 
   handleClick() {
@@ -185,18 +193,31 @@ export default class PlantDetail extends React.Component {
     return 'Add to garden';
   }
 
-  getGardenFormClass() {
-    if (!this.state.isGardenFormOpen) {
-      return 'hidden';
+  getGardenFormDisplay() {
+    if (this.state.isGardenFormOpen) {
+      return '';
     }
-    return 'shade';
+    return 'none';
+  }
+
+  getGardenFormPosition() {
+    if (this.state.isGardenFormOpen) {
+      return 'fixed';
+    }
+    return '';
+  }
+
+  cancelGarden() {
+    this.setState({
+      isGardenFormOpen: false
+    });
   }
 
   getDeleteModalClass() {
     if (this.state.isInGarden && this.state.isDeleteModalOpen) {
       return 'shade';
     }
-    return 'hidden';
+    return 'none';
   }
 
   getPromptClass() {
@@ -212,10 +233,18 @@ export default class PlantDetail extends React.Component {
     const imgName = plant.name.replace(' ', '_').toLowerCase();
     return (
       <>
-      <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval}/>
-      <Prompt className={this.getPromptClass()}/>
-        <GardenForm position="garden-form-absolute" title="Create New Garden" className={this.getGardenFormClass()} onSave={this.handleSave} values={this.state} handleChange={this.handleChange}/>
-        <div className="plant-card" plant-id={this.props.plantId}>
+        {/* <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval} />
+        <Prompt className={this.getPromptClass()} /> */}
+        <ChakraGarden
+          title="Create New Garden"
+          onSave={this.handleSave}
+          values={this.state}
+          handleChange={this.handleChange}
+          hide={this.getGardenFormDisplay}
+          positioning={this.getGardenFormPosition}
+          cancel={this.cancelGarden}
+        />
+        <div className="plant-card" plant-id={this.props.plantId} display="none">
           <img className="plant-img"
             src={`/images/${imgName}.jpg`}
             alt="vegetable" />
