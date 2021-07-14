@@ -5,7 +5,13 @@ import Prompt from '../components/prompt-sign-in';
 import AppContext from '../lib/app-context';
 import getLocalStorage from '../lib/get-localStorage';
 import {
-  Modal
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton
 } from '@chakra-ui/react';
 
 export default class PlantDetail extends React.Component {
@@ -35,6 +41,7 @@ export default class PlantDetail extends React.Component {
     this.handleRemove = this.handleRemove.bind(this);
     this.cancelRemoval = this.cancelRemoval.bind(this);
     this.getGardenFormDisplay = this.getGardenFormDisplay.bind(this);
+    this.cancelGarden = this.cancelGarden.bind(this);
     this.getDeleteModalClass = this.getDeleteModalClass.bind(this);
   }
 
@@ -189,10 +196,16 @@ export default class PlantDetail extends React.Component {
   }
 
   getGardenFormDisplay() {
-    if (this.state.isGardenFormOpen && !this.context.user) {
+    if (this.state.isGardenFormOpen) {
       return '';
     }
     return 'none';
+  }
+
+  cancelGarden() {
+    this.setState({
+      isGardenFormOpen: false
+    });
   }
 
   getDeleteModalClass() {
@@ -215,14 +228,22 @@ export default class PlantDetail extends React.Component {
     const imgName = plant.name.replace(' ', '_').toLowerCase();
     return (
       <>
-        <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval} />
-        <Prompt className={this.getPromptClass()} />
+        {/* <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval} />
+        <Prompt className={this.getPromptClass()} /> */}
         <ChakraGarden
-        title="Create New Garden"
-        onSave={this.handleSave}
-        values={this.state}
-        handleChange={this.handleChange}
-        hide={this.getGardenFormDisplay}
+          title="Create New Garden"
+          onSave={this.handleSave}
+          values={this.state}
+          handleChange={this.handleChange}
+          hide={this.getGardenFormDisplay}
+          cancel={this.cancelGarden}
+          // position="fixed"
+          // top="0"
+          // left="0"
+          // position="aboslute"
+          // top="50%"
+          // left="50%"
+          // transform="translate(-50%, -50%)"
         />
         <div className="plant-card" plant-id={this.props.plantId} display="none">
           <img className="plant-img"
