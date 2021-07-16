@@ -29,7 +29,7 @@ export default class ChakraGarden extends React.Component {
           <Heading my={3}>{this.props.title}</Heading>
           <FormControl
           id="soil"
-          isRequired>
+          >
             <FormLabel>Soil</FormLabel>
             <Select
               placeholder="Select soil quality"

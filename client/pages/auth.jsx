@@ -8,11 +8,13 @@ export default class AuthPage extends React.Component {
     const { user, route, handleSignIn } = this.context;
     if (user) return <Redirect to="" />;
     return (
-      <AuthForm
-      key={route.path}
-      action={route.path}
-      onSignIn={handleSignIn}
-      />
+      <>
+        <AuthForm
+        key={route.path}
+        action={route.path}
+        onSignIn={handleSignIn}
+        />
+      < />
     );
   }
 }
