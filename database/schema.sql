@@ -8,10 +8,10 @@ create schema "public";
 
 create table "public"."gardenStats" (
   "gardenId"        serial,
-  "username"         text    not null,
-  "soil"             text    not null,
-  "sun"              text    not null,
-  "size"             text    not null,
+  "username"         text,
+  "soil"             text,
+  "sun"              text,
+  "size"             text,
   "notes"            text,
   primary key ("gardenId")
 );

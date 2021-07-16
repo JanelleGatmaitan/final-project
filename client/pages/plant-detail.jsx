@@ -4,6 +4,7 @@ import DeleteConfirmation from '../components/delete-confirmation';
 import Prompt from '../components/prompt-sign-in';
 import AppContext from '../lib/app-context';
 import getLocalStorage from '../lib/get-localStorage';
+import AlertComponent from '../components/alert';
 
 export default class PlantDetail extends React.Component {
   constructor(props) {
@@ -111,6 +112,7 @@ export default class PlantDetail extends React.Component {
   }
 
   handleChange(event) {
+    console.log('handleChange called');
     const gardenCopy = Object.assign({}, this.state.gardenInfo);
     const target = event.target;
     const value = target.value;
@@ -143,6 +145,7 @@ export default class PlantDetail extends React.Component {
       .then(res => res.json())
       .then(data => {
         this.context.gardenId = data.gardenId;
+        console.log('res.json: ' + data);
         this.setState({
           isInGarden: data.plantAdded,
           isGardenFormOpen: false,
@@ -151,7 +154,6 @@ export default class PlantDetail extends React.Component {
         });
       })
       .catch(err => {
-        console.log('ann error occurred while creating garden');
         console.error(err);
         this.setState({
           gardenCreated: false
@@ -244,6 +246,7 @@ export default class PlantDetail extends React.Component {
           positioning={this.getGardenFormPosition}
           cancel={this.cancelGarden}
         />
+        <AlertComponent />
         <div className="plant-card" plant-id={this.props.plantId} display="none">
           <img className="plant-img"
             src={`/images/${imgName}.jpg`}
