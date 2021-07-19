@@ -10,19 +10,17 @@ import {
 function AlertComponent(props) {
   return (
     <Alert
-      status="success"
-      // mx="auto"
+      status={props.alertStyles.status}
       maxW={{ base: '70vw', sm: '60vw', lg: '50vw', xl: '40vw' }}
       variant="left-accent"
       position="fixed"
       top="50%"
       left="50%"
       transform="translate(-50%, -50%)"
-      // display="none"
     >
       <AlertIcon />
-      <AlertTitle mr={2}>Your browser is outdated!</AlertTitle>
-      <AlertDescription>Your Chakra experience may be degraded.</AlertDescription>
+      <AlertTitle mr={2}>{props.alertStyles.title}</AlertTitle>
+      <AlertDescription>{props.alertStyles.description}</AlertDescription>
       <CloseButton
       position="absolute"
       right="8px"

@@ -186,6 +186,7 @@ app.post('/api/gardenStats', (req, res, next) => {
         db.query(tasksSql, tasksParams);
       }
       res.status(200).json({
+        message: 'garden has been sucessfully created',
         plantAdded: true,
         plant: plantAdded,
         gardenId: gardenId
