@@ -6,7 +6,10 @@ import ListView from './pages/list-view';
 import Auth from './pages/auth';
 import AppContext from './lib/app-context';
 import decodeToken from './lib/decode-token';
-import { ChakraProvider } from '@chakra-ui/react';
+import {
+  ChakraProvider,
+  Heading
+} from '@chakra-ui/react';
 import theme from '../client/lib/theme';
 import Nav from '../client/components/nav';
 
@@ -63,7 +66,19 @@ export default class App extends React.Component {
       return <ListView />;
     }
     if (route.path === 'sign-in' || route.path === 'sign-up') {
-      return <Auth />;
+      const heading = route.path;
+      const formattedHeading = heading.charAt(0).toUpperCase() + heading.slice(1);
+      return (
+        <>
+        <Heading
+          textAlign='center'
+          m='50px'
+        >
+          {formattedHeading}
+        </Heading>
+        <Auth />
+        < />
+      );
     }
   }
 

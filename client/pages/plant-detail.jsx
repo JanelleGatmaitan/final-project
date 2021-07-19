@@ -36,6 +36,7 @@ export default class PlantDetail extends React.Component {
     this.getGardenFormPosition = this.getGardenFormPosition.bind(this);
     this.cancelGarden = this.cancelGarden.bind(this);
     this.getDeleteModalClass = this.getDeleteModalClass.bind(this);
+    this.getAlert = this.getAlert.bind(this);
   }
 
   componentDidMount() {
@@ -142,10 +143,12 @@ export default class PlantDetail extends React.Component {
         'Content-Type': 'application/json'
       }
     })
-      .then(res => res.json())
+      .then(res => {
+        return res.json();
+      })
       .then(data => {
         this.context.gardenId = data.gardenId;
-        console.log('res.json: ' + data);
+        console.log('data.gardenId: ' + data.gardenId);
         this.setState({
           isInGarden: data.plantAdded,
           isGardenFormOpen: false,
@@ -229,10 +232,21 @@ export default class PlantDetail extends React.Component {
     return 'hidden';
   }
 
+  getAlert() {
+    if (this.state.gardenCreated) {
+      return {
+        status: 'success',
+        title: 'Your garden has been created!',
+        description: 'You can now view saved plants in the "My Garden" tab'
+      };
+    }
+  }
+
   render() {
     if (!this.state.plant) return null;
     const plant = this.state.plant;
     const imgName = plant.name.replace(' ', '_').toLowerCase();
+    const alertStyling = this.getAlert();
     return (
       <>
         {/* <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval} />
@@ -246,7 +260,7 @@ export default class PlantDetail extends React.Component {
           positioning={this.getGardenFormPosition}
           cancel={this.cancelGarden}
         />
-        <AlertComponent />
+        <AlertComponent alertStyles={alertStyling}/>
         <div className="plant-card" plant-id={this.props.plantId} display="none">
           <img className="plant-img"
             src={`/images/${imgName}.jpg`}
