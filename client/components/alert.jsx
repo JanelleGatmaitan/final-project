@@ -10,6 +10,7 @@ import {
 function AlertComponent(props) {
   return (
     <Alert
+      display={props.hide}
       status={props.alertStyles.status}
       maxW={{ base: '70vw', sm: '60vw', lg: '50vw', xl: '40vw' }}
       variant="left-accent"
@@ -25,7 +26,7 @@ function AlertComponent(props) {
       position="absolute"
       right="8px"
       top="8px"
-      onClick={() => { console.log('closedbutton'); }}
+      onClick={props.close}
        />
     </Alert>
   );

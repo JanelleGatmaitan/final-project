@@ -10,6 +10,7 @@ export default class PlantDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      showAlert: false,
       date: null,
       plant: null,
       user: null,
@@ -37,6 +38,8 @@ export default class PlantDetail extends React.Component {
     this.cancelGarden = this.cancelGarden.bind(this);
     this.getDeleteModalClass = this.getDeleteModalClass.bind(this);
     this.getAlert = this.getAlert.bind(this);
+    this.getAlertDisplay = this.getAlertDisplay.bind(this);
+    this.closeAlert = this.closeAlert.bind(this);
   }
 
   componentDidMount() {
@@ -113,7 +116,6 @@ export default class PlantDetail extends React.Component {
   }
 
   handleChange(event) {
-    console.log('handleChange called');
     const gardenCopy = Object.assign({}, this.state.gardenInfo);
     const target = event.target;
     const value = target.value;
@@ -148,12 +150,12 @@ export default class PlantDetail extends React.Component {
       })
       .then(data => {
         this.context.gardenId = data.gardenId;
-        console.log('data.gardenId: ' + data.gardenId);
         this.setState({
           isInGarden: data.plantAdded,
           isGardenFormOpen: false,
           gardenCreated: true,
-          gardenId: data.gardenId
+          gardenId: data.gardenId,
+          showAlert: true
         });
       })
       .catch(err => {
@@ -189,6 +191,13 @@ export default class PlantDetail extends React.Component {
     this.setState({
       isDeleteModalOpen: false
     });
+  }
+
+  getAlertDisplay() {
+    if (this.state.showAlert) {
+      return '';
+    }
+    return 'none';
   }
 
   getButtonText() {
@@ -232,12 +241,24 @@ export default class PlantDetail extends React.Component {
     return 'hidden';
   }
 
+  closeAlert() {
+    this.setState({
+      showAlert: false
+    });
+  }
+
   getAlert() {
     if (this.state.gardenCreated) {
       return {
         status: 'success',
         title: 'Your garden has been created!',
         description: 'You can now view saved plants in the "My Garden" tab'
+      };
+    } else {
+      return {
+        status: 'error',
+        title: 'There was a problem creating the garden',
+        description: 'Please try again'
       };
     }
   }
@@ -249,8 +270,8 @@ export default class PlantDetail extends React.Component {
     const alertStyling = this.getAlert();
     return (
       <>
-        {/* <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval} />
-        <Prompt className={this.getPromptClass()} /> */}
+        <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval} />
+        <Prompt className={this.getPromptClass()} />
         <ChakraGarden
           title="Create New Garden"
           onSave={this.handleSave}
@@ -260,7 +281,11 @@ export default class PlantDetail extends React.Component {
           positioning={this.getGardenFormPosition}
           cancel={this.cancelGarden}
         />
-        <AlertComponent alertStyles={alertStyling}/>
+        <AlertComponent
+        alertStyles={alertStyling}
+        hide={this.getAlertDisplay}
+        close={this.closeAlert}
+        />
         <div className="plant-card" plant-id={this.props.plantId} display="none">
           <img className="plant-img"
             src={`/images/${imgName}.jpg`}
