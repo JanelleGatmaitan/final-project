@@ -21,6 +21,7 @@ function DetailPlantCard(props) {
           mt="40px"
           objectFit="cover"
           alt="vegetable"
+          maxH={{ base: '80vh', sm: '70vh', lg: '50vh', xl: '40vh' }}
           maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
           src={`/images/${props.imgUrl}.jpg`}
           />
@@ -36,9 +37,9 @@ function DetailPlantCard(props) {
         bgColor="green"
         padding="25px"
         _hover={{ bgColor: 'darkGreen' }}
-        onClick={() => console.log('lmaoo')}
+        onClick={props.addRemove}
         >
-          Add
+          {props.buttonText}
         </Button>
       </HStack>
       <VStack
