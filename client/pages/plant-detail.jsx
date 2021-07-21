@@ -265,13 +265,12 @@ export default class PlantDetail extends React.Component {
         description: 'Sign in or create an account to continue'
       };
     }
-    // } else {
-    //   return {
-    //     status: 'error',
-    //     title: 'There was a problem creating the garden',
-    //     description: 'Please try again'
-    // //   };
-    // }
+
+    return {
+      status: 'error',
+      title: 'There was a problem creating the garden',
+      description: 'Please try again'
+    };
   }
 
   render() {
