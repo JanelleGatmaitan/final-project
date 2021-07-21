@@ -1,5 +1,5 @@
 import React from 'react';
-import ChakraGarden from '../components/chakra-garden-form';
+import GardenForm from '../components/chakra-garden-form';
 import DeleteConfirmation from '../components/delete-confirmation';
 import Prompt from '../components/prompt-sign-in';
 import AppContext from '../lib/app-context';
@@ -171,7 +171,7 @@ export default class PlantDetail extends React.Component {
   handleClick() {
     if (!this.state.user) {
       this.setState({
-        isPromptOpen: true
+        showAlert: true
       });
     }
     if (!this.state.gardenCreated && this.state.user) {
@@ -256,13 +256,21 @@ export default class PlantDetail extends React.Component {
         title: 'Your garden has been created!',
         description: 'You can now view saved plants in the "My Garden" tab'
       };
-    } else {
+    }
+
+    if (!this.context.user) {
       return {
-        status: 'error',
-        title: 'There was a problem creating the garden',
-        description: 'Please try again'
+        status: 'warning',
+        title: 'Action required',
+        description: 'Sign in or create an account to continue'
       };
     }
+
+    return {
+      status: 'error',
+      title: 'There was a problem creating the garden',
+      description: 'Please try again'
+    };
   }
 
   render() {
@@ -276,10 +284,15 @@ export default class PlantDetail extends React.Component {
           imgUrl={imgSrc}
           title={plant.name}
           plantData={plant}
+          addRemove={this.handleClick}
+          buttonText={this.getButtonText()}
         />
-        {/* <DeleteConfirmation clickYes={this.handleRemove} clickNo={this.cancelRemoval} /> */}
+        {/* <DeleteConfirmation
+        className={this.getDeleteModalClass()}
+        clickYes={this.handleRemove}
+        clickNo={this.cancelRemoval} /> */}
         <Prompt className={this.getPromptClass()} />
-        <ChakraGarden
+        <GardenForm
           title="Create New Garden"
           onSave={this.handleSave}
           values={this.state}
@@ -293,48 +306,6 @@ export default class PlantDetail extends React.Component {
           hide={this.getAlertDisplay}
           close={this.closeAlert}
         />
-        {/* <div className="plant-card" plant-id={this.props.plantId} display="none">
-          <img className="plant-img"
-            src={`/images/${imgName}.jpg`}
-            alt="vegetable" />
-          <div className="row">
-            <h5 className="card-title">{plant.name}</h5>
-            <button className="add-remove-btn" onClick={this.handleClick}>{this.getButtonText()}</button>
-          </div>
-          <div className="card-body">
-            <h4 className="subsection">About</h4>
-            <p className="plant-info">{plant.description}</p>
-            <h4 className="subsection">Plant Care</h4>
-            <p className="subtitle">Optimal Sun</p>
-            <p className="plant-info">{plant.optimal_sun}</p>
-            <p className="subtitle">Optimal Soil</p>
-            <p className="plant-info">{plant.optimal_soil}</p>
-            <p className="subtitle">Planting Considerations</p>
-            <p className="plant-info">{plant.planting_considerations}</p>
-            <p className="subtitle">When to Plant</p>
-            <p className="plant-info">{plant.when_to_plant}</p>
-            <p className="subtitle">Growing from Seed</p>
-            <p className="plant-info">{plant.growing_from_seed}</p>
-            <p className="subtitle">Transplanting</p>
-            <p className="plant-info">{plant.transplanting}</p>
-            <p className="subtitle">Spacing</p>
-            <p className="plant-info">{plant.spacing}</p>
-            <p className="subtitle">Watering</p>
-            <p className="plant-info">{plant.watering}</p>
-            <p className="subtitle">Feeding</p>
-            <p className="plant-info">{plant.feeding}</p>
-            <p className="subtitle">Other Care</p>
-            <p className="plant-info">{plant.other_care}</p>
-            <p className="subtitle">Diseases</p>
-            <p className="plant-info">{plant.diseases}</p>
-            <p className="subtitle">Pests</p>
-            <p className="plant-info">{plant.pests}</p>
-            <p className="subtitle">Harvesting</p>
-            <p className="plant-info">{plant.harvesting}</p>
-            <p className="subtitle">Storage Use</p>
-            <p className="plant-info">{plant.storage_use}</p>
-          </div>
-        </div> */}
       </>
     );
   }
