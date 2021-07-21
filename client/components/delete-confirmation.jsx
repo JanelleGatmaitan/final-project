@@ -3,7 +3,9 @@ import React from 'react';
 export default class GardenForm extends React.Component {
   render() {
     return (
-     <div className={this.props.className}>
+     <div
+     display="none"
+     className={this.props.className}>
        <div className="modal">
          <p className="modal-text">
            Are you sure you want to remove this vegetable?

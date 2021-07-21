@@ -171,7 +171,7 @@ export default class PlantDetail extends React.Component {
   handleClick() {
     if (!this.state.user) {
       this.setState({
-        isPromptOpen: true
+        showAlert: true
       });
     }
     if (!this.state.gardenCreated && this.state.user) {
@@ -256,13 +256,22 @@ export default class PlantDetail extends React.Component {
         title: 'Your garden has been created!',
         description: 'You can now view saved plants in the "My Garden" tab'
       };
-    } else {
+    }
+
+    if (!this.context.user) {
       return {
-        status: 'error',
-        title: 'There was a problem creating the garden',
-        description: 'Please try again'
+        status: 'warning',
+        title: 'Action required',
+        description: 'Sign in or create an account to continue'
       };
     }
+    // } else {
+    //   return {
+    //     status: 'error',
+    //     title: 'There was a problem creating the garden',
+    //     description: 'Please try again'
+    // //   };
+    // }
   }
 
   render() {
@@ -279,7 +288,10 @@ export default class PlantDetail extends React.Component {
           addRemove={this.handleClick}
           buttonText={this.getButtonText()}
         />
-        {/* <DeleteConfirmation clickYes={this.handleRemove} clickNo={this.cancelRemoval} /> */}
+        {/* <DeleteConfirmation
+        className={this.getDeleteModalClass()}
+        clickYes={this.handleRemove}
+        clickNo={this.cancelRemoval} /> */}
         <Prompt className={this.getPromptClass()} />
         <GardenForm
           title="Create New Garden"

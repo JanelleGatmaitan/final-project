@@ -15,7 +15,7 @@ function AlertComponent(props) {
       maxW={{ base: '70vw', sm: '60vw', lg: '50vw', xl: '40vw' }}
       variant="left-accent"
       position="fixed"
-      top="65%"
+      top="45%"
       left="50%"
       transform="translate(-50%, -50%)"
     >
