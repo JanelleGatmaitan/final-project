@@ -5,6 +5,8 @@ import Prompt from '../components/prompt-sign-in';
 import AppContext from '../lib/app-context';
 import getLocalStorage from '../lib/get-localStorage';
 import AlertComponent from '../components/alert';
+import DetailPlantCard from '../components/detail-plant-card';
+import { VStack } from '@chakra-ui/layout';
 
 export default class PlantDetail extends React.Component {
   constructor(props) {
@@ -266,11 +268,16 @@ export default class PlantDetail extends React.Component {
   render() {
     if (!this.state.plant) return null;
     const plant = this.state.plant;
-    const imgName = plant.name.replace(' ', '_').toLowerCase();
+    const imgSrc = plant.name.replace(' ', '_').toLowerCase();
     const alertStyling = this.getAlert();
     return (
       <>
-        <DeleteConfirmation className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval} />
+        <DetailPlantCard
+          imgUrl={imgSrc}
+          title={plant.name}
+          plantData={plant}
+        />
+        {/* <DeleteConfirmation clickYes={this.handleRemove} clickNo={this.cancelRemoval} /> */}
         <Prompt className={this.getPromptClass()} />
         <ChakraGarden
           title="Create New Garden"
@@ -282,11 +289,11 @@ export default class PlantDetail extends React.Component {
           cancel={this.cancelGarden}
         />
         <AlertComponent
-        alertStyles={alertStyling}
-        hide={this.getAlertDisplay}
-        close={this.closeAlert}
+          alertStyles={alertStyling}
+          hide={this.getAlertDisplay}
+          close={this.closeAlert}
         />
-        <div className="plant-card" plant-id={this.props.plantId} display="none">
+        {/* <div className="plant-card" plant-id={this.props.plantId} display="none">
           <img className="plant-img"
             src={`/images/${imgName}.jpg`}
             alt="vegetable" />
@@ -327,7 +334,7 @@ export default class PlantDetail extends React.Component {
             <p className="subtitle">Storage Use</p>
             <p className="plant-info">{plant.storage_use}</p>
           </div>
-        </div>
+        </div> */}
       </>
     );
   }
