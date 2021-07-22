@@ -1,12 +1,10 @@
 import React from 'react';
 import GardenForm from '../components/chakra-garden-form';
-import DeleteConfirmation from '../components/delete-confirmation';
-import Prompt from '../components/prompt-sign-in';
+import DeleteModal from '../components/delete-confirmation';
 import AppContext from '../lib/app-context';
 import getLocalStorage from '../lib/get-localStorage';
 import AlertComponent from '../components/alert';
 import DetailPlantCard from '../components/detail-plant-card';
-import { VStack } from '@chakra-ui/layout';
 
 export default class PlantDetail extends React.Component {
   constructor(props) {
@@ -21,7 +19,6 @@ export default class PlantDetail extends React.Component {
       isInGarden: false,
       isGardenFormOpen: false,
       isDeleteModalOpen: false,
-      isPromptOpen: false,
       gardenInfo: {
         soil: null,
         sun: null,
@@ -236,13 +233,6 @@ export default class PlantDetail extends React.Component {
     return 'none';
   }
 
-  getPromptClass() {
-    if (this.state.isPromptOpen) {
-      return 'shade';
-    }
-    return 'hidden';
-  }
-
   closeAlert() {
     this.setState({
       showAlert: false
@@ -287,11 +277,11 @@ export default class PlantDetail extends React.Component {
           addRemove={this.handleClick}
           buttonText={this.getButtonText()}
         />
-        {/* <DeleteConfirmation
-        className={this.getDeleteModalClass()}
+        <DeleteModal
+        hide={this.getDeleteModalClass()}
         clickYes={this.handleRemove}
-        clickNo={this.cancelRemoval} /> */}
-        <Prompt className={this.getPromptClass()} />
+        clickNo={this.cancelRemoval}
+        />
         <GardenForm
           title="Create New Garden"
           onSave={this.handleSave}
