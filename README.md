@@ -1,5 +1,5 @@
 # Sprout
-Sprout is an application got home gardeners who want to keep track of the produce growing in the garden.
+Sprout is an application for home gardeners who want to keep track of the produce growing in the garden.
 
 # Live link
 https://vegetable-garden-tracker.herokuapp.com/
