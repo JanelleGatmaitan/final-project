@@ -174,7 +174,6 @@ export default class ListView extends React.Component {
             fontSize="18px"
             textAlign="center"
             pt="30px"
-            // pb="15px"
           >
             Daily Tasks
           </Heading>
