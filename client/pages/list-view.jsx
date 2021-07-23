@@ -3,6 +3,11 @@ import GardenForm from '../components/garden-form';
 import DeleteModal from '../components/delete-confirmation';
 import AppContext from '../lib/app-context';
 import getLocalStorage from '../lib/get-localStorage';
+import {
+  HStack,
+  Flex,
+  Heading
+} from '@chakra-ui/react';
 
 export default class ListView extends React.Component {
   constructor(props) {
@@ -153,59 +158,72 @@ export default class ListView extends React.Component {
     }
     return (
       <>
-      <GardenForm
-        positioning="relative"
-        title="My Garden"
-        placeHolders={this.state.gardenInfo}
-      />
-        {/* <DeleteModal className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval} />
-        <GardenForm position="garden-form-center" title="My Garden" onSave={this.handleSave}
-        values={this.state.gardenInfo} handleChange={this.handleChange} />
-      <div className="tasks">
-        <h4 className="tasks-title">Daily Tasks</h4>
-        <div className="row task-icons">
+        <GardenForm
+          id="column-left"
+          positioning="relative"
+          title="My Garden"
+          placeHolders={this.state.gardenInfo}
+          onSave={this.handleSave}
+          handleChange={this.handleChange}
+        />
+        <div
+          className="tasks"
+          id="column-right"
+        >
+          <Heading
+            fontSize="18px"
+            textAlign="center"
+            pt="30px"
+            // pb="15px"
+          >
+            Daily Tasks
+          </Heading>
+          <div className="row task-icons">
             <i className="fas fa-tint task-icon"></i>
             <i className="fas fa-recycle task-icon"></i>
             <i className="fas fa-cut task-icon"></i>
+          </div>
+          <div className="row task-names">
+            <p className={`task-name ${this.getTaskClass('Water')}`} onClick={this.onClick}>Water</p>
+            <p className={`task-name ${this.getTaskClass('Compost')}`} onClick={this.onClick}>Compost</p>
+            <p className={`task-name ${this.getTaskClass('Prune')}`} onClick={this.onClick}>Prune</p>
+          </div>
         </div>
-        <div className="row task-names">
-          <p className={`task-name ${this.getTaskClass('Water')}`} onClick={this.onClick}>Water</p>
-          <p className={`task-name ${this.getTaskClass('Compost')}`} onClick={this.onClick}>Compost</p>
-          <p className={`task-name ${this.getTaskClass('Prune')}`} onClick={this.onClick}>Prune</p>
-        </div>
-      </div>
+        {/* <DeleteModal className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval} />
+        <GardenForm position="garden-form-center" title="My Garden" onSave={this.handleSave} */}
+        {/* values={this.state.gardenInfo} handleChange={this.handleChange} /> */}
         <ul className="garden">
           {
             this.state.plantsInGarden.map(plant => (
               <li key={plant.plantId} className="listed-plant" plantid={plant.plantId} onClick={this.clickDeleteBtn}>
-                <SavedPlant plant={plant}/>
+                <SavedPlant plant={plant} />
               </li>
             ))
           }
-        </ul> */}
+        </ul>
       </>
     );
   }
 }
 
-// function SavedPlant(props) {
-//   const { name, dateAdded, expectedHarvestDate, plantId } = props.plant;
-//   return (
-//     <div className="saved-plant-data">
-//       <div className="column">
-//         <a href={`#plants?plantId=${plantId}`}>
-//           <img src={`/images/${name.toLowerCase()}.jpg`} className="list-img" alt="vegetable"></img>
-//         </a>
-//       </div>
-//       <div className="text-column">
-//         <a className='detail-link' href={`#plants?plantId=${plantId}`}>
-//           <p className="list-text">{name}</p>
-//         </a>
-//         <p className="list-text">{`Date added: ${dateAdded}`}</p>
-//         <p className="list-text">{`Expected harvest: ${expectedHarvestDate}`}</p>
-//       </div>
-//         <i plantid={plantId} className="delete-list fas fa-times"></i>
-//     </div>
-//   );
-// }
+function SavedPlant(props) {
+  const { name, dateAdded, expectedHarvestDate, plantId } = props.plant;
+  return (
+    <div className="saved-plant-data">
+      <div className="column">
+        <a href={`#plants?plantId=${plantId}`}>
+          <img src={`/images/${name.toLowerCase()}.jpg`} className="list-img" alt="vegetable"></img>
+        </a>
+      </div>
+      <div className="text-column">
+        <a className='detail-link' href={`#plants?plantId=${plantId}`}>
+          <p className="list-text">{name}</p>
+        </a>
+        <p className="list-text">{`Date added: ${dateAdded}`}</p>
+        <p className="list-text">{`Expected harvest: ${expectedHarvestDate}`}</p>
+      </div>
+      <i plantid={plantId} className="delete-list fas fa-times"></i>
+    </div>
+  );
+}
 ListView.contextType = AppContext;

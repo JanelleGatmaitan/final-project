@@ -36,6 +36,7 @@ function GardenForm(props) {
           <Select
             placeholder={props.placeHolders.soil}
             onChange={props.handleChange}
+            name="soil"
           >
             <option>Loamy</option>
             <option>Clay</option>
@@ -50,6 +51,7 @@ function GardenForm(props) {
           <Select
             placeholder={props.placeHolders.sun}
             onChange={props.handleChange}
+            name="sun"
           >
             <option>Full sun</option>
             <option>Part sun</option>
@@ -62,6 +64,7 @@ function GardenForm(props) {
           <Input
             onChange={props.handleChange}
             placeholder={props.placeHolders.size}
+            name="size"
           />
         </FormControl>
         <FormControl id="notes">
@@ -70,12 +73,14 @@ function GardenForm(props) {
             resize="none"
             placeholder={props.placeHolders.notes}
             onChange={props.handleChange}
+            name="notes"
           >
           </Textarea>
         </FormControl>
         <HStack>
           <Button
             type="submit"
+            my="15px"
             bgColor="green"
             color="white"
             onClick={props.onSave}
@@ -85,6 +90,11 @@ function GardenForm(props) {
           <Button
             bgColor="darkRed"
             color="white"
+            display={() => {
+              if (!props.cancel) {
+                return 'none';
+              }
+            }}
             onClick={props.cancel}
           >
             Cancel
