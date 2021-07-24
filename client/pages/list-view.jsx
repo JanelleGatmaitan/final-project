@@ -189,10 +189,21 @@ export default class ListView extends React.Component {
             <p className={`task-name ${this.getTaskClass('Prune')}`} onClick={this.onClick}>Prune</p>
           </div>
         </div>
+        <Flex
+          wrap="wrap"
+          justifyContent="center"
+          my="15px"
+        >
+          {
+            this.state.plantsInGarden.map(plant => (
+                <SavedPlant key={plant.plantId} plant={plant} />
+            ))
+          }
+        </Flex>
         {/* <DeleteModal className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval} />
         <GardenForm position="garden-form-center" title="My Garden" onSave={this.handleSave} */}
         {/* values={this.state.gardenInfo} handleChange={this.handleChange} /> */}
-        <ul className="garden">
+        {/* <ul className="garden">
           {
             this.state.plantsInGarden.map(plant => (
               <li key={plant.plantId} className="listed-plant" plantid={plant.plantId} onClick={this.clickDeleteBtn}>
@@ -200,7 +211,7 @@ export default class ListView extends React.Component {
               </li>
             ))
           }
-        </ul>
+        </ul> */}
       </>
     );
   }
