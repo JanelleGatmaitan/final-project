@@ -2,33 +2,12 @@ import React from 'react';
 import {
   HStack,
   Heading,
-  CloseButton,
   Image,
   Text,
   Box,
   Link
 } from '@chakra-ui/react';
 
-// function SavedPlant(props) {
-//   const { name, dateAdded, expectedHarvestDate, plantId } = props.plant;
-//   return (
-//     <div className="saved-plant-data">
-//       <div className="column">
-//         <a href={`#plants?plantId=${plantId}`}>
-//           <img src={`/images/${name.toLowerCase()}.jpg`} className="list-img" alt="vegetable"></img>
-//         </a>
-//       </div>
-//       <div className="text-column">
-//         <a className='detail-link' href={`#plants?plantId=${plantId}`}>
-//           <p className="list-text">{name}</p>
-//         </a>
-//         <p className="list-text">{`Date added: ${dateAdded}`}</p>
-//         <p className="list-text">{`Expected harvest: ${expectedHarvestDate}`}</p>
-//       </div>
-//       <i plantid={plantId} className="delete-list fas fa-times"></i>
-//     </div>
-//   );
-// }
 function SavedPlant(props) {
   const { plantId, name, dateAdded } = props.plant;
   return (
@@ -46,11 +25,15 @@ function SavedPlant(props) {
         mr="9px"
         mt="9px"
         >
-        <CloseButton />
+          <i
+          plantid={plantId}
+          className="delete-list fa fa-trash"
+          onClick={props.delete}
+          />
         </HStack>
         <HStack>
           <Image
-          src={`/images/${name.toLowerCase()}.jpg`}
+            src={`/images/${name.replace(' ', '_').toLowerCase()}.jpg`}
           alt="vegetable"
           boxSize="150px"
           objectFit="cover"

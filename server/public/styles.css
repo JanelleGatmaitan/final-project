@@ -25,6 +25,8 @@ label {
 .delete-list {
   transition: 0.5s color;
   font-size: 22px;
+  margin-right: 10px;
+  margin-top: 15px;
 }
 
 .delete-list:hover {

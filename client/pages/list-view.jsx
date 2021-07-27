@@ -5,10 +5,10 @@ import AppContext from '../lib/app-context';
 import getLocalStorage from '../lib/get-localStorage';
 import SavedPlant from '../components/list-view-plant-card';
 import {
-  HStack,
   Flex,
   Heading
 } from '@chakra-ui/react';
+import removePlant from '../lib/remove-plant';
 
 export default class ListView extends React.Component {
   constructor(props) {
@@ -130,16 +130,21 @@ export default class ListView extends React.Component {
     });
   }
 
-  handleRemove() {
-    const deletedPlantId = this.state.toDeleteId;
-    const deletedPlant = document.querySelector(`li.listed-plant[plantid='${deletedPlantId}']`);
-    deletedPlant.className = 'hidden';
+  handleRemove(event) {
+    const deletedPlantId = event.target.getAttribute('plantid');
+    // console.log(removePlant(this.state.plantsInGarden, deletedPlantId));
+    // this.setState({
+    //   plantsInGarden: removePlant(this.state.plantsInGarden, deletedPlantId)
+    // });
+    // const deletedPlant = document.querySelector(`li.listed-plant[plantid='${deletedPlantId}']`);
+    // deletedPlant.className = 'hidden';
     fetch(`/api/plantsInGarden/${this.state.gardenId}/${deletedPlantId}`, {
       method: 'DELETE'
     })
       .then(() => {
         this.setState({
-          isDeleteModalOpen: false
+          isDeleteModalOpen: false,
+          plantsInGarden: removePlant(this.state.plantsInGarden, deletedPlantId)
         });
       }
       )
@@ -196,7 +201,7 @@ export default class ListView extends React.Component {
         >
           {
             this.state.plantsInGarden.map(plant => (
-                <SavedPlant key={plant.plantId} plant={plant} />
+                <SavedPlant delete={this.handleRemove} key={plant.plantId} plant={plant} />
             ))
           }
         </Flex>
