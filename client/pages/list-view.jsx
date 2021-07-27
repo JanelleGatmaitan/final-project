@@ -151,11 +151,12 @@ export default class ListView extends React.Component {
         <div className="prompt">
           <p>Plant something to create a garden!</p>
           <a href="#">
-            <p>Find a plant.</p>
+            <p className="find-plant">Find a plant.</p>
           </a>
         </div>
       );
     }
+
     return (
       <>
         <GardenForm

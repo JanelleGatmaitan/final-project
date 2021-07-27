@@ -18,7 +18,6 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       user: null,
-      gardenId: null,
       isAuthorizing: true,
       route: parseRoute(window.location.hash)
     };

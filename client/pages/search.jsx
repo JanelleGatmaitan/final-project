@@ -58,32 +58,17 @@ export default class Search extends React.Component {
             >
               Start Planting
             </Heading>
-            {/* <Select
-            onChange={() => window.location.redirect(this.value)}
-            placeholder="Select a plant"
-            w="200px"
-            >
-              {
-                this.state.plantData.map(plant => (
-                  <option
-                  key={plant.id}
-                  value={`#plants?plantId=${plant.id}`}
-                  >
-                    {plant.name}
-                  </option>
-                ))
-              }
-            </Select> */}
             <form onSubmit={this.handleSubmit}>
-              <input
+              <Input
               placeholder="search for a plant"
+              width="60vw"
+              bgColor="gray"
               type="text"
-              className="search-bar"
               value={this.state.value}
               onChange={this.handleChange}
               />
             </form>
-          <div className="list-container">
+          <div>
             <ul className="search-list">
               {
                 filteredPlants.map(plant => (
@@ -107,12 +92,3 @@ function Suggestion(props) {
     </a>
   );
 }
-
-// function Options(props) {
-//   const { id, name } = props.plant;
-//   return (
-//     <a href={`#plants?plantId=${id}`} className="search-suggestions">
-//       {name}
-//     </a>
-//   );
-// }

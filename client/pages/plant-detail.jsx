@@ -6,6 +6,10 @@ import getLocalStorage from '../lib/get-localStorage';
 import AlertComponent from '../components/alert';
 import DetailPlantCard from '../components/detail-plant-card';
 import getGardenFormPlaceHolders from '../lib/get-form-placeholders';
+import {
+  VStack,
+  Spinner
+} from '@chakra-ui/react';
 
 export default class PlantDetail extends React.Component {
   constructor(props) {
@@ -150,7 +154,6 @@ export default class PlantDetail extends React.Component {
         return res.json();
       })
       .then(data => {
-        this.context.gardenId = data.gardenId;
         this.setState({
           isInGarden: data.plantAdded,
           isGardenFormOpen: false,
@@ -271,7 +274,17 @@ export default class PlantDetail extends React.Component {
   }
 
   render() {
-    if (!this.state.plant) return null;
+    if (!this.state.plant) {
+      return (
+        <VStack>
+          <Spinner
+            size="xl"
+            thickness="4px"
+            mt="150px"
+          />
+        </VStack>
+      );
+    }
     const plant = this.state.plant;
     const imgSrc = plant.name.replace(' ', '_').toLowerCase();
     const alertStyling = this.getAlert();

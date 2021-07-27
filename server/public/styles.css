@@ -76,31 +76,23 @@ label {
 .search-bar {
   font-size: 20px;
   list-style-type: none;
-  color: #a0a3a8;
 }
 
 .search-suggestions {
+  text-align: center;
   text-decoration: underline 1px;
   transition: 0.5s color;
 }
 
 .search-suggestions:hover {
-  color: black;
+  color: blue;
 }
 
 .search-bar:focus {
   outline: none;
 }
 
-.list-container {
-  width: 150px;
-  margin: 0 auto;
-}
-
 ul.search-list {
-  float: left;
-  position: relative;
-  left: -75%;
   font-size: 20px;
   list-style-type: none;
   line-height: 1.75em;
@@ -204,27 +196,7 @@ ul.search-list {
   border: 2px solid #f0f0f0;
 }
 
-.hidden {
-  display: none;
-}
-
-/* label {
-  margin-left: 20px;
-} */
-
-/* #soil {
-  transform: translateX(18px);
-} */
-
-/* #sun {
-  transform: translateX(2px);
-}
-
-#size {
-  transform: translateX(66px);
-} */
-
-/* .shade {
+.shade {
   position: fixed;
   top: 0;
   left: 0;
@@ -232,7 +204,7 @@ ul.search-list {
   z-index: 5;
   width: 100%;
   height: 100%;
-} */
+}
 
 .modal {
   text-align: center;
@@ -436,4 +408,12 @@ a.navigation-link > h2:hover {
   width: 348px;
   margin: 50px auto;
   text-align: center;
+}
+
+p.find-plant {
+  text-decoration: underline;
+}
+
+p.find-plant:hover {
+  color: blue;
 }
