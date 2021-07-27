@@ -1,10 +1,11 @@
 import React from 'react';
-import GardenForm from '../components/chakra-garden-form';
+import GardenForm from '../components/garden-form';
 import DeleteModal from '../components/delete-confirmation';
 import AppContext from '../lib/app-context';
 import getLocalStorage from '../lib/get-localStorage';
 import AlertComponent from '../components/alert';
 import DetailPlantCard from '../components/detail-plant-card';
+import getGardenFormPlaceHolders from '../lib/get-form-placeholders';
 
 export default class PlantDetail extends React.Component {
   constructor(props) {
@@ -24,7 +25,8 @@ export default class PlantDetail extends React.Component {
         sun: null,
         size: null,
         notes: ' '
-      }
+      },
+      formPlaceholders: getGardenFormPlaceHolders(window.location.hash)
     };
     this.handleSave = this.handleSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -215,7 +217,12 @@ export default class PlantDetail extends React.Component {
 
   getGardenFormPosition() {
     if (this.state.isGardenFormOpen) {
-      return 'fixed';
+      return {
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)'
+      };
     }
     return '';
   }
@@ -288,8 +295,9 @@ export default class PlantDetail extends React.Component {
           values={this.state}
           handleChange={this.handleChange}
           hide={this.getGardenFormDisplay}
-          positioning={this.getGardenFormPosition}
+          positioning={this.getGardenFormPosition()}
           cancel={this.cancelGarden}
+          placeHolders={this.state.formPlaceholders}
         />
         <AlertComponent
           alertStyles={alertStyling}

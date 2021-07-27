@@ -1,24 +1,108 @@
 import React from 'react';
+import {
+  VStack,
+  FormControl,
+  FormLabel,
+  Select,
+  Textarea,
+  Input,
+  Heading,
+  Button,
+  HStack
+} from '@chakra-ui/react';
 
-export default class GardenForm extends React.Component {
-  render() {
-    return (
-      <div className={this.props.className}>
-        <div className={this.props.position}>
-          <h4 className="garden-form-title">{this.props.title}</h4>
-          <form className="garden-form">
-            <label htmlFor="soil">Soil Quality:</label>
-            <input className="form-input" type="text" id="soil" name="soil" onChange={this.props.handleChange} value={this.props.values.soil} /><br />
-            <label htmlFor="sun">Sun Exposure:</label>
-            <input className="form-input" type="text" id="sun" name="sun" onChange={this.props.handleChange} value={this.props.values.sun} /><br />
-            <label htmlFor="size">Size:</label>
-            <input className="form-input" type="text" id="size" name="size" onChange={this.props.handleChange} value={this.props.values.size} /><br />
-            <label htmlFor="notes">Notes</label><br />
-            <textarea rows="10" cols="42" className="form-input" type="text" id="notes" name="notes" onChange={this.props.handleChange} value={this.props.values.notes} /><br />
-            <button type="submit" className="form-btn" onClick={this.props.onSave}>Save</button>
-          </form>
-        </div>
-      </div>
-    );
-  }
+function GardenForm(props) {
+  return (
+    <FormControl
+      padding={5}
+      display={props.hide}
+      position={props.positioning.position}
+      top={props.positioning.top}
+      left={props.positioning.left}
+      transform={props.positioning.transform}
+    >
+      <VStack
+        bgColor="gray"
+        mx="auto"
+        padding='4'
+        borderRadius='lg'
+        maxW={{ base: '90vw', sm: '80vw', lg: '50vw', xl: '40vw' }}
+        width='100%'>
+        <Heading my={3}>{props.title}</Heading>
+        <FormControl
+          id="soil"
+        >
+          <FormLabel>Soil</FormLabel>
+          <Select
+            placeholder={props.placeHolders.soil}
+            onChange={props.handleChange}
+            name="soil"
+          >
+            <option>Loamy</option>
+            <option>Clay</option>
+            <option>Sandy</option>
+            <option>Silty</option>
+            <option>Chalky</option>
+            <option>Peaky</option>
+          </Select>
+        </FormControl>
+        <FormControl id="sun">
+          <FormLabel>Sun</FormLabel>
+          <Select
+            placeholder={props.placeHolders.sun}
+            onChange={props.handleChange}
+            name="sun"
+          >
+            <option>Full sun</option>
+            <option>Part sun</option>
+            <option>Part shade</option>
+            <option>Full shade</option>
+          </Select>
+        </FormControl>
+        <FormControl id="size">
+          <FormLabel>Garden bed size</FormLabel>
+          <Input
+            onChange={props.handleChange}
+            placeholder={props.placeHolders.size}
+            name="size"
+          />
+        </FormControl>
+        <FormControl id="notes">
+          <FormLabel>Notes</FormLabel>
+          <Textarea
+            resize="none"
+            placeholder={props.placeHolders.notes}
+            onChange={props.handleChange}
+            name="notes"
+          >
+          </Textarea>
+        </FormControl>
+        <HStack>
+          <Button
+            type="submit"
+            my="15px"
+            bgColor="green"
+            color="white"
+            onClick={props.onSave}
+          >
+            Save
+          </Button>
+          <Button
+            bgColor="darkRed"
+            color="white"
+            display={() => {
+              if (!props.cancel) {
+                return 'none';
+              }
+            }}
+            onClick={props.cancel}
+          >
+            Cancel
+          </Button>
+        </HStack>
+      </VStack>
+    </FormControl>
+  );
 }
+
+export default GardenForm;

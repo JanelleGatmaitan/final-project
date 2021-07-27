@@ -155,10 +155,6 @@ app.get('/api/tasksCompleted/:gardenId', (req, res, next) => {
 
 app.post('/api/gardenStats', (req, res, next) => {
   const { plantAdded, gardenInfo, username } = req.body;
-  // if (!gardenInfo.soil || !gardenInfo.sun || !gardenInfo.size) {
-  //   // throw new ClientError(400, 'soil, sun, and size required fields');
-
-  // }
   const newGardenSql = `
     insert into "gardenStats" ("soil", "sun", "size", "notes", "username")
     values ($1, $2, $3, $4, $5)
@@ -182,6 +178,7 @@ app.post('/api/gardenStats', (req, res, next) => {
       const newPlantParams = [plantAdded.plantId, plantAdded.dateAdded,
         plantAdded.expectedHarvest, gardenId, plantAdded.name];
       if (plantAdded) {
+        console.log('plantAdded:' + plantAdded);
         db.query(plantSql, newPlantParams);
         db.query(tasksSql, tasksParams);
       }

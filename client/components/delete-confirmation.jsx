@@ -6,25 +6,6 @@ import {
   Heading
 } from '@chakra-ui/react';
 
-// export default class DeleteConfirmation extends React.Component {
-//   render() {
-//     return (
-//        <div
-//       //  className="modal"
-//        display="none"
-//        >
-//          <p className="modal-text">
-//            Are you sure you want to remove this vegetable?
-//          </p>
-//          <div className="row">
-//            <button className="modal-button yes" onClick={this.props.clickYes}>Yes</button>
-//            <button className="modal-button no" onClick={this.props.clickNo}>No</button>
-//          </div>
-//        </div>
-//     );
-//   }
-// }
-
 function DeleteModal(props) {
   return (
     <VStack
@@ -54,6 +35,7 @@ function DeleteModal(props) {
         bgColor="lightGreen"
         _hover={{ bgColor: 'darkGreen' }}
         onClick={props.clickYes}
+        plantid={props.key}
         >
           Yes
         </Button>
