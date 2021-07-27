@@ -35,6 +35,7 @@ function DeleteModal(props) {
         bgColor="lightGreen"
         _hover={{ bgColor: 'darkGreen' }}
         onClick={props.clickYes}
+        plantid={props.key}
         >
           Yes
         </Button>

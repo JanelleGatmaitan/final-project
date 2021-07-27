@@ -119,9 +119,9 @@ export default class ListView extends React.Component {
 
   getDeleteModalClass() {
     if (this.state.isDeleteModalOpen) {
-      return 'shade';
+      return '';
     }
-    return 'hidden';
+    return 'none';
   }
 
   cancelRemoval() {
@@ -131,13 +131,7 @@ export default class ListView extends React.Component {
   }
 
   handleRemove(event) {
-    const deletedPlantId = event.target.getAttribute('plantid');
-    // console.log(removePlant(this.state.plantsInGarden, deletedPlantId));
-    // this.setState({
-    //   plantsInGarden: removePlant(this.state.plantsInGarden, deletedPlantId)
-    // });
-    // const deletedPlant = document.querySelector(`li.listed-plant[plantid='${deletedPlantId}']`);
-    // deletedPlant.className = 'hidden';
+    const deletedPlantId = this.state.toDeleteId;
     fetch(`/api/plantsInGarden/${this.state.gardenId}/${deletedPlantId}`, {
       method: 'DELETE'
     })
@@ -201,22 +195,16 @@ export default class ListView extends React.Component {
         >
           {
             this.state.plantsInGarden.map(plant => (
-                <SavedPlant delete={this.handleRemove} key={plant.plantId} plant={plant} />
+                <SavedPlant
+                delete={this.clickDeleteBtn}
+                key={plant.plantId}
+                plant={plant}
+                clickYes={this.handleRemove}
+                />
             ))
           }
         </Flex>
-        {/* <DeleteModal className={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval} />
-        <GardenForm position="garden-form-center" title="My Garden" onSave={this.handleSave} */}
-        {/* values={this.state.gardenInfo} handleChange={this.handleChange} /> */}
-        {/* <ul className="garden">
-          {
-            this.state.plantsInGarden.map(plant => (
-              <li key={plant.plantId} className="listed-plant" plantid={plant.plantId} onClick={this.clickDeleteBtn}>
-                <SavedPlant plant={plant} />
-              </li>
-            ))
-          }
-        </ul> */}
+        <DeleteModal hide={this.getDeleteModalClass()} clickYes={this.handleRemove} clickNo={this.cancelRemoval} />
       </>
     );
   }
