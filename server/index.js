@@ -67,14 +67,14 @@ app.post('/api/auth/sign-in', (req, res, next) => {
     .then(result => {
       const [user] = result.rows;
       if (!user) {
-        throw new ClientError(401, 'invalid login');
+        throw new ClientError(401, 'User does not exist');
       }
       const { userId, hashedPassword } = user;
       return argon2
         .verify(hashedPassword, password)
         .then(isMatching => {
           if (!isMatching) {
-            throw new ClientError(401, 'invalid login');
+            throw new ClientError(401, 'Incorrect password or username');
           }
           const payload = { userId, username };
           const token = jwt.sign(payload, process.env.TOKEN_SECRET);
@@ -178,7 +178,6 @@ app.post('/api/gardenStats', (req, res, next) => {
       const newPlantParams = [plantAdded.plantId, plantAdded.dateAdded,
         plantAdded.expectedHarvest, gardenId, plantAdded.name];
       if (plantAdded) {
-        console.log('plantAdded:' + plantAdded);
         db.query(plantSql, newPlantParams);
         db.query(tasksSql, tasksParams);
       }
