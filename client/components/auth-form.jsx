@@ -39,6 +39,7 @@ function AuthForm(props) {
           color="white"
           onClick={props.handleSubmit}
           alignSelf="flex-end"
+          _hover={{ bgColor: 'darkGreen' }}
         >
           {props.text}
         </Button>
