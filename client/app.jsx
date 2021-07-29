@@ -65,19 +65,7 @@ export default class App extends React.Component {
       return <ListView />;
     }
     if (route.path === 'sign-in' || route.path === 'sign-up') {
-      const heading = route.path;
-      const formattedHeading = heading.charAt(0).toUpperCase() + heading.slice(1);
-      return (
-        <>
-        <Heading
-          textAlign='center'
-          m='50px'
-        >
-          {formattedHeading}
-        </Heading>
-        <Auth />
-        < />
-      );
+      return <Auth />;
     }
   }
 
