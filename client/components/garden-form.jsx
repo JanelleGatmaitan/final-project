@@ -19,6 +19,7 @@ function GardenForm(props) {
         top={props.positioning.top}
         left={props.positioning.left}
         transform={props.positioning.transform}
+        display={props.hide}
       >
         <VStack
           bgColor="gray"
