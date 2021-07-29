@@ -1,5 +1,4 @@
 import React from 'react';
-// import AppContext from '../lib/app-context';
 import {
   FormControl,
   FormLabel,
@@ -21,6 +20,7 @@ function AuthForm(props) {
           isRequired={true}
           type="text"
           onChange={props.handleChange}
+          bgColor="gray"
           />
         </FormControl>
         <FormControl id="password">
@@ -29,6 +29,7 @@ function AuthForm(props) {
           type="password"
           name="password"
           onChange={props.handleChange}
+          bgColor="gray"
           />
         </FormControl>
         <Button
@@ -37,8 +38,9 @@ function AuthForm(props) {
           bgColor="green"
           color="white"
           onClick={props.handleSubmit}
+          alignSelf="flex-end"
         >
-          {props.buttonText}
+          {props.text}
         </Button>
       </VStack>
   );

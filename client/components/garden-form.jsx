@@ -76,18 +76,20 @@ function GardenForm(props) {
             >
             </Textarea>
           </FormControl>
-          <HStack>
+        <HStack alignSelf="flex-end">
             <Button
               type="submit"
               my="15px"
               bgColor="green"
+              _hover={{ bgColor: 'darkGreen' }}
               color="white"
               onClick={props.onSave}
             >
               Save
             </Button>
             <Button
-              bgColor="darkRed"
+              bgColor="lightRed"
+              _hover={{ bgColor: 'darkRed' }}
               color="white"
               display={() => {
                 if (!props.cancel) {

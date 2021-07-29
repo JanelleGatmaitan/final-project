@@ -3,6 +3,7 @@ import React from 'react';
 import AppContext from '../lib/app-context';
 import Redirect from '../components/redirect';
 import AlertComponent from '../components/alert';
+import { Heading } from '@chakra-ui/react';
 
 export default class AuthPage extends React.Component {
   constructor(props) {
@@ -21,6 +22,7 @@ export default class AuthPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.closeAlert = this.closeAlert.bind(this);
     this.alertDisplay = this.alertDisplay.bind(this);
+    this.getText = this.getText.bind(this);
   }
 
   handleChange() {
@@ -55,7 +57,7 @@ export default class AuthPage extends React.Component {
         } else {
           alert = {
             status: 'success',
-            title: 'Your accunt has been created',
+            title: 'Your account has been created',
             description: 'Continue to sign in'
           };
         }
@@ -66,7 +68,6 @@ export default class AuthPage extends React.Component {
         if (action === 'sign-up') {
           window.location.hash = 'sign-in';
         } else if (result.user && result.token) {
-          console.log('result: ', result);
           this.context.handleSignIn(result);
         }
       })
@@ -88,18 +89,30 @@ export default class AuthPage extends React.Component {
     });
   }
 
+  getText() {
+    if (this.context.route.path === 'sign-in') return 'Sign In';
+    return 'Sign Up';
+  }
+
   render() {
     const { user, route } = this.context;
     if (user) return <Redirect to="" />;
     const alertStyling = this.state.alertStyling;
+    const text = this.getText();
     return (
       <>
+        <Heading
+          textAlign='center'
+          m='50px'
+        >
+          {text}
+        </Heading>
         <AuthForm
         key={route.path}
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}
         close={this.closeAlert}
-        buttonText='efsdfsfd'
+        text={text}
         />
         <AlertComponent
           hide={this.alertDisplay}
