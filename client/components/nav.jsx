@@ -1,14 +1,10 @@
 import React from 'react';
 import {
   Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   HStack,
-  Spacer
+  Spacer,
+  Link
 } from '@chakra-ui/react';
-import { ChevronDownIcon } from '@chakra-ui/icons';
 import AppContext from '../lib/app-context';
 
 export default class Nav extends React.Component {
@@ -21,6 +17,13 @@ export default class Nav extends React.Component {
 
   hideNewAcc() {
     if (this.context.user) {
+      return 'none';
+    }
+    return '';
+  }
+
+  hideGardenLink() {
+    if (!this.context.user) {
       return 'none';
     }
     return '';
@@ -48,25 +51,23 @@ export default class Nav extends React.Component {
     return (
       <div className="drawer">
         <HStack padding={6}>
-          <Menu>
-            <MenuButton
-              bgColor="gray"
-              as={Button}
-              rightIcon={<ChevronDownIcon />}
-            >
-              Menu
-            </MenuButton>
-            <MenuList>
-              {
-                this.getMenuItems().map(item => (
-                  <MakeItem key={item.title} item={item} />
-                ))
-              }
-            </MenuList>
-          </Menu>
+          <Link
+            variant="navLink"
+            href="#"
+          >
+            Search
+          </Link>
+          <Link
+            variant="navLink"
+            href="#garden"
+            display={this.hideGardenLink()}
+          >
+            My Garden
+          </Link>
           <Spacer />
           <Button
             bgColor="gray"
+            _hover={{ bgColor: 'darkGray' }}
             onClick={() => {
               this.context.handleSignOut();
             }
@@ -75,6 +76,7 @@ export default class Nav extends React.Component {
           </Button>
           <Button
             bgColor="gray"
+            _hover={{ bgColor: 'darkGray' }}
             onClick={() => { window.location.hash = 'sign-up'; }}
             display={this.hideNewAcc()}>
             Create new account
@@ -85,14 +87,4 @@ export default class Nav extends React.Component {
   }
 }
 
-function MakeItem(props) {
-  const { title, to } = props.item;
-  return (
-    <MenuItem onClick={() => {
-      window.location.hash = to;
-    }}>
-      {title}
-    </MenuItem>
-  );
-}
 Nav.contextType = AppContext;
