@@ -60,7 +60,7 @@ export default class Search extends React.Component {
             </Heading>
             <form onSubmit={this.handleSubmit}>
               <Input
-              placeholder="search for a plant"
+              placeholder="Search for a plant"
               width="60vw"
               bgColor="gray"
               type="text"
