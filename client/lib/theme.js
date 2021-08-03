@@ -17,6 +17,17 @@ const theme = extendTheme({
 
   fixed: {
     position: 'fixed'
+  },
+
+  components: {
+    Link: {
+      variants: {
+        navLink: {
+          fontSize: '18px',
+          fontWeight: 'bold'
+        }
+      }
+    }
   }
 });
 
