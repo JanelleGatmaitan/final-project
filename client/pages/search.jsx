@@ -59,14 +59,14 @@ export default class Search extends React.Component {
               Start Planting
             </Heading>
             <form onSubmit={this.handleSubmit}>
-              {/* <Input
+              <Input
               placeholder="Search for a plant"
               width="60vw"
               bgColor="gray"
               type="text"
               value={this.state.value}
               onChange={this.handleChange}
-              /> */}
+              />
             </form>
           <div>
             <ul className="search-list">

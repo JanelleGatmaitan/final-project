@@ -24,7 +24,7 @@ export default class App extends React.Component {
 
   handleSignIn(result) {
     const { user, token } = result;
-    const userData = { user: user };
+    const userData = user;
     window.localStorage.setItem('react-context-jwt', token);
     window.localStorage.setItem('user-data', JSON.stringify(userData));
     this.setState({ user: userData });
@@ -70,7 +70,6 @@ export default class App extends React.Component {
     const { user, route } = this.state;
     const { handleSignIn, handleSignOut } = this;
     const contextValue = { user, route, handleSignIn, handleSignOut };
-    console.log('user: ', user);
     return (
       <ChakraProvider theme={theme}>
         <AppContext.Provider value={contextValue}>

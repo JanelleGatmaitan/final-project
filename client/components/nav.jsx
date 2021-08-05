@@ -7,6 +7,7 @@ import {
   Text
 } from '@chakra-ui/react';
 import AppContext from '../lib/app-context';
+import getLocalStorage from '../lib/get-localStorage';
 
 export default class Nav extends React.Component {
   constructor(props) {
@@ -39,11 +40,10 @@ export default class Nav extends React.Component {
   }
 
   getGreeting() {
-    console.log('this.context: ', this.context);
     if (this.context.user) {
-      return this.context.user.username;
+      const userData = getLocalStorage('user-data');
+      return userData.username;
     }
-    console.log('this.context.user is null');
     return 'ghgg';
   }
 
@@ -104,7 +104,8 @@ export default class Nav extends React.Component {
             bgColor="gray"
             _hover={{ bgColor: 'darkGray' }}
             onClick={() => { window.location.hash = 'sign-up'; }}
-            display={this.hideNewAcc()}>
+            display={this.hideNewAcc()}
+            >
             Create new account
           </Button>
         </HStack>
