@@ -78,6 +78,7 @@ export default class AuthPage extends React.Component {
 
   alertDisplay() {
     if (this.state.isAlertOpen) {
+      setTimeout(() => this.closeAlert(), 3000);
       return '';
     }
     return 'none';

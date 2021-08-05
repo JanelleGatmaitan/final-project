@@ -199,6 +199,7 @@ export default class PlantDetail extends React.Component {
 
   getAlertDisplay() {
     if (this.state.showAlert) {
+      setTimeout(() => this.closeAlert(), 3000);
       return '';
     }
     return 'none';
