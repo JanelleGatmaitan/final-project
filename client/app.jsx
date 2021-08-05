@@ -6,10 +6,7 @@ import ListView from './pages/list-view';
 import Auth from './pages/auth';
 import AppContext from './lib/app-context';
 import decodeToken from './lib/decode-token';
-import {
-  ChakraProvider,
-  Heading
-} from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import theme from '../client/lib/theme';
 import Nav from '../client/components/nav';
 
@@ -27,7 +24,7 @@ export default class App extends React.Component {
 
   handleSignIn(result) {
     const { user, token } = result;
-    const userData = { user: user };
+    const userData = user;
     window.localStorage.setItem('react-context-jwt', token);
     window.localStorage.setItem('user-data', JSON.stringify(userData));
     this.setState({ user: userData });
@@ -76,7 +73,7 @@ export default class App extends React.Component {
     return (
       <ChakraProvider theme={theme}>
         <AppContext.Provider value={contextValue}>
-            <Nav />
+            <Nav/>
             {this.renderPage()}
         </AppContext.Provider>
       </ChakraProvider>

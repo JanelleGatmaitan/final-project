@@ -70,7 +70,7 @@ export default class PlantDetail extends React.Component {
 
   async getGardenData() {
     const data = getLocalStorage('user-data');
-    const username = data.user.username;
+    const username = data.username;
     const response = await fetch(`/api/gardenStats/${username}`);
     const gardenData = await response.json();
     this.setState({

@@ -3,11 +3,21 @@ import {
   Button,
   HStack,
   Spacer,
-  Link
+  Link,
+  Text
 } from '@chakra-ui/react';
 import AppContext from '../lib/app-context';
+import getLocalStorage from '../lib/get-localStorage';
 
 export default class Nav extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: null
+    };
+    this.getGreeting = this.getGreeting.bind(this);
+  }
+
   getButtonText() {
     if (this.context.user) {
       return 'Sign Out';
@@ -27,6 +37,14 @@ export default class Nav extends React.Component {
       return 'none';
     }
     return '';
+  }
+
+  getGreeting() {
+    if (this.context.user) {
+      const userData = getLocalStorage('user-data');
+      return userData.username;
+    }
+    return 'ghgg';
   }
 
   getMenuItems() {
@@ -61,10 +79,18 @@ export default class Nav extends React.Component {
             variant="navLink"
             href="#garden"
             display={this.hideGardenLink()}
+            pl="15px"
           >
             My Garden
           </Link>
           <Spacer />
+          <Text
+            fontWeight="bold"
+            pr="15px"
+            display={this.hideGardenLink()}
+          >
+            {`Hi, ${this.getGreeting()}!`}
+          </Text>
           <Button
             bgColor="gray"
             _hover={{ bgColor: 'darkGray' }}
@@ -78,7 +104,8 @@ export default class Nav extends React.Component {
             bgColor="gray"
             _hover={{ bgColor: 'darkGray' }}
             onClick={() => { window.location.hash = 'sign-up'; }}
-            display={this.hideNewAcc()}>
+            display={this.hideNewAcc()}
+            >
             Create new account
           </Button>
         </HStack>

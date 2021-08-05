@@ -23,7 +23,7 @@ const theme = extendTheme({
     Link: {
       variants: {
         navLink: {
-          fontSize: '18px',
+          fontSize: '16px',
           fontWeight: 'bold'
         }
       }
