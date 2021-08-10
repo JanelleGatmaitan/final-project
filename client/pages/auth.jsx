@@ -9,8 +9,8 @@ export default class AuthPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      password: '',
+      username: undefined,
+      password: undefined,
       isAlertOpen: false,
       alertStyling: {
         status: 'error',
@@ -33,6 +33,7 @@ export default class AuthPage extends React.Component {
   }
 
   handleSubmit() {
+    let alert;
     event.preventDefault();
     const action = this.context.route.path;
     fetch(`/api/auth/${action}`, {
@@ -44,36 +45,44 @@ export default class AuthPage extends React.Component {
       })
     })
       .then(res => {
+        console.log('res: ', res);
         return res.json();
       })
       .then(result => {
-        let alert;
+        console.log('result: ', result);
         if (result.error) {
           alert = {
             status: 'error',
-            title: 'Unsuccessful sign in attempt',
+            title: `Unsuccessful ${action} attempt`,
             description: `${result.error}`
           };
+          this.setState({
+            isAlertOpen: true,
+            alertStyling: alert
+          });
         } else {
           alert = {
             status: 'success',
             title: 'Your account has been created',
             description: 'Continue to sign in'
           };
+          this.setState({
+            isAlertOpen: true,
+            alertStyling: alert
+          });
         }
-        this.setState({
-          isAlertOpen: true,
-          alertStyling: alert
-        });
-        if (action === 'sign-up') {
-          window.location.hash = 'sign-in';
-        } else if (result.user && result.token) {
+        if (result.user && result.token) {
           this.context.handleSignIn(result);
         }
       })
       .catch(err => {
         console.error(err);
       });
+
+    this.setState({
+      username: '',
+      password: ''
+    });
   }
 
   alertDisplay() {
@@ -114,6 +123,8 @@ export default class AuthPage extends React.Component {
         handleSubmit={this.handleSubmit}
         close={this.closeAlert}
         text={text}
+        usernameValue={this.state.username}
+        passwordValue={this.state.password}
         />
         <AlertComponent
           hide={this.alertDisplay}

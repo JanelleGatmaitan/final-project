@@ -21,6 +21,7 @@ function AuthForm(props) {
           type="text"
           onChange={props.handleChange}
           bgColor="gray"
+          value={props.usernameValue}
           />
         </FormControl>
         <FormControl id="password">
@@ -30,6 +31,7 @@ function AuthForm(props) {
           name="password"
           onChange={props.handleChange}
           bgColor="gray"
+          value={props.passwordValue}
           />
         </FormControl>
         <Button
