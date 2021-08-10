@@ -33,6 +33,7 @@ export default class AuthPage extends React.Component {
   }
 
   handleSubmit() {
+    let alert;
     event.preventDefault();
     const action = this.context.route.path;
     fetch(`/api/auth/${action}`, {
@@ -47,33 +48,43 @@ export default class AuthPage extends React.Component {
         return res.json();
       })
       .then(result => {
-        let alert;
         if (result.error) {
           alert = {
             status: 'error',
-            title: 'Unsuccessful sign in attempt',
+            title: `Unsuccessful ${action} attempt`,
             description: `${result.error}`
           };
+          this.setState({
+            isAlertOpen: true,
+            alertStyling: alert
+          });
         } else {
           alert = {
             status: 'success',
             title: 'Your account has been created',
             description: 'Continue to sign in'
           };
+
+          if (!result.user) {
+            this.setState({
+              isAlertOpen: true,
+              alertStyling: alert
+            });
+          }
         }
-        this.setState({
-          isAlertOpen: true,
-          alertStyling: alert
-        });
-        if (action === 'sign-up') {
-          window.location.hash = 'sign-in';
-        } else if (result.user && result.token) {
+
+        if (result.user && result.token) {
           this.context.handleSignIn(result);
         }
       })
       .catch(err => {
         console.error(err);
       });
+
+    this.setState({
+      username: '',
+      password: ''
+    });
   }
 
   alertDisplay() {
@@ -114,6 +125,8 @@ export default class AuthPage extends React.Component {
         handleSubmit={this.handleSubmit}
         close={this.closeAlert}
         text={text}
+        usernameValue={this.state.username}
+        passwordValue={this.state.password}
         />
         <AlertComponent
           hide={this.alertDisplay}
