@@ -163,7 +163,7 @@ export default class ListView extends React.Component {
           id="column-left"
           positioning="relative"
           title="My Garden"
-          placeHolders={this.state.gardenInfo}
+          gardenFormValues={this.state.gardenInfo}
           onSave={this.handleSave}
           handleChange={this.handleChange}
         />

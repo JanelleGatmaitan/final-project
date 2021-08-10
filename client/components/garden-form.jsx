@@ -34,7 +34,8 @@ function GardenForm(props) {
           >
             <FormLabel>Soil</FormLabel>
             <Select
-              placeholder={props.placeHolders.soil}
+              placeholder={props.placeHolders ? props.placeHolders.soil : undefined}
+              value={props.gardenFormValues ? props.gardenFormValues.soil : undefined}
               onChange={props.handleChange}
               name="soil"
             >
@@ -49,7 +50,8 @@ function GardenForm(props) {
           <FormControl id="sun">
             <FormLabel>Sun</FormLabel>
             <Select
-              placeholder={props.placeHolders.sun}
+              placeholder={props.placeHolders ? props.placeHolders.sun : undefined}
+              value={props.gardenFormValues ? props.gardenFormValues.sun : undefined}
               onChange={props.handleChange}
               name="sun"
             >
@@ -63,17 +65,18 @@ function GardenForm(props) {
             <FormLabel>Garden bed size</FormLabel>
             <Input
               onChange={props.handleChange}
-              placeholder={props.placeHolders.size}
+              placeholder={props.placeHolders ? props.placeHolders.size : undefined}
               name="size"
+              value={props.gardenFormValues ? props.gardenFormValues.size : undefined}
             />
           </FormControl>
           <FormControl id="notes">
             <FormLabel>Notes</FormLabel>
             <Textarea
               resize="none"
-              placeholder={props.placeHolders.notes}
               onChange={props.handleChange}
               name="notes"
+              value={props.gardenFormValues ? props.gardenFormValues.notes : undefined}
             >
             </Textarea>
           </FormControl>
