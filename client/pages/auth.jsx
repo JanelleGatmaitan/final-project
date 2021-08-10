@@ -9,8 +9,8 @@ export default class AuthPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: undefined,
-      password: undefined,
+      username: '',
+      password: '',
       isAlertOpen: false,
       alertStyling: {
         status: 'error',
@@ -45,11 +45,9 @@ export default class AuthPage extends React.Component {
       })
     })
       .then(res => {
-        console.log('res: ', res);
         return res.json();
       })
       .then(result => {
-        console.log('result: ', result);
         if (result.error) {
           alert = {
             status: 'error',
@@ -66,11 +64,15 @@ export default class AuthPage extends React.Component {
             title: 'Your account has been created',
             description: 'Continue to sign in'
           };
-          this.setState({
-            isAlertOpen: true,
-            alertStyling: alert
-          });
+
+          if (!result.user) {
+            this.setState({
+              isAlertOpen: true,
+              alertStyling: alert
+            });
+          }
         }
+
         if (result.user && result.token) {
           this.context.handleSignIn(result);
         }
