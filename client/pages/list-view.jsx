@@ -4,6 +4,7 @@ import DeleteModal from '../components/delete-confirmation';
 import AppContext from '../lib/app-context';
 import getLocalStorage from '../lib/get-localStorage';
 import SavedPlant from '../components/list-view-plant-card';
+import AlertComponent from '../components/alert';
 import {
   Flex,
   Heading
@@ -28,7 +29,14 @@ export default class ListView extends React.Component {
         notes: ''
       },
       isDeleteModalOpen: false,
-      toDeleteId: null
+      toDeleteId: null,
+      isAlertOpen: false,
+      alertDisplay: 'none',
+      alertStyling: {
+        status: 'error',
+        title: '',
+        description: ''
+      }
     };
     this.onClick = this.onClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -37,6 +45,8 @@ export default class ListView extends React.Component {
     this.cancelRemoval = this.cancelRemoval.bind(this);
     this.clickDeleteBtn = this.clickDeleteBtn.bind(this);
     this.getGardenData = this.getGardenData.bind(this);
+    this.closeAlert = this.closeAlert.bind(this);
+    this.getAlertDisplay = this.getAlertDisplay.bind(this);
   }
 
   componentDidMount() {
@@ -107,7 +117,42 @@ export default class ListView extends React.Component {
         'Content-Type': 'application/json'
       }
     })
+      .then(res => {
+        if (res.ok) {
+          this.setState({
+            isAlertOpen: true,
+            alertStyling: {
+              status: 'success',
+              title: 'Saved!',
+              description: 'Your changes have been saved successfully.'
+            }
+          });
+        } else {
+          this.setState({
+            isAlertOpen: true,
+            alertStyling: {
+              status: 'error',
+              title: 'Error!',
+              description: 'Your changes were not saved.'
+            }
+          });
+        }
+      })
       .catch(err => console.error(err));
+  }
+
+  closeAlert() {
+    this.setState({
+      isAlertOpen: false
+    });
+  }
+
+  getAlertDisplay() {
+    if (this.state.isAlertOpen) {
+      setTimeout(() => this.closeAlert(), 3000);
+      return '';
+    }
+    return 'none';
   }
 
   clickDeleteBtn(event) {
@@ -171,6 +216,11 @@ export default class ListView extends React.Component {
           className="tasks"
           id="column-right"
         >
+        <AlertComponent
+          hide={this.getAlertDisplay}
+          alertStyles={this.state.alertStyling}
+          close={this.closeAlert}
+        />
           <Heading
             fontSize="18px"
             textAlign="center"
