@@ -5,10 +5,8 @@ import AppContext from '../lib/app-context';
 import getLocalStorage from '../lib/get-localStorage';
 import SavedPlant from '../components/list-view-plant-card';
 import AlertComponent from '../components/alert';
-import {
-  Flex,
-  Heading
-} from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
+import Tasks from '../components/tasks';
 import removePlant from '../lib/remove-plant';
 
 export default class ListView extends React.Component {
@@ -47,6 +45,7 @@ export default class ListView extends React.Component {
     this.getGardenData = this.getGardenData.bind(this);
     this.closeAlert = this.closeAlert.bind(this);
     this.getAlertDisplay = this.getAlertDisplay.bind(this);
+    this.getTaskClass = this.getTaskClass.bind(this);
   }
 
   componentDidMount() {
@@ -212,15 +211,19 @@ export default class ListView extends React.Component {
           onSave={this.handleSave}
           handleChange={this.handleChange}
         />
-        <div
-          className="tasks"
-          id="column-right"
-        >
         <AlertComponent
           hide={this.getAlertDisplay}
           alertStyles={this.state.alertStyling}
           close={this.closeAlert}
         />
+        <Tasks
+        getTaskClass={this.getTaskClass}
+        clickTask={this.onClick}
+        />
+        {/* <div
+          className="tasks"
+          id="column-right"
+        >
           <Heading
             fontSize="18px"
             textAlign="center"
@@ -238,7 +241,7 @@ export default class ListView extends React.Component {
             <p className={`task-name ${this.getTaskClass('Compost')}`} onClick={this.onClick}>Compost</p>
             <p className={`task-name ${this.getTaskClass('Prune')}`} onClick={this.onClick}>Prune</p>
           </div>
-        </div>
+        </div> */}
         <Flex
           wrap="wrap"
           justifyContent="center"
