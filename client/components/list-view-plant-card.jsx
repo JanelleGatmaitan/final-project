@@ -5,8 +5,10 @@ import {
   Image,
   Text,
   Box,
-  Link
+  Link,
+  IconButton
 } from '@chakra-ui/react';
+import { CloseIcon } from '@chakra-ui/icons';
 
 function SavedPlant(props) {
   const { plantId, name, dateAdded } = props.plant;
@@ -25,19 +27,23 @@ function SavedPlant(props) {
         mr="9px"
         mt="9px"
         >
-          <i
-          plantid={plantId}
-          className="delete-list fa fa-trash"
-          onClick={props.delete}
+          <IconButton
+            bgColor="lightRed"
+            _hover={{ bgColor: 'darkRed' }}
+            plantid={plantId}
+            onClick={props.delete}
+            borderRadius="6px"
+            w={5} h={6}
+            icon={<CloseIcon w={3} h={3} />}
           />
         </HStack>
         <HStack>
           <Image
             src={`/images/${name.replace(' ', '_').toLowerCase()}.jpg`}
-          alt="vegetable"
-          boxSize="150px"
-          objectFit="cover"
-          mx="20px"
+            alt="vegetable"
+            boxSize="150px"
+            objectFit="cover"
+            mx="20px"
           />
           <Box>
             <Link
