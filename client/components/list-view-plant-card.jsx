@@ -26,6 +26,8 @@ function SavedPlant(props) {
             window.location.hash = `#plants?plantId=${plantId}`;
           }
         }}
+        _hover={{ transform: 'scale(1.1)' }}
+        cursor='pointer'
       >
         <HStack
         justifyContent="flex-end"
