@@ -21,6 +21,11 @@ function SavedPlant(props) {
         mx="20px"
         mt="15px"
         rounded="6px"
+        onClick={e => {
+          if (!e.target.getAttribute('plantid')) {
+            window.location.hash = `#plants?plantId=${plantId}`;
+          }
+        }}
       >
         <HStack
         justifyContent="flex-end"
@@ -33,8 +38,9 @@ function SavedPlant(props) {
             plantid={plantId}
             onClick={props.delete}
             borderRadius="6px"
-            w={5} h={6}
-            icon={<CloseIcon w={3} h={3} />}
+            w={5}
+            h={6}
+            icon={<CloseIcon w={3} h={3} plantid={plantId}/>}
           />
         </HStack>
         <HStack>

@@ -201,7 +201,6 @@ export default class ListView extends React.Component {
                 key={plant.plantId}
                 plant={plant}
                 clickYes={this.handleRemove}
-                clickCard={this.clickCard}
                 />
             ))
           }
