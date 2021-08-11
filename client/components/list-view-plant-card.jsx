@@ -27,6 +27,7 @@ function SavedPlant(props) {
           }
         }}
         _hover={{ transform: 'scale(1.1)' }}
+        transition='all .2s ease-in-out'
         cursor='pointer'
       >
         <HStack
