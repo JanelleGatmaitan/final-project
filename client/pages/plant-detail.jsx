@@ -25,10 +25,10 @@ export default class PlantDetail extends React.Component {
       isGardenFormOpen: false,
       isDeleteModalOpen: false,
       gardenInfo: {
-        soil: null,
-        sun: null,
-        size: null,
-        notes: ' '
+        soil: '',
+        sun: '',
+        size: '',
+        notes: ''
       },
       formPlaceholders: getGardenFormPlaceHolders(window.location.hash)
     };
