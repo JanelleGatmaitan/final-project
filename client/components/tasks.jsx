@@ -1,10 +1,13 @@
 import React from 'react';
-import { Heading } from '@chakra-ui/react';
+import {
+  Heading,
+  Box
+} from '@chakra-ui/react';
 
 function Tasks(props) {
   return (
     <>
-      <div
+      <Box
         className="tasks"
         id="column-right"
       >
@@ -15,17 +18,17 @@ function Tasks(props) {
         >
           Daily Tasks
         </Heading>
-        <div className="row task-icons">
+        <Box className="row task-icons">
           <i className="fas fa-tint task-icon"></i>
           <i className="fas fa-recycle task-icon"></i>
           <i className="fas fa-cut task-icon"></i>
-        </div>
-        <div className="row task-names">
+        </Box>
+        <Box className="row task-names" cursor="pointer">
           <p className={`task-name ${props.getTaskClass('Water')}`} onClick={props.clickTask}>Water</p>
           <p className={`task-name ${props.getTaskClass('Compost')}`} onClick={props.clickTask}>Compost</p>
           <p className={`task-name ${props.getTaskClass('Prune')}`} onClick={props.clickTask}>Prune</p>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </>
   );
 }
